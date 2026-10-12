@@ -84,8 +84,8 @@ Concept review points
     resource bound. Polynomial bit simulation preserves its asymptotic form.
 
 Proof-network review — required before submission
-  The headline theorem is open. The first fourteen supporting statements
-    are discharged, followed by the weighted/blow-up proof block below.
+  The headline theorem is open. All twenty-eight supporting statements
+    are discharged, including the weighted/blow-up proof block below.
     The hull-feasibility proof assumes the indicator statement, and the
     joint-distribution proof assumes the conditioning statement. The entropy
     bounds and average-gap proofs use only background axioms. Strict decrease
@@ -93,9 +93,9 @@ Proof-network review — required before submission
     uses strict decrease, entropy bounds, and the conditioning invariants.
     Rational search correctness uses that existence statement, candidate
     completeness, and the conditioning invariants. Every assumption has a
-    checked proof. Recompute the least-fixed-point closure after adding the
-    weighted and structural statements; only the headline theorem may remain
-    open at the end of this block.
+    checked proof. Recomputed the least-fixed-point closure after adding the
+    weighted and structural statements: all twenty-eight conclusions close,
+    and only the headline theorem remains open.
   When proof branches are introduced, expose meaningful intermediate claims
     as separate theorem concepts and annotated proofs. Follow the branches
     above and record the actual external assumptions in each proof's axiom
@@ -114,6 +114,11 @@ Local validation
   On 2026-10-13, lax build --replay passed with 17 concepts and 14 proofs
     in 51 seconds, without violations or warnings. Verified the full proof
     dependency closure and refreshed preview at port 8137.
+  After the weighted and structural block, lax build --replay passed with
+    25 concepts and 28 proofs in 1m02s. Verified that all 28 supporting
+    conclusions close under their checked dependencies, and only
+    Lax263307.MainTheorem.exists_qptas is open. The preview at port 8137
+    displays the new weighted and tree-decomposition concepts.
   Executed the rational search on the uniform singleton moments of a
     three-vertex clique with k=1, p=4, r=13: the empty set fails the test,
     and the search returns the singleton {2}. Candidate counts are 11 for
