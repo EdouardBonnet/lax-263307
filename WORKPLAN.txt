@@ -81,11 +81,16 @@ Concept review points
     resource bound. Polynomial bit simulation preserves its asymptotic form.
 
 Proof-network review — required before submission
-  The headline theorem is open. The first proof block discharges seven
-    supporting statements. The hull-feasibility proof assumes the indicator
-    statement, and the joint-distribution proof assumes the conditioning
-    statement; both assumptions have their own proofs in this submission.
-    All other proofs in this block use only background axioms.
+  The headline theorem is open. Fourteen supporting statements are discharged.
+    The hull-feasibility proof assumes the indicator statement, and the
+    joint-distribution proof assumes the conditioning statement. The entropy
+    bounds and average-gap proofs use only background axioms. Strict decrease
+    uses the distribution and average-gap statements; conditioning existence
+    uses strict decrease, entropy bounds, and the conditioning invariants.
+    Rational search correctness uses that existence statement, candidate
+    completeness, and the conditioning invariants. Every assumption has a
+    checked proof; the least-fixed-point computation closes all fourteen
+    supporting statements and leaves only the headline theorem open.
   When proof branches are introduced, expose meaningful intermediate claims
     as separate theorem concepts and annotated proofs. Follow the branches
     above and record the actual external assumptions in each proof's axiom
@@ -101,6 +106,13 @@ Local validation
     and 7 proofs in 54 seconds. Inspected the computed assumption sets:
     only the two documented internal proof edges occur, and all supporting
     statements are discharged. The main QPTAS theorem remains open.
+  On 2026-10-13, lax build --replay passed with 17 concepts and 14 proofs
+    in 51 seconds, without violations or warnings. Verified the full proof
+    dependency closure and refreshed preview at port 8137.
+  Executed the rational search on the uniform singleton moments of a
+    three-vertex clique with k=1, p=4, r=13: the empty set fails the test,
+    and the search returns the singleton {2}. Candidate counts are 11 for
+    n=4,r=2 and 8 for n=3,r=13, including the cases r>n.
   A successful build checks the statement and declarations, not its proof.
 
 Proof progress — 2026-10-12
