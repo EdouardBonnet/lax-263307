@@ -1,0 +1,89 @@
+Lax263307 — QPTAS for maximum-weight independent set
+
+Scope
+  Theorem 2 of Bonnet–Chang is the single headline result.
+  Start with concept review; the main proof obligation remains open.
+  The induced-minor corollary, vertex-cover consequence, and other
+  applications are outside this initial scope.
+
+Source
+  round-or-cut.pdf is an exact copy of ../round-or-cut/round-or-cut.pdf.
+  SHA-256: 724847a087ed2b4a0bbff6076197a14d58acf9033ec28a6c015de697e3c61d4a
+  Copied 2026-10-12. Keep this snapshot fixed when following page numbers.
+
+Existing foundations — reuse, do not redevelop
+  Lax808846: registered word RAM, pinned in the concept package.
+  Lax759944: registered binary word encoding and RAM polynomial-time
+    interfaces, pinned in the concept package.
+  Lax920634, ../subcubic-expanders: explicit deterministic subcubic
+    graphs of linear treewidth; currently an archive draft. Its size
+    selection and construction bounds support Lemma 10. The sampled-path
+    contradiction only needs existence; retain the effective construction
+    when an algorithmic interface is useful.
+  Lax455465, ../leighton-rao: ongoing deterministic flow–cut development.
+    Use RamDirectedUniformFlowCut and the paper's vertex-splitting
+    reduction for Lemma 7. The paper counts endpoint loads and singleton
+    paths; these conventions must survive the reduction.
+  Lax109476, ../linear-programming: registered exact LP solver and its
+    rational ellipsoid implementation. Current registered revision:
+    0a042604c7ae1ef4cd9a4c7d82eb902f313d4864.
+    Reuse EllipsoidSequence, EllipsoidTermination, EllipsoidSearch, and
+    the rational arithmetic/RAM modules. The public solver statement
+    accepts explicit LPs; Section 5.1 needs the additional bridge to a
+    separation oracle with early success and potentially lower-dimensional
+    convex hulls. Do not enumerate all independent sets or materialize an
+    exponential facet description to use the explicit LP solver.
+    Extract/generalize the existing ellipsoid argument instead.
+  Lax228581: registered treewidth definitions, already used by Lax920634.
+    Check reusable separator/treewidth facts before introducing obligations
+    for Robertson–Seymour and Dvořák–Norin (paper Theorem 5).
+
+Dependency policy
+  Only definitions needed to state the main theorem are currently imported.
+  Add the above theorem dependencies when their proof branches are added.
+  For unregistered sibling dependencies, use relative path requirements
+    and lax build --nonstrict. Replace them by exact registered source pins
+    before archive submission. Do not register another submission here.
+
+Planned proof branches, following the paper
+  1. Separator/treewidth bridge, then the light-separator theorem (Lemma 6):
+     vertex-capacitated flow–cut (Lemma 7), repeated cuts (Lemma 8),
+     tree-decomposition transfer (Lemma 9), existing subcubic graphs
+     (Lemma 10), and the sampled-path contradiction (Lemma 11).
+     Randomness is used only in an existence argument; the separator
+     algorithm remains deterministic.
+  2. The rational relaxation R_r(G,k), indicator feasibility, and entropy
+     decrease under conditioning (Lemma 12). Preserve the global mass k.
+  3. The existing ellipsoid method with early success, coefficient bounds,
+     and recursive separating inequalities for the independent-set hull.
+  4. Solve/RoundOrCut: certified upper bounds, approximation loss, termination
+     and total quasipolynomial runtime (Lemma 14, Theorem 15, Section 5.3).
+  5. Independent blow-ups preserve the separator hypothesis (Lemma 16),
+     then rational scaling/rounding and projection of the selected copies
+     prove the weighted guarantee in Theorem 2.
+  6. Compile/combine the actual RAM programs and prove their execution and
+     rational-size bounds, keeping the polynomial term in original bit size
+     additive. This is part of the proof, not an assumed cost annotation.
+
+Concept review points
+  Balanced separators use the original order n and exact integer inequality
+    3|K| <= 2n. The bound c(m+1)^b includes edgeless singleton graphs.
+  Rational weights include negative values; preprocessing can drop them.
+  Constants and the program depend on the class, not on a particular input.
+  No class-recognition algorithm or separator oracle is supplied.
+  The explicit sufficient RAM word width is bounded by the same QPTAS
+    resource bound. Polynomial bit simulation preserves its asymptotic form.
+
+Proof-network review — required before submission
+  Initially there is one open statement and no proof edges.
+  When proof branches are introduced, expose meaningful intermediate claims
+    as separate theorem concepts and annotated proofs. Follow the branches
+    above and record the actual external assumptions in each proof's axiom
+    set. Do not use a proof assuming the headline theorem, a circular chain,
+    or a theorem restatement disguised as an algorithmic dependency.
+  Recheck the complete displayed proof network before lax submit.
+
+Local validation
+  lax build --replay .
+  The concepts are a reviewable initial draft, not yet approved or frozen.
+  A successful build checks the statement and declarations, not its proof.

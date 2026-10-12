@@ -1,0 +1,16 @@
+specVersion: "1"
+id: lax-263307
+leanVersion: "v4.33.0"
+mathlibVersion: "db584cd6d46c92f209a44c0f1c829460d327499d"
+title: "QPTAS for Max Weight Independent Set in Graphs with Strongly Edge-Sublinear Separators"
+authors:
+  - name: Édouard Bonnet
+    github: EdouardBonnet
+bibEntries:
+  - |
+    @unpublished{BonnetChang2026QPTAS,
+      author = {Bonnet, Édouard and Chang, Yeonsu},
+      title = {{QPTAS} for Max Weight Independent Set in Graphs with Strongly Edge-Sublinear Separators},
+      year = {2026},
+      note = {Manuscript, local PDF snapshot of 12 October 2026, Theorem 2}
+    }
