@@ -16,7 +16,8 @@ Existing foundations — reuse, do not redevelop
   Lax759944: registered binary word encoding and RAM polynomial-time
     interfaces, pinned in the concept package.
   Lax920634, ../subcubic-expanders: explicit deterministic subcubic
-    graphs of linear treewidth; currently an archive draft. Its size
+    graphs of linear treewidth; registered at revision
+    4e1ce662f8ff75f2fa86d3a3973c871d3068c4c0. Its size
     selection and construction bounds support Lemma 10. The sampled-path
     contradiction only needs existence; retain the effective construction
     when an algorithmic interface is useful.
@@ -85,5 +86,7 @@ Proof-network review — required before submission
 
 Local validation
   lax build --replay .
+  Passed 2026-10-12: 5 concepts, 1 open theorem statement, 0 proofs;
+    concept/proof compilation, kernel replay, and archive inspection passed.
   The concepts are a reviewable initial draft, not yet approved or frozen.
   A successful build checks the statement and declarations, not its proof.
