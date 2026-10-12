@@ -9,3 +9,9 @@ import Lax263307.ConditionedCosts
 import Lax263307.ComponentCuts
 import Lax263307.HullNonempty
 import Lax263307.ConditioningDistribution
+import Lax263307.Entropy
+import Lax263307.EntropyBounds
+import Lax263307.EntropyGap
+import Lax263307.EntropyDecrease
+import Lax263307.ConditioningExistence
+import Lax263307.RationalConditioning
