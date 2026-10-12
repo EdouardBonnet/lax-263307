@@ -15,3 +15,11 @@ import Lax263307.EntropyGap
 import Lax263307.EntropyDecrease
 import Lax263307.ConditioningExistence
 import Lax263307.RationalConditioning
+import Lax263307.IndependentBlowUp
+import Lax263307.BlowUpIndependentSets
+import Lax263307.PositiveWeights
+import Lax263307.WeightRounding
+import Lax263307.RoundingBounds
+import Lax263307.WeightedProjection
+import Lax263307.BlowUpClasses
+import Lax263307.BlowUpDecompositions

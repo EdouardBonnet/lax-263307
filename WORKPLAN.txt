@@ -41,12 +41,15 @@ Existing foundations — reuse, do not redevelop
     exponential facet description to use the explicit LP solver.
     Extract/generalize the existing ellipsoid argument instead.
   Lax228581: registered treewidth definitions, already used by Lax920634.
+    Now pinned directly in concepts and proofs at revision
+    1e200ffac8b69e63b802f0aaf1dfee79561ca39a, using the registered source
+    twin-width-treewidth-separation-v433/concepts.
     Check reusable separator/treewidth facts before introducing obligations
     for Robertson–Seymour and Dvořák–Norin (paper Theorem 5).
 
 Dependency policy
-  Only definitions needed to state the main theorem are currently imported.
-  Add the above theorem dependencies when their proof branches are added.
+  RAM/encoding and the registered treewidth definitions are currently imported.
+  Add the other theorem dependencies when their proof branches are added.
   For unregistered sibling dependencies, use relative path requirements
     and lax build --nonstrict. Replace them by exact registered source pins
     before archive submission. Do not register another submission here.
@@ -81,7 +84,8 @@ Concept review points
     resource bound. Polynomial bit simulation preserves its asymptotic form.
 
 Proof-network review — required before submission
-  The headline theorem is open. Fourteen supporting statements are discharged.
+  The headline theorem is open. The first fourteen supporting statements
+    are discharged, followed by the weighted/blow-up proof block below.
     The hull-feasibility proof assumes the indicator statement, and the
     joint-distribution proof assumes the conditioning statement. The entropy
     bounds and average-gap proofs use only background axioms. Strict decrease
@@ -89,8 +93,9 @@ Proof-network review — required before submission
     uses strict decrease, entropy bounds, and the conditioning invariants.
     Rational search correctness uses that existence statement, candidate
     completeness, and the conditioning invariants. Every assumption has a
-    checked proof; the least-fixed-point computation closes all fourteen
-    supporting statements and leaves only the headline theorem open.
+    checked proof. Recompute the least-fixed-point closure after adding the
+    weighted and structural statements; only the headline theorem may remain
+    open at the end of this block.
   When proof branches are introduced, expose meaningful intermediate claims
     as separate theorem concepts and annotated proofs. Follow the branches
     above and record the actual external assumptions in each proof's axiom
@@ -150,6 +155,36 @@ Proof progress — 2026-10-12
   Next: RAM instruction counts and rational bit-length bounds for this
     enumeration, or another independent branch. The light-separator branch,
     ellipsoid oracle bridge, recursion, and blow-up arguments remain.
+
+Weighted and blow-up progress — 2026-10-13
+  Added fourteen more annotated proofs:
+    - independent sets lift to all copies and project back independently;
+    - lift cardinality, projection capacity, and exact total blow-up order;
+    - signed weights reduce to nonnegative weights by clipping, followed by
+      removing nonpositive selected vertices;
+    - the empty set handles every all-nonpositive instance, including n=0;
+    - pointwise floor bounds and total rounding loss on any vertex set;
+    - the rounded copy count is at most 2n²/ε;
+    - an ε/2 cardinality approximation on the rounded graph projects to an
+      ε weight approximation on the original graph;
+    - independent blow-up closures (with empty fibres) are hereditary;
+    - labeled copy graphs belong to that closure;
+    - bounded multiplicities lift a tree decomposition to bags of size at
+      most s(w+1), using the registered tree-decomposition definition.
+  The weighted guarantee compares with an optimum chosen only for analysis;
+    no optimum or separator is supplied to an algorithm. Maximum weight is
+    defined as the maximum of all vertex weights and zero, covering empty
+    inputs. The positive-weight branch includes the case n=1.
+  Zero-copy fibres are allowed. For hereditary host classes this agrees with
+    the paper's nonempty-fibre convention after deleting unused host vertices.
+  Numeric execution check: weights [5,2,0] and ε=1/2 give maximum 5, scale
+    5/12, and multiplicities [12,4,0]. Lifting {0} selects 12 copies and
+    projects to weight 5. Clipping [-3,5,0] gives [0,5,0]; filtering all
+    vertices leaves total original weight 5.
+  The separator-preservation estimate of Lemma 16 still requires its
+    high-degree deletion and isolated-vertex construction. The current
+    lifted decomposition handles bounded fibre sizes only. Those structural
+    steps, the unweighted algorithm, and the full RAM runtime remain open.
 
 Local preview
   lax serve . --port 8137

@@ -10,3 +10,9 @@ import Lax263307Proofs.EntropyGap
 import Lax263307Proofs.EntropyDecrease
 import Lax263307Proofs.ConditioningExistence
 import Lax263307Proofs.RationalConditioning
+import Lax263307Proofs.BlowUpIndependentSets
+import Lax263307Proofs.PositiveWeights
+import Lax263307Proofs.RoundingBounds
+import Lax263307Proofs.WeightedProjection
+import Lax263307Proofs.BlowUpClasses
+import Lax263307Proofs.BlowUpDecompositions
