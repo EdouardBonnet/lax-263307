@@ -2,7 +2,9 @@ Lax263307 — QPTAS for maximum-weight independent set
 
 Scope
   Theorem 2 of Bonnet–Chang is the single headline result.
-  Start with concept review; the main proof obligation remains open.
+  Proof work authorized 2026-10-12 after the initial concept draft.
+  The headline statement and its mathematical definitions are unchanged;
+  the main proof obligation remains open.
   The induced-minor corollary, vertex-cover consequence, and other
   applications are outside this initial scope.
 
@@ -76,7 +78,11 @@ Concept review points
     resource bound. Polynomial bit simulation preserves its asymptotic form.
 
 Proof-network review — required before submission
-  Initially there is one open statement and no proof edges.
+  The headline theorem is open. The first proof block discharges seven
+    supporting statements. The hull-feasibility proof assumes the indicator
+    statement, and the joint-distribution proof assumes the conditioning
+    statement; both assumptions have their own proofs in this submission.
+    All other proofs in this block use only background axioms.
   When proof branches are introduced, expose meaningful intermediate claims
     as separate theorem concepts and annotated proofs. Follow the branches
     above and record the actual external assumptions in each proof's axiom
@@ -88,5 +94,32 @@ Local validation
   lax build --replay .
   Passed 2026-10-12: 5 concepts, 1 open theorem statement, 0 proofs;
     concept/proof compilation, kernel replay, and archive inspection passed.
-  The concepts are a reviewable initial draft, not yet approved or frozen.
+  After the first proof block, lax build --replay passed with 11 concepts
+    and 7 proofs in 54 seconds. Inspected the computed assumption sets:
+    only the two documented internal proof edges occur, and all supporting
+    statements are discharged. The main QPTAS theorem remains open.
   A successful build checks the statement and declarations, not its proof.
+
+Proof progress — 2026-10-12
+  Completed the relaxation block with no sorry/admit or proof-package axioms:
+    - independent-set indicators satisfy all five constraint families;
+    - their exact convex hull is contained in the relaxation;
+    - the exact hull is nonempty iff the target independent set exists;
+    - conditioned costs lie in [0,1], sum to k, fix chosen vertices to one,
+      and preserve positive moments at positive-cost steps;
+    - the normalized first and second moments satisfy the probability,
+      symmetry, marginal, edge-vanishing, and conditional-probability
+      identities in equations (15) and (16);
+    - independence bounds give valid inequalities on the exact hull
+      (Lemma 13);
+    - the conditioned-cost test exactly detects violation of that cut.
+  These are seven annotated proofs across five theorem concepts, supported
+    by LinearRelaxation's definitions and RelaxationAlgebra's used helpers.
+  Next: entropy bounds and strict decrease, then finite conditioning search
+    and its rational implementation (Lemma 12). The light-separator branch,
+    ellipsoid oracle bridge, recursion, blow-ups, and RAM runtime remain.
+
+Local preview
+  lax serve . --port 8137
+  http://localhost:8137/lax-263307/
+  Running preview reloads after lax build writes a fresh build-output.json.

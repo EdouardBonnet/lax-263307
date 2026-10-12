@@ -25,8 +25,8 @@ in Graphs with Strongly Edge-Sublinear Separators*, Theorem 2.
 
 # Formalization notes
 
-This is the sole theorem statement of the initial submission. The
-separator hypothesis uses the harmless $m+1$ normalization explained
+This is the submission's headline theorem. The separator hypothesis
+uses the harmless $m+1$ normalization explained
 in `EdgeSublinearSeparators`. The approximation scheme refers directly
 to the registered RAM semantics through `QPTAS.HasQPTAS`.
 -/
