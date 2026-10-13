@@ -288,3 +288,30 @@ Registered flow–cut integration — 2026-10-13
   the original separation at cost at most
   4*rho*|A|*|B|/gamma, whenever the finite large capacity exceeds
   rho*(2n)²/gamma. This brings the count to 58 supporting claims.
+
+  Final validation of the registered cut-side block: lax build --replay
+  passed at 5c44915, 40 concepts and 58 proofs, 1m38s, no Lax warnings.
+  Recomputed closure with all registered proof conclusions as the external
+  foundation (3152 closed registered conclusions). All 58 own supporting
+  statements close; only MainTheorem.exists_qptas remains open.
+  Registered LR source and exact pin were checked both in the synchronized
+  record and on the live archive page. Main statement/definitions unchanged.
+
+Next flow-side proof — preserve the endpoint convention
+  Apply registered ArcToPath.exists_path_flow to a high-value split arc flow.
+  For each positive simple path from u-minus to v-plus, reconstruct a list Q
+  of original vertices such that its expansion [w-minus,w-plus] is the split
+  path. Every input port has only its paired output as a positive outgoing
+  capacity arc. A reverse output-to-input arc would repeat the preceding
+  input port, contradicting path simplicity. Thus successive original
+  vertices are adjacent, and Q is simple. The u=v commodity projects to the
+  singleton [u], which must be retained.
+  Retain precisely these n² commodities; each has routed mass at least f.
+  Normalize each commodity to mass one. Since f≥1/gamma, every normalization
+  factor is at most gamma. Vertex membership in a projected path matches
+  traversal of its capacity arc, giving total endpoint-inclusive load ≤gamma*x.
+  Only existence is required on the flow side: the separator promise later
+  rules out high-value flow, so no new RAM path decomposition is needed.
+  Then prove the repeated cut procedure (≤n cuts, disjoint removed B shores),
+  choose a rational finite large capacity using an integer universal constant,
+  and implement the split-input/cut-output wrappers on the registered RAM.
