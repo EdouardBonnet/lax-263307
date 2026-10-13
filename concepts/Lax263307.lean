@@ -56,3 +56,8 @@ import Lax263307.PowerBagBounds
 import Lax263307.WidthGrowth
 import Lax263307.NoBoundedLoadRoutes
 import Lax263307.ForcedSeparation
+import Lax263307.RepeatedCutAccounting
+import Lax263307.BalancedPartitions
+import Lax263307.CutTraces
+import Lax263307.SeparatorDecompositions
+import Lax263307.EdgeBagBounds

@@ -458,3 +458,68 @@ High-flow exclusion and actual certificate shores
   bag bridge, oracle correctness including ellipsoid stopping, and RAM/time
   compilation. The main QPTAS theorem remains open; all current width and
   flow-cut claims explicitly retain the intermediate class power-bag premise.
+
+Repeated-cut trace, cost, and balance
+  Full replay at e421d84 passed: 58 concepts, 91 proofs, 3m08s, no Lax
+  warnings. Closure with registered foundations closes all 91 supporting
+  claims, including the three imported Lax920634 source-family conclusions;
+  only MainTheorem.exists_qptas remains open.
+  Four further claims compile (95 supporting claims): cumulative cut cost
+  using disjoint discarded shores; balanced closed parts imply a balanced
+  separator; correctness, balance, cost, and ≤n steps for a cut trace; and
+  existence of such a trace from an oracle on each large remainder.
+  Important size invariant: the retained discarded piece B_i\A_i is small,
+  while the discarded shore B_i also contains the separator A_i∩B_i and
+  need not itself be at most half the remainder. Choose orientation by
+  comparing shore cardinalities, which also compares exclusive-piece sizes.
+  Strengthened split_certificate from n≥2 to n>0: its split graph has 2n
+  vertices, so the registered solver already applies for every positive n.
+  This handles a possible one-vertex remainder without a special solver gap.
+  Next: instantiate the per-remainder cut oracle with labeled induced costs,
+  binary-log ratio and finite-capacity bounds; derive the class power-bag
+  bound from separators; compile the oracle and repeat loop on actual RAM.
+
+Ellipsoid route to investigate — strong-gap early stopping
+  The LP submission's internal EllipsoidTermination.cannot_retain_ball is
+  generic in the integer normal schedule; its rounded matrix/center updates
+  do not require a fixed explicit-row oracle. Inspect reuse of the registered
+  proof package at its exact pin rather than assume the public explicit LP
+  solver alone implements the desired separation oracle.
+  A full-dimensional ball around an independent-set moment vector can be
+  protected by a uniformly strong gap oracle, avoiding a false assumption
+  that the exact 0/1 hull has nonempty ambient interior.
+  Candidate strategy: project each rational center to the explicit local
+  relaxation via an infinity-distance LP. If far, its dual gives a normalized
+  separating normal; if near, use exact feasible moments for round-or-cut.
+  Ignore pieces of cost ≤delta*k/(2n), and query heavy pieces at
+  floor((1-delta)*pieceCost)+1. Child failure gives a valid component cut
+  of normalized gap ≥delta²*k/(2n). To obtain a raw moment-vector gap, also
+  require the chosen conditioning moment to be ≥1/(2*(n+1)^r).
+  A stopped-conditioning probability argument may supply this: expected
+  entropy drift on nonsparse states is ≥constant/p, entropy ≤log n, and
+  r>constant*p*log n forces sparse-leaf probability ≥1/2. There are at most
+  n^r leaves, and telescoping transition probabilities are ≤their raw
+  conditioning moments when integer k≥1. The existing entropy lemmas are
+  ingredients, but this stopped-process quantitative claim is NOT yet proved.
+  Projection distance small relative to the raw cut gap preserves a uniform
+  gap at the queried center. Valid cuts then retain a small ball around every
+  true independent-set moment vertex, and generic ellipsoid termination
+  certifies that failure implies no target independent set. Runtime and bit
+  bounds must still be proved for the actual registered RAM updates and LP
+  calls; no abstract-program or thin-body shortcut may replace those proofs.
+
+Separator-to-width bridge
+  Added two decomposition claims: dependent component-tree gluing, and
+  the logarithmic recursive bag bound from balanced bounded separators.
+  Added two width claims: a real edge-sublinear class bag bound, and its
+  integer power form HasPowerBagBound C a A for positive a,A.
+  The original hereditary separator premise now supplies the class premise
+  of the high-flow impossibility and forced-separation results. Isolated
+  vertices are removed before recursion and restored as singleton leaves;
+  the remaining order is at most twice the edge count. The logarithm is
+  absorbed at exponent beta=(1+b)/2<1. This uses no unproved sharp
+  separator-treewidth theorem and introduces no extra main hypothesis.
+  Next: full replay of 99 supporting claims; instantiate the remainder
+  cut oracle and logarithmic capacity bounds; extend the width bound to
+  the independent blow-up closure; strong-gap oracle, RAM compilation,
+  and the final QPTAS correctness and time bound remain required.

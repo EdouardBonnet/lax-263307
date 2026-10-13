@@ -99,7 +99,7 @@ axiom separator_cost_bound {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.A
 axiom split_certificate :
   ∃ (solve : List ℕ → List ℕ) (C : ℝ), Lax759944.RamPolytime.RamPolytime solve ∧ 0 < C ∧
     ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-      (x : Fin n → ℚ≥0) (large : ℚ≥0), 2 ≤ n →
+      (x : Fin n → ℚ≥0) (large : ℚ≥0), 0 < n →
       let I := splitInstance G x large
       ∃ certificate : Lax455465.FlowCutCertificate.Certificate (2 * n),
         solve (encodeInput .directed I) = Lax455465.FlowCutCertificate.encodeCertificate certificate ∧
