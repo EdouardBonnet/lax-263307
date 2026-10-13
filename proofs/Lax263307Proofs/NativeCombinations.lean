@@ -216,7 +216,7 @@ theorem command_spec (B n k : ℕ) (hB : (n+1)*(k+1)+n+k+3<B)
     (hcoeff : ∀ i≤n,∀ j≤k,i.choose j<B) :
     Spec B (fun σ => σ.vars "choose.n"=n ∧ σ.vars "choose.k"=k ∧
       (n+1)*(k+1)≤(σ.arrs "choose.table").length) command
-      (fun _ τ => Prefix (table n k) "choose.table" τ)
+      (fun _ τ => Prefix (table n k) "choose.table" τ ∧ τ.vars "choose.cols"=k+1)
       (54*(n+1)*(k+1)+16) := by
   have hl := table_length n k
   have hloop := Spec.forRangeZero "choose.i" "choose.length" (Invariant n k)
@@ -239,7 +239,7 @@ theorem command_spec (B n k : ℕ) (hB : (n+1)*(k+1)+n+k+3<B)
       intro i hi
       omega
   obtain ⟨τ,r2,p2⟩ := hloop ν hi
-  refine ⟨τ,(r1.seq r2).mono (by rw [hl]; nlinarith),?_⟩
+  refine ⟨τ,(r1.seq r2).mono (by rw [hl]; nlinarith),?_,p2.1.1⟩
   simpa only [p2.2,List.take_length] using p2.1.2.2.2.2
 
 /-- The membership vector of the direct subset selection. -/

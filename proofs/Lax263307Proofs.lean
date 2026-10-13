@@ -83,3 +83,7 @@ import Lax263307Proofs.NativeMultiplicities
 import Lax263307Proofs.NativeOracleCalls
 import Lax263307Proofs.NativeWeightReduction
 import Lax263307Proofs.NativeBlowUp
+import Lax263307Proofs.NativeExhaustive
+import Lax263307Proofs.NativeCombinations
+import Lax263307Proofs.NativeZeroScan
+import Lax263307Proofs.NativeIndependentTest

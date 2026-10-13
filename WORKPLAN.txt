@@ -940,3 +940,35 @@ Complete functional algorithm
   These helpers are not yet imported by the public proof root; they await
   the native exhaustive-search composition. Next draft:
   /tmp/qptas-native-independent-test.lean (actual matrix/membership scan).
+  NativeIndependentTest now compiles: actual graph/membership reads return
+  exactly the independence predicate, with source cost 38*n^2+12.
+  NativeExhaustive now passes local Lean in its full prototype. Its native
+  loop retains exactly the first successful candidate in sublistsLen order;
+  failure matches findIndependentSet. Pascal-table preparation, input/output
+  and compilation yield one fixed RAM program with time and sufficient width
+  c*(n+k+2)^2*(n+1)^k, c=10000+layoutAllowance, for all n,k, including empty
+  graphs, target zero and targets above n. Source subroutines operate on
+  graph buffers for later recursive composition. The new public claim and
+  its helper chain are copied/imported and require strict replay.
+  Main theorem still open: moment LP/catalog and cut encodings, conditioning
+  and separator wrapper, explicit recursive control and stack, global bounds.
+  NativeExhaustive and its helper chain passed full strict replay (6m07s):
+  89 concepts and 163 public proofs. Fixed the exact proof-root import
+  inventory (NativeCombinations, NativeZeroScan, NativeIndependentTest).
+  Closure audit leaves only MainTheorem.exists_qptas open. Same three
+  warnings: two proof-package advisories and NativeOracleCalls awaiting use.
+  Next drafts: /tmp/qptas-native-catalog-order.lean now passes local Lean;
+  it proves that dedup is redundant, enumerated cardinality blocks are
+  disjoint, and enumeration agrees exactly with CoordinateCatalog.indexing.
+  /tmp/qptas-native-masks.lean contains finite-set mask semantics and the
+  actual membership-to-mask RAM loop (15*n+8 source cost). Last local
+  check found one simplification failure in mask_insert; the correction
+  has been written but has not been checked after the strict replay.
+  /tmp/qptas-native-catalog.lean contains the full two-level catalog RAM
+  loop, exact cardinality-block appends, Pascal preparation, and a source
+  cost bound polynomial in n, R and catalog length. This draft has not
+  been checked, copied into proofs, or given a public theorem. Import
+  NativeMasks and NativeCatalogOrder only after validating their drafts.
+  No overall completion percentage is justified: functional correctness is
+  proved, but the large-target native path, recursive control and stack,
+  and combined execution/word/time bounds remain substantial obligations.
