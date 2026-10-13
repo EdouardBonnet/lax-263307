@@ -385,3 +385,19 @@ Coupled endpoint sampling — compiled continuation
   Next: use these marginal identities to bound the whole sampler's bad-event
   probability and total route length, choose a good almost-embedding, then
   integrate the light-separator contradiction and algorithmic oracle.
+
+Whole-sample bounds and induced almost-embedding
+  Full replay at 5352a03 passed: 46 concepts, 74 proofs, 2m43s, no Lax
+  warnings. Registered-foundation closure closes all 74 supporting statements;
+  MainTheorem.exists_qptas is still the only open own statement.
+  Four further annotated claims compile (78 supporting claims): total
+  expected route size m*E[size]; whole-sample interaction probability at most
+  m²*(collision+adjacency); existence of a positive good sample of total size
+  at most 4M; and an induced AlmostEmbedding H G from that sample for any
+  finite simple source graph H under the two probability/length budgets.
+  The embedding uses shared endpoint images, connected walk supports, and
+  the four-distinct-endpoints condition for disjoint source edges. Source
+  vertex images need not be distinct; singleton host routes are preserved.
+  Next: remove long routes and preserve source treewidth, accounting for
+  isolated vertices created by edge deletion; then combine with the induced
+  host edge-count and the class's sublinear width bound for Lemma 11.

@@ -44,3 +44,5 @@ import Lax263307.RouteDistributions
 import Lax263307.ConditionalRoutes
 import Lax263307.FiniteProductSampling
 import Lax263307.CoupledRouteSampling
+import Lax263307.CoupledSamplingBounds
+import Lax263307.SampledAlmostEmbeddings

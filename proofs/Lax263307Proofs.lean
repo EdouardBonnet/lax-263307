@@ -37,3 +37,5 @@ import Lax263307Proofs.RouteDistributions
 import Lax263307Proofs.ConditionalRoutes
 import Lax263307Proofs.FiniteProductSampling
 import Lax263307Proofs.CoupledRouteSampling
+import Lax263307Proofs.CoupledSamplingBounds
+import Lax263307Proofs.SampledAlmostEmbeddings
