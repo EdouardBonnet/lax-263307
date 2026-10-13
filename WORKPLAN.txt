@@ -541,3 +541,42 @@ Instantiated light-separator theorem
   toward the smaller shore controls its exclusive discarded piece.
   The result is currently a mathematical trace/correctness theorem; it
   does not yet assert that its wrappers or repeated-cut loop run on RAM.
+
+Blow-up width and heavy conditioning
+  Full replay at 388995c passed: 64 concepts, 100 proofs, 3m35s, no Lax
+  warnings. Registered closure closes every supporting claim.
+  Two blow-up width claims compile, completing the structural width
+  prerequisite for the weighted reduction, including arbitrary empty
+  fibres. Restrict the host to used fibres before comparing edge counts;
+  representatives embed this restricted host into the blow-up.
+  Two heavy-conditioning claims also compile. A simpler quantitative
+  argument replaces the proposed stopped-process construction: discard
+  marginal choices below tau=1/(2*n*p*(log2 n+1)). They contribute at most
+  1/(2p) to expected entropy drop. Since the total drop exceeds 2/p,
+  some remaining choice decreases entropy by more than 1/p. With
+  r≥p*(log2 n+1), this reaches sparse costs and raw moment at least tau^r.
+  This proves the moment lower bound needed for a uniform raw cut gap;
+  it still requires exact rational search, the component-gap estimate,
+  projection LP/oracle, ellipsoid stopping, and actual RAM/time assembly.
+
+Quantitative search and component cut buffers
+  The heavy rational search compiles and uses the existing candidate list,
+  adding the exact test rationalFloor(n,p)^r≤y_A. It returns the sparse
+  costs, mass, and quantitative raw moment floor. Five component-gap claims
+  compile: L1 coefficient bound≤|C|+u; stability under coordinate errors;
+  raw feasible-point heavy-part cut gap; preservation at a nearby queried
+  center; and a central-cut buffer around every valid hull point.
+  In particular coordinate error eta*delta²/(8n²) leaves gap at least
+  eta*delta²/(4n); a gap Delta protects a cube of radius Delta/(4n).
+  Together these provide the lower-dimensional hull-safe ingredients for
+  the early-stop ellipsoid approach. The nearest-point projection LP,
+  child target/ignore-small-part recursion analysis, generic ellipsoid
+  execution, and actual RAM/time assembly remain required.
+  Reuse avenue confirmed in CLI resolution: registered external proof
+  packages are supported. The exact LP pin is 0a042604c7ae1ef4cd9a4c7d82eb902f313d4864.
+  Lax455465Proofs includes a native sparse virtual-RAM interpreter with
+  quadratic source-time overhead, and generic command/frame lemmas. This
+  can invoke the registered flow and LP programs on constructed inputs.
+  Lax109476Proofs supplies generic rounded ellipsoid updates/termination
+  and the underlying RAM arithmetic. These proof packages must be declared
+  at their archive pins and provisioned by Lax before importing them.

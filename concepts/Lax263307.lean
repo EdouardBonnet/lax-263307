@@ -62,3 +62,7 @@ import Lax263307.CutTraces
 import Lax263307.SeparatorDecompositions
 import Lax263307.EdgeBagBounds
 import Lax263307.LightSeparators
+import Lax263307.BlowUpBagBounds
+import Lax263307.HeavyConditioning
+import Lax263307.HeavyRationalConditioning
+import Lax263307.StrongComponentGaps

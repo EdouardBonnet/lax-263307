@@ -55,3 +55,7 @@ import Lax263307Proofs.CutTraces
 import Lax263307Proofs.SeparatorDecompositions
 import Lax263307Proofs.EdgeBagBounds
 import Lax263307Proofs.LightSeparators
+import Lax263307Proofs.BlowUpBagBounds
+import Lax263307Proofs.HeavyConditioning
+import Lax263307Proofs.HeavyRationalConditioning
+import Lax263307Proofs.StrongComponentGaps
