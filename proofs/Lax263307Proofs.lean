@@ -79,3 +79,6 @@ import Lax263307Proofs.RecursiveAlgorithm
 import Lax263307Proofs.WeightedAlgorithm
 import Lax263307Proofs.NativeFrontend
 import Lax263307Proofs.NativeMaximum
+import Lax263307Proofs.NativeMultiplicities
+import Lax263307Proofs.NativeOracleCalls
+import Lax263307Proofs.NativeWeightReduction

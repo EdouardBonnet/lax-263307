@@ -82,28 +82,6 @@ theorem read_input_spec (B n : ℕ) (xs : List ℕ) (hsize : n*n+3*n+3 < B)
 def copyCount (n wn wd en ed Wn Wd : ℕ) : ℕ :=
   (2*n*wn*ed*Wd) / (wd*en*Wn)
 
-theorem copy_count_eq (n : ℕ) (q ε W : ℚ) (hq : 0 ≤ q) (hε : 0 ≤ ε) (hW : 0 ≤ W) :
-    copyCount n q.num.natAbs q.den ε.num.natAbs ε.den W.num.natAbs W.den =
-      ⌊q / (ε*W/(2*n))⌋₊ := by
-  have hqnum : (q.num.natAbs : ℚ) = (q.num : ℚ) := by
-    have he : (q.num.natAbs : ℤ) = q.num := Int.natAbs_of_nonneg (Rat.num_nonneg.mpr hq)
-    simpa only [Int.cast_natCast] using congrArg (fun z : ℤ => (z : ℚ)) he
-  have henum : (ε.num.natAbs : ℚ) = (ε.num : ℚ) := by
-    have he : (ε.num.natAbs : ℤ) = ε.num := Int.natAbs_of_nonneg (Rat.num_nonneg.mpr hε)
-    simpa only [Int.cast_natCast] using congrArg (fun z : ℤ => (z : ℚ)) he
-  have hWnum : (W.num.natAbs : ℚ) = (W.num : ℚ) := by
-    have he : (W.num.natAbs : ℤ) = W.num := Int.natAbs_of_nonneg (Rat.num_nonneg.mpr hW)
-    simpa only [Int.cast_natCast] using congrArg (fun z : ℤ => (z : ℚ)) he
-  rw [copyCount, ← Rat.natFloor_natCast_div_natCast]
-  congr 1
-  push_cast
-  rw [hqnum, henum, hWnum]
-  have hqrep : (q.num:ℚ) = q*q.den := (div_eq_iff (by exact_mod_cast q.den_ne_zero)).mp q.num_div_den
-  have herep : (ε.num:ℚ) = ε*ε.den := (div_eq_iff (by exact_mod_cast ε.den_ne_zero)).mp ε.num_div_den
-  have hWrep : (W.num:ℚ) = W*W.den := (div_eq_iff (by exact_mod_cast W.den_ne_zero)).mp W.num_div_den
-  rw [hqrep,herep,hWrep]
-  field_simp
-
 def computeCopies : Com := .assign "copy.count"
   (.div (.mul (.mul (.mul (.mul (.lit 2) (.var "input.n")) (.var "weight.n"))
     (.var "accuracy.d")) (.var "maximum.d"))

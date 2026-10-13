@@ -84,3 +84,4 @@ import Lax263307.NearOracle
 import Lax263307.ProjectedOracle
 import Lax263307.RecursiveAlgorithm
 import Lax263307.WeightedAlgorithm
+import Lax263307.NativeWeightReduction

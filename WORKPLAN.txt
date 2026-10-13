@@ -889,3 +889,30 @@ Complete functional algorithm
   certificate/function, so cannot establish exact function refinement.
   The generic invocation draft preserves f x exactly and reuses native
   input preparation and virtual execution with polynomial bounds.
+  NativeMultiplicities and NativeOracleCalls now pass local Lean checks.
+  The multiplicity loop has source cost 58*n+6, reads the actual rational
+  encodings, and computes exactly copies(max(w,0),epsilon), with arithmetic
+  intermediate bound 2*M^4+3. The accuracy reader is also checked.
+  The generic fixed-function invocation retains f x exactly using its own
+  RamPolytime witness; it applies to both chosen LP and flow functions.
+  These two helpers are copied/imported but need strict replay.
+  Next: compose full native weight preprocessing, then build the numbered
+  blow-up and recursive buffers/control; main theorem remains open.
+  NativeWeightReduction.exists_program now passes local Lean in its
+  prototype and is copied into concepts/proofs: one actual fixed finite RAM
+  program reads encodeInput and emits exactly copies(max(w,0),epsilon).
+  Time and sufficient word width are c*(n+h+1)^2, uniformly at every larger
+  width, for rational numerator/denominator height 2^h. Includes order zero
+  and no-positive-weight cases. c=10000+layoutAllowance; native magnitude
+  M=2^(n+h+2), source exponent v=4*(n+h+2)+n^2+3n+13.
+  Strict replay is still needed for this claim and the two preceding helpers.
+  Still open: numbered blow-up construction, moment/cut buffers and catalog,
+  explicit recursive RAM control, complete global complexity and MainTheorem.
+  NativeWeightReduction and its helpers passed full strict replay (6.1m):
+  87 concepts and 161 public proofs. The closure audit leaves only
+  MainTheorem.exists_qptas open. Warnings are the two proof-package
+  advisories and the intentionally unused generic NativeOracleCalls helper,
+  which awaits the complete native recursive algorithm. Removed redundant
+  copy_count_eq; the arbitrary-fraction quotient proof is used instead.
+  Next draft: /tmp/qptas-native-blowup.lean, owner-array construction and
+  adjacency lookup for the exact finSigmaFinEquiv numbering. Not checked yet.
