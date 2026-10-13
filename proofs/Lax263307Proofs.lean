@@ -23,3 +23,10 @@ import Lax263307Proofs.RecursionDepth
 import Lax263307Proofs.TargetSearch
 import Lax263307Proofs.ExhaustiveTargets
 import Lax263307Proofs.ComponentCutEncoding
+import Lax263307Proofs.ConnectedBags
+import Lax263307Proofs.ConnectedRepresentations
+import Lax263307Proofs.AlmostEmbeddings
+import Lax263307Proofs.PathSampling
+import Lax263307Proofs.SamplingOutcomes
+import Lax263307Proofs.InducedRouteEdges
+import Lax263307Proofs.EdgeDeletionWidth

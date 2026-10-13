@@ -195,3 +195,60 @@ Local preview
   lax serve . --port 8137
   http://localhost:8137/lax-263307/
   Running preview reloads after lax build writes a fresh build-output.json.
+
+Structural and recursion progress — 2026-10-13
+  Added fourteen checked supporting proofs (42 total):
+    - high-degree deletion removes at most 2m/s vertices;
+    - a blow-up decomposes into bounded fibres and isolated survivors,
+      giving bag bound |X| + max(1,s(w+1));
+    - choosing s = ceil((m+1)^((1-b)/2)) gives exponent (1+b)/2
+      and explicit bag constant 3+2c, under the original width bound;
+    - canonical components form a partition closed under undeleted edges;
+    - independent answers combine with exactly additive cardinalities;
+    - a conditioned query produces the next-level size guarantee or a
+      valid violated component inequality;
+    - the integer balanced-recursion depth decreases on every child and
+      is at most 2(log2(n)+1);
+    - Bernoulli's inequality transfers the accumulated loss into the
+      requested unweighted guarantee;
+    - an executable descending target loop maintains the certified
+      upper bound and approximation invariant;
+    - executable small-target search enumerates precisely the size-k
+      sets, has binomial candidate count, and certifies rejection;
+    - collected component-cut coefficients represent the exact inequality
+      and each has absolute value at most n.
+  Commit 0cf54dc. Full lax build --replay passed: 32 concepts, 42 proofs,
+  2m08s. All 42 supporting conclusions close under checked dependencies;
+  only MainTheorem.exists_qptas remains open. No sorry/admit or axioms in
+  the proof sources. The preview at port 8137 reloads these concepts.
+  The power estimate assumes a host-width bound in terms of the blow-up's
+  edge count. Heredity, deletion of unused host vertices, the host-edge
+  comparison, and the separator/treewidth bridge still need integration.
+  The target loop takes a callback with success/rejection certificates.
+  Constructing that callback using the oracle, and implementing the whole
+  algorithm as an actual RAM program, remain outstanding.
+  User asked for completion percentage: estimated 25–30% overall, explicitly
+  a rough estimate rather than a count of the supporting theorem statements.
+  Continue working; the main result is not complete or ready for submission.
+
+Almost-embedding and sampling progress — 2026-10-13
+  Eleven additional supporting proofs now compile (53 total):
+    - bags meeting a nonempty connected vertex set induce a connected tree;
+    - connected-set representations transfer a decomposition with bag factor B;
+    - an almost-embedding of a degree-d graph without isolates has load
+      at most 2d, proving Lemma 9;
+    - independent samples have collision probability bounded by sum(load²),
+      and adjacency probability bounded by ordered adjacency mass;
+    - expected sample size equals the sum of vertex loads;
+    - the cost hypotheses give bounds ell²/k, 2ell²/p, and ell;
+    - finite Markov and union bounds select an outcome without collisions
+      and with total cost at most four times its expectation bound;
+    - induced routes of length at most L induce at most d|E(H)|L² edges;
+    - deleting q edges lowers treewidth by at most q.
+  This completes the decomposition transfer and several sampling ingredients,
+  not the full sampled-path contradiction: the coupled endpoint/path
+  distribution, deleting long routes, isolated source vertices, expander
+  integration, and exponent contradiction remain to be assembled.
+  User reported Lax455465 registered. Archive synchronization and its live
+  page now confirm registration; fetch the exact recorded source pin before
+  beginning the vertex-splitting reduction.

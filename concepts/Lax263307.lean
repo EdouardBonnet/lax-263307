@@ -30,3 +30,10 @@ import Lax263307.RecursionDepth
 import Lax263307.TargetSearch
 import Lax263307.ExhaustiveTargets
 import Lax263307.ComponentCutEncoding
+import Lax263307.ConnectedBags
+import Lax263307.ConnectedRepresentations
+import Lax263307.AlmostEmbeddings
+import Lax263307.PathSampling
+import Lax263307.SamplingOutcomes
+import Lax263307.InducedRouteEdges
+import Lax263307.EdgeDeletionWidth
