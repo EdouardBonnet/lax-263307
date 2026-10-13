@@ -693,3 +693,12 @@ Heavy-part recursion and rational projection certificates
   User again asked the completion percentage: about 50%, as a rough
   work estimate; main theorem remains open. Full replay of the expanded
   supporting block is required after the prior import inspection fix.
+
+  Replay at ccbf2bd compiled concepts/proofs (50s/50s) and passed kernel
+  replay (4m15s). Inspection requires a direct proof-package declaration
+  of the registered Lax109476 concepts to use its certificate-soundness
+  claim; a transitive concept dependency or its proof package alone does
+  not admit that axiom. Add the exact same registered concept revision
+  directly to proofs/lakefile.toml. No manifest or foreign source changes.
+  Remove old_multipliers_cast, whose definitional equality was simplified
+  without using its proof term. Full successful replay remains required.
