@@ -401,3 +401,22 @@ Whole-sample bounds and induced almost-embedding
   Next: remove long routes and preserve source treewidth, accounting for
   isolated vertices created by edge deletion; then combine with the induced
   host edge-count and the class's sublinear width bound for Lemma 11.
+
+Pruning and the quantitative width obstruction
+  Full replay of good sampling passed at 3f4739b: 48 concepts, 78 proofs,
+  2m31s, no Lax warnings.
+  Seven further annotated claims compile (85 supporting claims): transfer
+  with isolated vertices using singleton leaf bags; long-route edge count;
+  induced almost-embedding after pruning; labeled host restriction to its
+  route union with preserved route sizes and edge count; hereditary class
+  bag-bound transfer; treewidth-plus-one bound after restoring deleted edges;
+  and the combined sampled width obstruction with L*removed ≤4M.
+  The class bag bound W is an explicit intermediate hypothesis, not yet
+  derived from the main separator hypothesis. That bridge remains required.
+  Strengthened the existing sampling_bounds claim from sum x = k to sum x≤k.
+  This is needed after induced restriction removes vertex cost; the same
+  collision, adjacency, and expected-size conclusions hold. The two sums
+  use monotonicity instead of equality. No main theorem definition changed.
+  Next: integrate the registered source family with fixed-factor size
+  overshoot, use cost-based sampling bounds in the obstruction, and then
+  derive the sublinear class width promise and the light-separator theorem.

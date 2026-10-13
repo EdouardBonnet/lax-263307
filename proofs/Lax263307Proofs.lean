@@ -39,3 +39,7 @@ import Lax263307Proofs.FiniteProductSampling
 import Lax263307Proofs.CoupledRouteSampling
 import Lax263307Proofs.CoupledSamplingBounds
 import Lax263307Proofs.SampledAlmostEmbeddings
+import Lax263307Proofs.IsolatedEmbeddingTransfer
+import Lax263307Proofs.RoutePruning
+import Lax263307Proofs.HostRestriction
+import Lax263307Proofs.InducedEmbeddingWidth

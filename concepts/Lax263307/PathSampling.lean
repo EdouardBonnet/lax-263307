@@ -11,7 +11,7 @@ samples intersect with probability at most $\sum_v q_v^2$. The probability
 that an edge joins their vertex sets is at most the ordered adjacency mass
 $\sum_{uv\in E(G)}2q_uq_v$. Also $\mathbb E[|Q|]=\sum_vq_v$.
 
-Consequently, if $q_v\le\ell x_v/k$, $0\le x_v\le1$, $\sum_vx_v=k>0$,
+Consequently, if $q_v\le\ell x_v/k$, $0\le x_v\le1$, $\sum_vx_v\le k$ with $k>0$,
 and $e_G(x)\le k^2/p$ with $p>0$, these bounds are respectively
 $\ell^2/k$, $2\ell^2/p$, and $\ell$.
 
@@ -76,7 +76,7 @@ axiom adjacency_union_bound {n q : ℕ} (G : SimpleGraph (Fin n))
 axiom sampling_bounds {n q : ℕ} (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] (P : Distribution n q) (x : Fin n → ℝ) (k ℓ p : ℝ)
     (k_positive : 0 < k) (ℓ_nonnegative : 0 ≤ ℓ) (p_positive : 0 < p)
-    (cost_bounds : ∀ v, 0 ≤ x v ∧ x v ≤ 1) (mass : (∑ v, x v) = k)
+    (cost_bounds : ∀ v, 0 ≤ x v ∧ x v ≤ 1) (mass : (∑ v, x v) ≤ k)
     (load_bound : ∀ v, load P v ≤ ℓ * x v / k)
     (edge_bound : Entropy.edgeCost G x ≤ k ^ 2 / p) :
     collisionProbability P ≤ ℓ ^ 2 / k ∧

@@ -164,7 +164,7 @@ theorem adjacencyMass_scale {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.
 conclusion: Lax263307.PathSampling.sampling_bounds
 ---
 Substitute the vertex-load bound into the two union bounds. The estimate
-`x_v² ≤ x_v` and total cost `k` control intersections; the edge-cost hypothesis
+`x_v² ≤ x_v` and total cost at most `k` control intersections; the edge-cost hypothesis
 controls adjacency. Summing the same load bound controls expected size.
 
 # Attribution
@@ -174,7 +174,7 @@ Bonnet–Chang, equations (8) and (9) and the length estimate in Lemma 11.
 theorem sampling_bounds {n q : ℕ} (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] (P : Distribution n q) (x : Fin n → ℝ) (k ℓ p : ℝ)
     (k_positive : 0 < k) (ℓ_nonnegative : 0 ≤ ℓ) (p_positive : 0 < p)
-    (cost_bounds : ∀ v, 0 ≤ x v ∧ x v ≤ 1) (mass : (∑ v, x v) = k)
+    (cost_bounds : ∀ v, 0 ≤ x v ∧ x v ≤ 1) (mass : (∑ v, x v) ≤ k)
     (load_bound : ∀ v, load P v ≤ ℓ * x v / k)
     (edge_bound : edgeCost G x ≤ k ^ 2 / p) :
     collisionProbability P ≤ ℓ ^ 2 / k ∧
@@ -197,7 +197,8 @@ theorem sampling_bounds {n q : ℕ} (G : SimpleGraph (Fin n))
       collisionProbability P ≤ ∑ v, (load P v) ^ 2 :=
         Lax263307.PathSampling.collision_union_bound P
       _ ≤ ∑ v, c ^ 2 * x v := Finset.sum_le_sum fun v _ => hsq v
-      _ = c ^ 2 * k := by rw [← Finset.mul_sum, mass]
+      _ = c ^ 2 * (∑ v, x v) := by rw [← Finset.mul_sum]
+      _ ≤ c ^ 2 * k := mul_le_mul_of_nonneg_left mass (sq_nonneg c)
       _ = ℓ ^ 2 / k := by dsimp [c]; field_simp
   have hadj : adjacencyMass G (load P) ≤ c ^ 2 * adjacencyMass G x := by
     rw [← adjacencyMass_scale G x c]
@@ -226,7 +227,8 @@ theorem sampling_bounds {n q : ℕ} (G : SimpleGraph (Fin n))
     rw [Lax263307.PathSampling.expected_size_identity]
     calc
       (∑ v, load P v) ≤ ∑ v, c * x v := Finset.sum_le_sum fun v _ => hload v
-      _ = c * k := by rw [← Finset.mul_sum, mass]
+      _ = c * (∑ v, x v) := by rw [← Finset.mul_sum]
+      _ ≤ c * k := mul_le_mul_of_nonneg_left mass hc
       _ = ℓ := by dsimp [c]; field_simp
   exact ⟨hcoll, hadj', hsize⟩
 

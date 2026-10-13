@@ -46,3 +46,7 @@ import Lax263307.FiniteProductSampling
 import Lax263307.CoupledRouteSampling
 import Lax263307.CoupledSamplingBounds
 import Lax263307.SampledAlmostEmbeddings
+import Lax263307.IsolatedEmbeddingTransfer
+import Lax263307.RoutePruning
+import Lax263307.HostRestriction
+import Lax263307.InducedEmbeddingWidth
