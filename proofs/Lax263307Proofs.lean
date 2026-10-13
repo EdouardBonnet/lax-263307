@@ -96,3 +96,6 @@ import Lax263307Proofs.NativeCatalogMetadata
 import Lax263307Proofs.NativeMomentRows
 import Lax263307Proofs.NativeIntegerEncoding
 import Lax263307Proofs.NativeRationalTabulate
+import Lax263307Proofs.NativeMomentAccess
+import Lax263307Proofs.NativeMomentProduce
+import Lax263307Proofs.NativeMomentAssembly

@@ -1014,3 +1014,24 @@ Complete functional algorithm
   coefficient pairs, inactive rows and negation), and
   /tmp/qptas-native-moment-assembly.lean (exact six-family LP encoding).
   These three drafts are not yet checked or imported.
+  NativeMomentAccess, NativeMomentProduce and NativeMomentAssembly now
+  pass Lean together with a 100000-heartbeat cap. The metadata reader loads
+  the actual two masks, cardinality and independence flag, then computes
+  cardinality-based row activation (20 source cost). Coefficient adapters
+  handle zero rows, natural positive/negative parts, negation by swapping,
+  and guarded activation. The assembly proof splits the precise MomentLP
+  matrix into its six existing row families and proves the exact dimension
+  header, row-bound vector and zero objective encodings. All three are now
+  copied/imported and require strict replay.
+  Remaining LP construction work: implement the native family-index loops,
+  set row.index/column.index/row.v and the target parameter, compose the
+  guarded coefficient readers with NativeRationalTabulate, append the
+  dimensions/bounds/objective blocks, and obtain the full fixed-program
+  execution and uniform polynomial-in-catalog resource bound. Then wire
+  distance/projection LP construction and the same registered LP function
+  into the large-target native driver; recursion/stack/global bounds remain.
+  These three modules passed full strict replay (6m52s). Counts remain
+  90 concepts and 164 public proofs; the closure audit leaves only the
+  main QPTAS theorem open. The 65 warnings include intentional native
+  helpers awaiting their caller. Next draft for the actual six-family
+  entry readers: /tmp/qptas-native-moment-family.lean.
