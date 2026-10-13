@@ -106,7 +106,8 @@ theorem certificate_outcome {m n : ℕ} (P : Program ℚ m n) (center : Fin n �
     · exact Or.inr (Or.inl ⟨point z, hnear⟩)
     · right; right
       refine ⟨normal dual, dualValue P (oldMultipliers dual), ?_⟩
-      simpa only [normal_cast, cast_dual_value, realVector] using hfar
+      have hold : oldMultipliers (realVector dual) = realVector (oldMultipliers dual) := rfl
+      simpa only [normal_cast, hold, cast_dual_value, realVector] using hfar
   | infeasible dual =>
     have hbad := Lax109476.CertificateSoundness.valid_certificate_correct _ _
       (distanceProgram P center) (.infeasible dual) valid
