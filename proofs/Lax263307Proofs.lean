@@ -16,3 +16,10 @@ import Lax263307Proofs.RoundingBounds
 import Lax263307Proofs.WeightedProjection
 import Lax263307Proofs.BlowUpClasses
 import Lax263307Proofs.BlowUpDecompositions
+import Lax263307Proofs.TreeExtensions
+import Lax263307Proofs.BlowUpDeletion
+import Lax263307Proofs.RecursiveRounding
+import Lax263307Proofs.RecursionDepth
+import Lax263307Proofs.TargetSearch
+import Lax263307Proofs.ExhaustiveTargets
+import Lax263307Proofs.ComponentCutEncoding

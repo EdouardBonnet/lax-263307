@@ -23,3 +23,10 @@ import Lax263307.RoundingBounds
 import Lax263307.WeightedProjection
 import Lax263307.BlowUpClasses
 import Lax263307.BlowUpDecompositions
+import Lax263307.BlowUpDeletion
+import Lax263307.SeparatorComponents
+import Lax263307.RecursiveRounding
+import Lax263307.RecursionDepth
+import Lax263307.TargetSearch
+import Lax263307.ExhaustiveTargets
+import Lax263307.ComponentCutEncoding
