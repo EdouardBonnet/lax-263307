@@ -672,3 +672,11 @@ Explicit moment LP
   Next: strict replay of all 131 supporting claims, rational optimal LP
   certificate casting and oracle outcomes, protected rounded ellipsoid
   stopping, heavy-part recursive rounding, and RAM/global time closure.
+
+Moment LP import inspection correction
+  Replay at 41d0d54 compiled both packages (50s/49s) and replayed the kernel
+  proofs (4m26s). Inspection found one redundant direct concept-package
+  import in proofs/MomentLP: Lax109476.RationalCertificates was not a direct
+  proof-package requirement. The own MomentLP concept already imports it;
+  remove the redundant proof import. No theorem statement or proof body
+  changes. A full successful saved build remains required after this fix.

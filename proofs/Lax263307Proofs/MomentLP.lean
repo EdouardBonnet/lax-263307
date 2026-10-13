@@ -1,6 +1,5 @@
 import Lax263307.MomentLP
 import Lax263307.ComponentCutEncoding
-import Lax109476.RationalCertificates
 import Mathlib.Tactic
 
 namespace Lax263307Proofs.MomentLP
