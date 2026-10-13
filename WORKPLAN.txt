@@ -972,3 +972,21 @@ Complete functional algorithm
   No overall completion percentage is justified: functional correctness is
   proved, but the large-target native path, recursive control and stack,
   and combined execution/word/time bounds remain substantial obligations.
+  2026-10-14: NativeMasks and NativeCatalogOrder now compile. The full
+  NativeCatalog prototype also passes Lean: exact subset masks in the
+  existing moment-coordinate order, actual native loop and append code,
+  physical [n,r] input and mask-list output, and one fixed compiled program
+  with time and sufficient width c*(n+r+N+2)^3, c=10000+layoutAllowance.
+  Includes empty graphs and r exceeding n; only N catalog masks are stored.
+  Copied into concepts/proofs with exact root inventories. Needs full
+  strict replay. Next: native mask access/cardinality, LP coefficient rows,
+  dense rational input construction, and the large-target native driver.
+  NativeCatalog passed full strict replay (6.2m): 90 concepts and
+  164 public proofs. Closure audit leaves only MainTheorem.exists_qptas
+  open. Eleven warnings: two proof-package advisories, the generic native
+  oracle invocation awaiting its caller, and eight catalog/mask helper
+  facts reserved for the LP construction. New unchecked drafts:
+  /tmp/qptas-native-tabulate.lean (bounded native array generation),
+  /tmp/qptas-native-mask-unpack.lean (membership bits and exact cardinality),
+  /tmp/qptas-native-catalog-metadata.lean (cardinality and independence arrays
+  aligned with the exact LP catalog). These have no public proof claim yet.

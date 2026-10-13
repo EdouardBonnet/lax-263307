@@ -87,3 +87,6 @@ import Lax263307Proofs.NativeExhaustive
 import Lax263307Proofs.NativeCombinations
 import Lax263307Proofs.NativeZeroScan
 import Lax263307Proofs.NativeIndependentTest
+import Lax263307Proofs.NativeMasks
+import Lax263307Proofs.NativeCatalogOrder
+import Lax263307Proofs.NativeCatalog

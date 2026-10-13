@@ -87,3 +87,4 @@ import Lax263307.WeightedAlgorithm
 import Lax263307.NativeWeightReduction
 import Lax263307.NativeBlowUp
 import Lax263307.NativeExhaustive
+import Lax263307.NativeCatalog
