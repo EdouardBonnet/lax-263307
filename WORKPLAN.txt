@@ -337,3 +337,16 @@ Split path projection — current proof block
   each positive path's endpoint pair and the proved capacity-arc count then
   bound each vertex-use probability by gamma*x_v/n². No RAM path conversion
   is required; this distribution is used only in the contradiction.
+
+Uniform normalization — continued proof block
+  Two annotated claims now compile (63 supporting claims): commodity
+  probabilities are nonnegative, each ordered pair has mass 1/n², and total
+  mass is one; arbitrary nonnegative loads are bounded by gamma/n² times
+  the original flow load when routed mass is at least 1/gamma and each
+  flow record has a unique endpoint pair. Diagonal pairs are included.
+  The first replay of split projection passed kernel replay but Lax statement
+  inspection also picked up the recursive theorem's generated _unary helper
+  with the copied annotation. The recursive proof is now an unannotated
+  helper and its public theorem is a nonrecursive annotated wrapper.
+  Next: instantiate normalization with actual split-flow support and choose
+  projected routes, then provide a finite route distribution for sampling.

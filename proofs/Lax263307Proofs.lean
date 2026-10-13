@@ -32,3 +32,4 @@ import Lax263307Proofs.InducedRouteEdges
 import Lax263307Proofs.EdgeDeletionWidth
 import Lax263307Proofs.VertexSplitting
 import Lax263307Proofs.SplitPathProjection
+import Lax263307Proofs.RoutingNormalization

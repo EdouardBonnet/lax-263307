@@ -39,3 +39,4 @@ import Lax263307.InducedRouteEdges
 import Lax263307.EdgeDeletionWidth
 import Lax263307.VertexSplitting
 import Lax263307.SplitPathProjection
+import Lax263307.RoutingNormalization

@@ -81,21 +81,7 @@ theorem capacity_arc_count {n : ℕ} (Q : List (Fin n)) (simple : Q.Nodup) (v : 
   · rw [if_neg hv]
     exact List.count_eq_zero.mpr hv
 
-/--
----
-conclusion: Lax263307.SplitPathProjection.project_simple_path
----
-Induct over the split path. An input port has only its paired output port
-as a positive-capacity successor. The next input port cannot be the one
-just visited, because the path is simple; the connecting arc therefore
-represents an original graph edge. Apply induction to the remaining pairs
-and preserve both original endpoints and simplicity.
-
-# Attribution
-
-Bonnet–Chang, flow projection in Lemma 7.
--/
-theorem project_simple_path {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+theorem project_simple_path_aux {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (x : Fin n → ℚ≥0) (large : ℚ≥0) (P : List (Fin (2 * n))) (u v : Fin n)
     (simple : P.Nodup)
     (chain : P.IsChain (fun a b => 0 < (splitInstance G x large).capacity a b))
@@ -147,7 +133,7 @@ theorem project_simple_path {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.
             have hlast : (c :: tail).getLast? = some (plus v) := by
               simpa only [List.getLast?_cons_cons] using finish
             exact hc ▸ hlast
-          obtain ⟨Q, hQ, hnodup, hchain, hhead, hlast⟩ := project_simple_path G x large
+          obtain ⟨Q, hQ, hnodup, hchain, hhead, hlast⟩ := project_simple_path_aux G x large
             (minus w :: tail) w v htail_simple htail_chain rfl htail_finish
           have huQ : u ∉ Q := by
             intro hu
@@ -171,6 +157,29 @@ theorem project_simple_path {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.
           simp at hsecond
 termination_by P.length
 decreasing_by simp_wf; subst_vars; simp only [List.length_cons]; omega
+
+/--
+---
+conclusion: Lax263307.SplitPathProjection.project_simple_path
+---
+Induct over the split path. An input port has only its paired output port
+as a positive-capacity successor. The next input port cannot be the one
+just visited, because the path is simple; the connecting arc therefore
+represents an original graph edge. Apply induction to the remaining pairs
+and preserve both original endpoints and simplicity.
+
+# Attribution
+
+Bonnet–Chang, flow projection in Lemma 7.
+-/
+theorem project_simple_path {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (x : Fin n → ℚ≥0) (large : ℚ≥0) (P : List (Fin (2 * n))) (u v : Fin n)
+    (simple : P.Nodup)
+    (chain : P.IsChain (fun a b => 0 < (splitInstance G x large).capacity a b))
+    (start : P.head? = some (minus u)) (finish : P.getLast? = some (plus v)) :
+    ∃ Q : List (Fin n), P = expandRoute Q ∧ Q.Nodup ∧ Q.IsChain G.Adj ∧
+      Q.head? = some u ∧ Q.getLast? = some v :=
+  project_simple_path_aux G x large P u v simple chain start finish
 
 theorem chain_of_zip {α : Type} (P : List α) (R : α → α → Prop) :
     (∀ p ∈ P.zip P.tail, R p.1 p.2) → P.IsChain R := by
