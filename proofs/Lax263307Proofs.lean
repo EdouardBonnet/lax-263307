@@ -82,3 +82,4 @@ import Lax263307Proofs.NativeMaximum
 import Lax263307Proofs.NativeMultiplicities
 import Lax263307Proofs.NativeOracleCalls
 import Lax263307Proofs.NativeWeightReduction
+import Lax263307Proofs.NativeBlowUp

@@ -916,3 +916,17 @@ Complete functional algorithm
   copy_count_eq; the arbitrary-fraction quotient proof is used instead.
   Next draft: /tmp/qptas-native-blowup.lean, owner-array construction and
   adjacency lookup for the exact finSigmaFinEquiv numbering. Not checked yet.
+  NativeBlowUp prototype now passes local Lean: owner-array expansion agrees
+  with finSigmaFinEquiv, each flattened adjacency lookup is checked, and the
+  complete compiled program reads the original weighted input and emits the
+  rounded blow-up graph. Time and sufficient width are c*(n+N+h+1)^2, with
+  c=100000+layoutAllowance and N the total number of rounded copies. Includes
+  empty graphs and zero-copy fibers. Weight preprocessing now also exports
+  preservation of the complete original input buffer for subsequent phases.
+  Copied to concepts/proofs; the new public claim needs strict replay.
+  NativeBlowUp passed full strict replay (6.5m): 88 concepts and 162 public
+  proofs. Closure audit leaves only MainTheorem.exists_qptas open. Same three
+  warnings: two proof-package advisories and NativeOracleCalls awaiting use.
+  Next draft: /tmp/qptas-native-combinations.lean. It contains exact direct
+  indexing in sublistsLen order, native Pascal-table construction, and a
+  native subset membership decoder. These are not yet locally checked.

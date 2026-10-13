@@ -57,7 +57,8 @@ theorem prepare_spec {n : ℕ} (B M : ℕ) (hM : 1≤M) (hn : n≤M)
     Spec B (fun σ => σ.inp=encodeInput G w ε ∧ n*n+3*n+3≤(σ.arrs "input.data").length ∧
       n≤(σ.arrs "copy.counts").length) prepare
       (fun σ τ => Prefix (List.ofFn (copies (fun v => max (w v) 0) ε)) "copy.counts" τ ∧
-        τ.vars "input.n"=n ∧ τ.out=σ.out) (12*(n*n+3*n+3)+110*n+78) := by
+        τ.vars "input.n"=n ∧ τ.out=σ.out ∧ Prefix (tailInput G w ε) "input.data" τ)
+      (12*(n*n+3*n+3)+110*n+78) := by
   let qs := List.ofFn w
   let a := NativeMaximum.maximum qs
   have hqs : qs.length=n := List.length_ofFn
@@ -105,7 +106,7 @@ theorem prepare_spec {n : ℕ} (B M : ℕ) (hM : 1≤M) (hn : n≤M)
     (adjacency G) (encodeRational ε) qs hM hB (by rwa [hqs]) hε.1 hε.2 hmax.1 hmax.2.1
     (by rwa [hfront,hqs]) hwords ξ ⟨hpξ,hbaseξ,hnξ,p3.1,p3.2,hmaxnξ,hmaxdξ,hcountsξ⟩
   have rtotal := r1.seq (r2.seq (r3.seq r4))
-  refine ⟨τ,rtotal.mono (by simp only [tail_length,hqs]; omega),?_,?_,?_⟩
+  refine ⟨τ,rtotal.mono (by simp only [tail_length,hqs]; omega),?_,?_,?_,?_⟩
   · have heq : NativeMultiplicities.counts n ε.num.natAbs ε.den a.1 a.2 qs =
         List.ofFn (copies (fun v => max (w v) 0) ε) := NativeMultiplicities.counts_correct w ε hεpos
     rw [hqs] at p4
@@ -113,6 +114,8 @@ theorem prepare_spec {n : ℕ} (B M : ℕ) (hM : 1≤M) (hn : n≤M)
     exact p4
   · exact (r4.frame_var "input.n" (by decide)).trans (hnξ.trans hqs)
   · exact rtotal.out_eq (by decide)
+  · have rr := r2.seq (r3.seq r4)
+    simpa only [Prefix,rr.frame_arr "input.data" (by decide)] using p1.2.2.2.2.2
 
 
 theorem output_words {n : ℕ} (B M : ℕ) (hM : 1≤M) (hn : n≤M)
@@ -152,7 +155,7 @@ theorem command_spec {n : ℕ} (B M : ℕ) (hM : 1≤M) (hn : n≤M)
   let xs := List.ofFn (copies (fun v => max (w v) 0) ε)
   have hlen : xs.length=n := List.length_ofFn
   rintro σ hσ
-  obtain ⟨ν,r1,hp,hnum,hout⟩ := prepare_spec B M hM hn G w ε hεpos hw hε hB hsize σ hσ
+  obtain ⟨ν,r1,hp,hnum,hout,_⟩ := prepare_spec B M hM hn G w ε hεpos hw hε hB hsize σ hσ
   let μ := ν.setVar "emit.count" n
   have r2 : Run B (.assign "emit.count" (.var "input.n")) ν μ 2 := Run.assign (by
     rw [evalB_var_iff]; exact ⟨hnum.symm,hnum ▸ hnB⟩)
