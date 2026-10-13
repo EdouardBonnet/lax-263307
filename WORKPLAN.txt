@@ -1056,3 +1056,26 @@ Complete functional algorithm
   /tmp/qptas-native-rational-read.lean (buffer-parametric canonical reader),
   /tmp/qptas-native-distance-entries.lean (runtime-index distance LP formulas),
   /tmp/qptas-native-lp-read.lean (native reads of base LP and center entries).
+  NativeRationalRead, NativeLPRead, NativeDistanceEntries, NativeDistanceUnits,
+  NativeDistanceCoefficient, NativeDistanceBound, NativeDistanceData,
+  NativeDistanceMetadata, NativeDistanceMatrix, NativeDistanceVectors and
+  NativeDistanceInput now pass Lean. Actual base-LP/center reads, dimension
+  parsing, all coefficient and vector loops, and the output header compose
+  into the exact registered distanceProgram encoding. Source buffers survive.
+  Source cost <=1000*(m+n+2)^2; scalar/shape guard <=100*(m+n+2)^2.
+  NativeOracleFrame and NativeDistanceOracle also pass Lean: one fixed
+  host command constructs and runs every distance query through the SAME
+  RamPolytime function chosen by the functional correctness proof. Exact
+  output bytes, virtual execution bounds, capacities, and preservation of
+  base LP/center are proved. All 13 modules are copied/imported and require
+  full strict replay. No new public conclusion or external assumption.
+  Next: native certificate access/classification and projection normals;
+  large-target conditioning, separator, child calls and cuts; recursive
+  stack/control; global resource bounds and the final main theorem.
+  The complete native distance construction/invocation batch passed strict
+  replay (11.1m total, 8m kernel replay): 91 concepts, 165 public proofs.
+  Closure audit leaves exactly MainTheorem.exists_qptas open. No new external
+  assumptions, changed pins, or public axioms. Next certificate-processing
+  drafts are in /tmp/qptas-native-{signed-arithmetic,certificate-read,slice,
+  rational-bounds,projection-normal,projection-decide,projection-vectors,
+  projection-near,projection-result}.lean; these are not checked or imported.
