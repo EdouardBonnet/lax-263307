@@ -70,3 +70,4 @@ import Lax263307Proofs.RoundedOracleSearch
 import Lax263307Proofs.AlgorithmParameters
 import Lax263307Proofs.ParameterResources
 import Lax263307Proofs.NativeRoundedStep
+import Lax263307Proofs.ComputedSeparators

@@ -796,3 +796,23 @@ Computed separator prototype
   draft transfers the registered certificate guarantees to the selected
   shores, then identifies the computed list with a checked cut trace.
   This prototype is not yet part of the archive build or closure count.
+  The prototype now compiles, including a complete functional
+  ComputedSeparators.light_separator theorem. The sorted remainder labels,
+  cut-prefix decoder, rational capacities, deterministic shore orientation,
+  and n-step cut list are connected to the registered solver's actual output.
+  The computed separator has cost at most 12*ratio(B,n)*k/ell, and the
+  computed pieces are exactly a checked partition with every part of size
+  at most 2n/3. Copied into concepts/proofs; strict replay still required.
+  This closes the functional separator construction. Its RAM wrapper and
+  the surrounding recursive algorithm remain to be implemented and verified.
+  Full strict replay passed (4m45s): 80 concepts and 154 proofs, with the
+  same two advisory warnings. Closure audit again leaves only the main
+  theorem open. Computed separator definitions passed the axiom audit.
+
+Computed child-answer decision next
+  /tmp/qptas-computed-rounding.lean is the next draft: exact rational
+  targets, queries skipped on light parts, a fixed-order first-failure
+  scan, and union of successful answers. Its proof should establish the
+  actual returned cut's validity, gap, and coefficient norm, or the actual
+  returned independent union's approximation guarantee. This draft is
+  not yet checked or included in the submission.
