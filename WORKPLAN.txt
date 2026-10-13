@@ -350,3 +350,20 @@ Uniform normalization — continued proof block
   helper and its public theorem is a nonrecursive annotated wrapper.
   Next: instantiate normalization with actual split-flow support and choose
   projected routes, then provide a finite route distribution for sampling.
+
+Normalization replay and route-distribution construction
+  Full Lax kernel replay and statement inspection passed at d815a59:
+  42 concepts, 63 annotated proofs, 1m53s, no Lax warnings. Closure with
+  registered foundations closes all 63 supporting statements; the main
+  exists_qptas statement is still the only open own statement.
+  Two further annotated claims compile (65 supporting claims): finite
+  commodity-normalized graph routes form a genuine distribution with uniform
+  endpoints and the generic scaled membership-load bound; every feasible
+  split arc-flow of value at least 1/gamma gives such a distribution with
+  vertex-use probability at most gamma*x_v/n². The registered ArcToPath
+  theorem supplies finite simple paths. Support enumeration is analysis-only.
+  Positive route outcomes are nonempty, simple, and connected in the original
+  graph. All n² original commodities are retained, including singleton
+  diagonal routes. Capacity-arc membership gives the endpoint-inclusive load.
+  Next: conditional route laws and their product-mixture identity, then
+  coupled sampling with shared endpoint images and repeated cut accounting.
