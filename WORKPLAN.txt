@@ -279,3 +279,12 @@ Registered flow–cut integration — 2026-10-13
   Lax455465.RamDirectedUniformFlowCut.exists_polynomial_time_flow_cut;
   closure auditing must now include its registered dependency proof chain,
   rather than count only statements proved inside this submission.
+
+  Full replay for the registered integration passed: 40 concepts, 57 proofs,
+  2m52s. The sole warning identifies an unused specialized capacity helper;
+  it is superseded by the general capacity formula and has been removed.
+  Added the certificate dichotomy: a flow value at least 1/gamma preserves
+  the feasible split flow; a smaller value forces a small cut and yields
+  the original separation at cost at most
+  4*rho*|A|*|B|/gamma, whenever the finite large capacity exceeds
+  rho*(2n)²/gamma. This brings the count to 58 supporting claims.

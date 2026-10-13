@@ -16,11 +16,6 @@ open Lax455465.ConcurrentFlow
   dsimp [original, plus]
   omega
 
-theorem capacity_forward {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-    (x : Fin n → ℚ≥0) (large : ℚ≥0) (v : Fin n) :
-    (splitInstance G x large).capacity (minus v) (plus v) = x v := by
-  simp [splitInstance, minus, plus, original]
-
 theorem capacity_reverse {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (x : Fin n → ℚ≥0) (large : ℚ≥0) (v : Fin n) :
     (splitInstance G x large).capacity (plus v) (minus v) = large := by
@@ -397,5 +392,124 @@ theorem separator_cost_bound {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G
     norm_cast
   rw [hcost] at hcap
   nlinarith
+
+theorem small_cut_of_low_flow {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (x : Fin n → ℚ≥0) (large : ℚ≥0)
+    (certificate : Lax455465.FlowCutCertificate.Certificate (2 * n)) (ρ γ : ℝ)
+    (nonnegative : 0 ≤ ρ) (positive : 0 < γ)
+    (admissible : AdmissibleCut (splitInstance G x large).weights certificate.cut)
+    (ratio : (ratioCost (splitInstance G x large).network
+      (splitInstance G x large).weights certificate.cut : ℝ) ≤
+        ρ * (certificate.flow.value : ℝ))
+    (low_value : (certificate.flow.value : ℝ) < 1 / γ)
+    (large_capacity : ρ * (2 * n : ℕ) ^ 2 / γ < (large : ℝ)) :
+    cutCapacity (splitInstance G x large).network certificate.cut < (large : ℝ≥0) := by
+  classical
+  let I := splitInstance G x large
+  let U := certificate.cut
+  have hweights : I.weights = uniformWeight (2 * n) := by
+    funext v
+    simp [I, splitInstance, RationalInstance.weights, uniformWeight]
+  have hmass (V : Finset (Fin (2 * n))) : mass I.weights V = (V.card : ℝ≥0) := by
+    simp [hweights, mass, uniformWeight]
+  have hleft : (0 : ℝ) < U.card := by
+    have h := admissible.1
+    change 0 < mass I.weights U at h
+    rw [hmass] at h
+    exact_mod_cast h
+  have hright : (0 : ℝ) < Uᶜ.card := by
+    have h := admissible.2
+    change 0 < mass I.weights Uᶜ at h
+    rw [hmass] at h
+    exact_mod_cast h
+  have hratio : (cutCapacity I.network U : ℝ) / ((U.card : ℝ) * Uᶜ.card) ≤
+      ρ * (certificate.flow.value : ℝ) := by
+    change (ratioCost I.network I.weights U : ℝ) ≤ _ at ratio
+    simpa only [ratioCost, hmass, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_natCast] using ratio
+  have hcap := (div_le_iff₀ (mul_pos hleft hright)).mp hratio
+  have hL : (U.card : ℝ) ≤ (2 * n : ℕ) := by
+    exact_mod_cast (show U.card ≤ 2 * n by simpa using Finset.card_le_univ U)
+  have hR : (Uᶜ.card : ℝ) ≤ (2 * n : ℕ) := by
+    exact_mod_cast (show Uᶜ.card ≤ 2 * n by simpa using Finset.card_le_univ Uᶜ)
+  have hproduct : (U.card : ℝ) * Uᶜ.card ≤ ((2 * n : ℕ) : ℝ) ^ 2 := by
+    simpa only [pow_two] using mul_le_mul hL hR hright.le (by positivity)
+  have hflow := mul_le_mul_of_nonneg_left low_value.le nonnegative
+  have hscale : 0 ≤ ρ * (1 / γ) := mul_nonneg nonnegative (by positivity)
+  have hbound : (cutCapacity I.network U : ℝ) ≤ ρ * (2 * n : ℕ) ^ 2 / γ := by
+    calc
+      (cutCapacity I.network U : ℝ) ≤ (ρ * (certificate.flow.value : ℝ)) *
+          ((U.card : ℝ) * Uᶜ.card) := hcap
+      _ ≤ (ρ * (1 / γ)) * ((U.card : ℝ) * Uᶜ.card) :=
+        mul_le_mul_of_nonneg_right hflow (mul_nonneg hleft.le hright.le)
+      _ ≤ (ρ * (1 / γ)) * ((2 * n : ℕ) : ℝ) ^ 2 := mul_le_mul_of_nonneg_left hproduct hscale
+      _ = ρ * (2 * n : ℕ) ^ 2 / γ := by ring
+  have hlt := hbound.trans_lt large_capacity
+  change (cutCapacity I.network U : ℝ≥0) < (large : ℝ≥0)
+  exact_mod_cast hlt
+
+/--
+---
+conclusion: Lax263307.VertexSplitting.flow_or_separation
+---
+Compare the certificate's flow value with `1/γ`. A smaller value bounds the
+cut capacity by `rho(2n)²/γ`, below the chosen large capacity. The cut therefore
+projects to a nontrivial separation. Its ratio is at most `rho/γ`, and the
+shore and capacity identities give the desired original separator cost.
+The other branch retains the certificate's feasible high-value split flow.
+
+# Attribution
+
+Bonnet–Chang, the two alternatives in the vertex-splitting reduction of Lemma 7.
+-/
+theorem flow_or_separation {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (x : Fin n → ℚ≥0) (large : ℚ≥0)
+    (certificate : Lax455465.FlowCutCertificate.Certificate (2 * n)) (ρ γ : ℝ)
+    (nonnegative : 0 ≤ ρ) (positive : 0 < γ)
+    (admissible : AdmissibleCut (splitInstance G x large).weights certificate.cut)
+    (flow_valid : IsArcConcurrentFlow .directed (splitInstance G x large).network
+      (splitInstance G x large).weights (certificate.flow.value : ℝ≥0) certificate.flow.flow)
+    (ratio : (ratioCost (splitInstance G x large).network
+      (splitInstance G x large).weights certificate.cut : ℝ) ≤
+        ρ * (certificate.flow.value : ℝ))
+    (large_capacity : ρ * (2 * n : ℕ) ^ 2 / γ < (large : ℝ)) :
+    ((1 / γ ≤ (certificate.flow.value : ℝ)) ∧
+      IsArcConcurrentFlow .directed (splitInstance G x large).network
+        (splitInstance G x large).weights (certificate.flow.value : ℝ≥0) certificate.flow.flow) ∨
+    ((leftShore certificate.cut).Nonempty ∧ (rightShore certificate.cut).Nonempty ∧
+      leftShore certificate.cut ∪ rightShore certificate.cut = Finset.univ ∧
+      (∀ u ∈ leftShore certificate.cut \ rightShore certificate.cut,
+        ∀ v ∈ rightShore certificate.cut \ leftShore certificate.cut, ¬G.Adj u v) ∧
+      (∑ v ∈ leftShore certificate.cut ∩ rightShore certificate.cut, (x v : ℝ)) ≤
+        4 * ρ * (leftShore certificate.cut).card * (rightShore certificate.cut).card / γ) := by
+  by_cases hhigh : 1 / γ ≤ (certificate.flow.value : ℝ)
+  · exact Or.inl ⟨hhigh, flow_valid⟩
+  · have hlow : (certificate.flow.value : ℝ) < 1 / γ := lt_of_not_ge hhigh
+    have hsmall := small_cut_of_low_flow G x large certificate ρ γ nonnegative positive
+      admissible ratio hlow large_capacity
+    have hnonempty : certificate.cut.Nonempty := by
+      by_contra he
+      have hzero := Finset.not_nonempty_iff_eq_empty.mp he
+      have h := admissible.1
+      simp [hzero, mass] at h
+    have hproper : certificate.cutᶜ.Nonempty := by
+      by_contra he
+      have hzero := Finset.not_nonempty_iff_eq_empty.mp he
+      have h := admissible.2
+      simp [hzero, mass] at h
+    obtain ⟨hA, hB, hcover, hsep, _, _⟩ :=
+      Lax263307.VertexSplitting.small_cut_separation G x large certificate.cut hsmall hnonempty hproper
+    have hratio : (ratioCost (splitInstance G x large).network
+      (splitInstance G x large).weights certificate.cut : ℝ) ≤ ρ / γ := by
+      calc
+        _ ≤ ρ * (certificate.flow.value : ℝ) := ratio
+        _ ≤ ρ * (1 / γ) := mul_le_mul_of_nonneg_left hlow.le nonnegative
+        _ = ρ / γ := by ring
+    have hcost := Lax263307.VertexSplitting.separator_cost_bound G x large certificate.cut
+      (ρ / γ) (div_nonneg nonnegative positive.le) hsmall admissible hratio
+    right
+    refine ⟨hA, hB, hcover, hsep, ?_⟩
+    calc
+      _ ≤ 4 * (ρ / γ) * (leftShore certificate.cut).card * (rightShore certificate.cut).card := hcost
+      _ = 4 * ρ * (leftShore certificate.cut).card * (rightShore certificate.cut).card / γ := by ring
 
 end Lax263307Proofs.VertexSplitting

@@ -109,4 +109,26 @@ axiom split_certificate :
         (ratioCost I.network I.weights certificate.cut : ℝ) ≤
           C * logFactor (2 * n) * (certificate.flow.value : ℝ)
 
+/-- A split flow–cut certificate yields a high-value flow or a cheap separation. -/
+axiom flow_or_separation {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (x : Fin n → ℚ≥0) (large : ℚ≥0)
+    (certificate : Lax455465.FlowCutCertificate.Certificate (2 * n)) (ρ γ : ℝ)
+    (nonnegative : 0 ≤ ρ) (positive : 0 < γ)
+    (admissible : AdmissibleCut (splitInstance G x large).weights certificate.cut)
+    (flow_valid : IsArcConcurrentFlow .directed (splitInstance G x large).network
+      (splitInstance G x large).weights (certificate.flow.value : ℝ≥0) certificate.flow.flow)
+    (ratio : (ratioCost (splitInstance G x large).network
+      (splitInstance G x large).weights certificate.cut : ℝ) ≤
+        ρ * (certificate.flow.value : ℝ))
+    (large_capacity : ρ * (2 * n : ℕ) ^ 2 / γ < (large : ℝ)) :
+    ((1 / γ ≤ (certificate.flow.value : ℝ)) ∧
+      IsArcConcurrentFlow .directed (splitInstance G x large).network
+        (splitInstance G x large).weights (certificate.flow.value : ℝ≥0) certificate.flow.flow) ∨
+    ((leftShore certificate.cut).Nonempty ∧ (rightShore certificate.cut).Nonempty ∧
+      leftShore certificate.cut ∪ rightShore certificate.cut = Finset.univ ∧
+      (∀ u ∈ leftShore certificate.cut \ rightShore certificate.cut,
+        ∀ v ∈ rightShore certificate.cut \ leftShore certificate.cut, ¬G.Adj u v) ∧
+      (∑ v ∈ leftShore certificate.cut ∩ rightShore certificate.cut, (x v : ℝ)) ≤
+        4 * ρ * (leftShore certificate.cut).card * (rightShore certificate.cut).card / γ)
+
 end Lax263307.VertexSplitting
