@@ -71,3 +71,6 @@ import Lax263307Proofs.AlgorithmParameters
 import Lax263307Proofs.ParameterResources
 import Lax263307Proofs.NativeRoundedStep
 import Lax263307Proofs.ComputedSeparators
+import Lax263307Proofs.ComputedRounding
+import Lax263307Proofs.RegisteredLP
+import Lax263307Proofs.NearOracle

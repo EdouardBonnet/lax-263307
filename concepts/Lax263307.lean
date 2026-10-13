@@ -78,3 +78,6 @@ import Lax263307.AlgorithmParameters
 import Lax263307.ParameterResources
 import Lax263307.NativeRoundedStep
 import Lax263307.ComputedSeparators
+import Lax263307.ComputedRounding
+import Lax263307.RegisteredLP
+import Lax263307.NearOracle

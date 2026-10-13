@@ -816,3 +816,22 @@ Computed child-answer decision next
   actual returned cut's validity, gap, and coefficient norm, or the actual
   returned independent union's approximation guarantee. This draft is
   not yet checked or included in the submission.
+
+Computed near-relaxation oracle
+  ComputedRounding.collect_correct and RegisteredLP.exists_solver now
+  compile in their archive modules. The former certifies the actual first
+  failed child or the actual independent union; the latter parses the
+  registered LP solver output into its valid certificate.
+  NearOracle.exists_oracle connects actual heavy conditioning, computed
+  LR separators, and child queries. Its child hypothesis is explicitly the
+  recursion induction hypothesis; no recursive correctness is assumed as
+  an external fact. These three claims await strict archive replay.
+  Next: ProjectedOracle couples exact projection certificates and the near
+  oracle, proves nonzero normals and uniform protected-cube retention, and
+  feeds the bounded rounded ellipsoid search. Then close the recursive
+  functional algorithm and its actual finite RAM implementation and bounds.
+  Full strict replay passed (5m01s): 83 concepts and 157 proofs, with
+  the same two advisory proof-package warnings. All supporting claims
+  are registered-closed; only MainTheorem.exists_qptas remains open.
+  /tmp/qptas-projected-oracle.lean and /tmp/qptas-recursive-algorithm.lean
+  contain the next drafts; neither has been checked yet.
