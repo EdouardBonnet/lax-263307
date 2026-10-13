@@ -33,3 +33,15 @@ name = "Lax920634"
 git = "https://github.com/EdouardBonnet/lax-920634"
 rev = "4e1ce662f8ff75f2fa86d3a3973c871d3068c4c0"
 subDir = "concepts"
+
+[[require]]
+name = "Lax109476Proofs"
+git = "https://github.com/EdouardBonnet/lax-109476"
+rev = "0a042604c7ae1ef4cd9a4c7d82eb902f313d4864"
+subDir = "proofs"
+
+[[require]]
+name = "Lax455465Proofs"
+git = "https://github.com/EdouardBonnet/lax-455465"
+rev = "9988b9c5399185cfb3ca2129ca7c807fd80c2885"
+subDir = "proofs"

@@ -580,3 +580,27 @@ Quantitative search and component cut buffers
   Lax109476Proofs supplies generic rounded ellipsoid updates/termination
   and the underlying RAM arithmetic. These proof packages must be declared
   at their archive pins and provisioned by Lax before importing them.
+
+  Full replay at f8f6bde passed: 68 concepts, 110 proofs, 3m49s, no Lax
+  warnings. Added declarations for Lax109476 (concepts), Lax109476Proofs,
+  and Lax455465Proofs at their exact registered archive revisions. Lax
+  provisions them; no manifests or package source files are edited.
+  Next prototype /tmp/qptas-projection-lp.lean encodes infinity-distance
+  projection by appending one nonnegative distance variable and two rows
+  per coordinate. Definitions use computable Fin.addCases indices, not
+  Fintype.equivFin, to permit an eventual actual RAM matrix wrapper.
+
+Infinity-distance LP projection
+  Lax accepted the registered Lax109476 and Lax455465 proof dependencies
+  in a partial proof build (1m17s). It gives two advisory proof-dependency
+  warnings: depending on proof packages is discouraged. This is not a
+  rejection and does not require approval. Their verified arithmetic,
+  ellipsoid, and virtual-RAM implementations are the intended reuse.
+  Six distance-projection claims compile in the prototype: exact primal
+  characterization; bounded objective; feasibility iff the original LP;
+  L1≤1 valid dual normal; matching objective gives gap equal to distance;
+  and nearby-feasible-point-or-strong-cut dichotomy. Indexing uses the
+  computable Fin.addCases/Fin.castAdd/Fin.natAdd operations.
+  Main integration still needs encoding the moment relaxation as explicit
+  LP rows, rational certificate casting and normals, heavy child recursion,
+  generic ellipsoid stopping, and actual RAM wrappers/overall time bounds.
