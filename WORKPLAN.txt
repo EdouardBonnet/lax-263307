@@ -523,3 +523,21 @@ Separator-to-width bridge
   cut oracle and logarithmic capacity bounds; extend the width bound to
   the independent blow-up closure; strong-gap oracle, RAM compilation,
   and the final QPTAS correctness and time bound remain required.
+
+Instantiated light-separator theorem
+  Full replay at 108f1d6 passed: 63 concepts, 99 proofs, 3m26s, no Lax
+  warnings. Registered closure audit closes all 99 supporting claims;
+  only MainTheorem.exists_qptas remains open.
+  The class_light_separator claim now compiles: the original hereditary
+  separator premise supplies positive constants a,K,B. Costs x in [0,1],
+  mass≤k, edgeCost≤k²/p yield a balanced separator of cost≤delta*k, via
+  a trace of at most n cuts, provided
+    12*B*(log2(2n)+1)≤delta*ell,
+    k≥K*(ell+1)^(4a+2), p≥2*K*(ell+1)^(4a+2).
+  Every large remainder uses the registered split solver's certificate.
+  Relabeling and restriction preserve nonnegativity and cannot increase
+  mass or edge cost. The global gamma=ell*n²/(3k) obeys the necessary
+  load bound while the remainder has more than 2n/3 vertices. Orienting
+  toward the smaller shore controls its exclusive discarded piece.
+  The result is currently a mathematical trace/correctness theorem; it
+  does not yet assert that its wrappers or repeated-cut loop run on RAM.

@@ -61,3 +61,4 @@ import Lax263307.BalancedPartitions
 import Lax263307.CutTraces
 import Lax263307.SeparatorDecompositions
 import Lax263307.EdgeBagBounds
+import Lax263307.LightSeparators
