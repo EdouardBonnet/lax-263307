@@ -367,3 +367,21 @@ Normalization replay and route-distribution construction
   diagonal routes. Capacity-arc membership gives the endpoint-inclusive load.
   Next: conditional route laws and their product-mixture identity, then
   coupled sampling with shared endpoint images and repeated cut accounting.
+
+Coupled endpoint sampling — compiled continuation
+  Full replay of the route-distribution construction passed at 9a40730:
+  43 concepts, 65 proofs, 2m03s, no Lax warnings.
+  Conditional route laws now compile: each ordered pair gives a normalized
+  law on simple routes with those endpoints; averaging endpoint pairs gives
+  the original distribution, and averaging four independent endpoints gives
+  the independent route-pair law.
+  Finite product mass and injectively selected-coordinate marginals compile.
+  The coupled sampler chooses one independent uniform image per source
+  vertex, then one conditionally independent route per source edge.
+  Its joint mass is one; positive outcomes have the required shared images
+  and simple graph routes; every nonloop edge has the original route marginal;
+  nonincident edges have the independent product marginal. This is 74
+  annotated supporting claims with the main theorem unchanged and open.
+  Next: use these marginal identities to bound the whole sampler's bad-event
+  probability and total route length, choose a good almost-embedding, then
+  integrate the light-separator contradiction and algorithmic oracle.

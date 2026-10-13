@@ -34,3 +34,6 @@ import Lax263307Proofs.VertexSplitting
 import Lax263307Proofs.SplitPathProjection
 import Lax263307Proofs.RoutingNormalization
 import Lax263307Proofs.RouteDistributions
+import Lax263307Proofs.ConditionalRoutes
+import Lax263307Proofs.FiniteProductSampling
+import Lax263307Proofs.CoupledRouteSampling

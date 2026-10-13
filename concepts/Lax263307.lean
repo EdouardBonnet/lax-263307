@@ -41,3 +41,6 @@ import Lax263307.VertexSplitting
 import Lax263307.SplitPathProjection
 import Lax263307.RoutingNormalization
 import Lax263307.RouteDistributions
+import Lax263307.ConditionalRoutes
+import Lax263307.FiniteProductSampling
+import Lax263307.CoupledRouteSampling
