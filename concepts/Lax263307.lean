@@ -67,3 +67,5 @@ import Lax263307.HeavyConditioning
 import Lax263307.HeavyRationalConditioning
 import Lax263307.StrongComponentGaps
 import Lax263307.DistanceProjection
+import Lax263307.CoordinateCatalog
+import Lax263307.BufferedEllipsoid

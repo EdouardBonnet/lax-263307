@@ -604,3 +604,46 @@ Infinity-distance LP projection
   Main integration still needs encoding the moment relaxation as explicit
   LP rows, rational certificate casting and normals, heavy child recursion,
   generic ellipsoid stopping, and actual RAM wrappers/overall time bounds.
+
+  Full replay at a3cea26 passed: 69 concepts, 116 proofs, 3m58s. The two
+  advisory proof-dependency warnings remain; registered closure closes all
+  116 supporting claims and only the main QPTAS statement remains open.
+
+Algorithm assembly refinements
+  Avoid a component BFS: the concrete Trace.parts partition already groups
+  each discarded exclusive piece and the final remainder. It has q+1≤n+1≤2n
+  parts for positive n, and each part is balanced. Ignore parts of cost
+  ≤delta*k/(4n), losing at most delta*k/2; query heavy parts at
+  floor((1-delta)*partCost)+1. If all queries succeed, recursive answers
+  retain a factor at least 1-4delta per level. A failed query gives an
+  independence bound u=floor((1-delta)*partCost). Apply StrongComponentGaps
+  with delta/2: the heavier threshold and stronger rounding margin imply
+  raw query gap≥eta*delta²/(16n), when projection error≤eta*delta²/(32n²).
+  The protected raw cube radius is then eta*delta²/(64n²). Scale moment
+  coordinates by 4*N (N=catalog length); both projection and component cuts
+  protect the same scaled cube of radius eta*delta²/(256*N*n²).
+  For delta=1/D and eta=(1/Q)^r, Q=2*n*p*(log2 n+1), choose dyadic precision
+  B=log2(256*N*n²*D²*Q^r)+1. This radius is inside the initial unit ball
+  around every scaled 0/1 independent-set moment point. Generic LP
+  EllipsoidTermination.cannot_retain_ball has thresholdSteps N B=
+  4*(N+1)*(B*N+1), applies to any integer normal schedule with squared
+  Euclidean norm≥1, and uses the actual rounded rational updates.
+  These assembly refinements are not yet formalized and do not discharge
+  the explicit RAM wrapper/loop or global correctness/time obligations.
+
+Computable coordinate catalog and ellipsoid geometry
+  Five catalog claims compile in the prototype: completeness, no duplicates,
+  dimension bound, positive dimension, and dimension at least two for n>0.
+  The indexing equivalence uses List.get and idxOf and is computable.
+  Four protected-ball geometry claims also compile: Euclidean-to-coordinate
+  bound; unit-cube scaling; initial unit-ball containment; and squared norm
+  at least one for nonzero integer normals.
+  /tmp/qptas-buffered-ellipsoid.lean additionally contains a fully compiled
+  buffered_cuts_stop helper invoking the registered actual rounded sequence.
+  It is not imported yet to avoid an unused-helper warning before its oracle
+  integration. It shows rejection through thresholdSteps impossible if every
+  cut retains the dyadic coordinate cube around a scaled unit-cube point.
+  User asked current status and percentage: answered 116 claims kernel-checked,
+  only main QPTAS open, and about 50% as a rough work estimate (not lemma
+  coverage). Remaining substantial work: recursive oracle, explicit moment LP
+  rows, ellipsoid integration, actual RAM wrappers, correctness and time.

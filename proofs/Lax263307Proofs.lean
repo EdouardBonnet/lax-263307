@@ -60,3 +60,5 @@ import Lax263307Proofs.HeavyConditioning
 import Lax263307Proofs.HeavyRationalConditioning
 import Lax263307Proofs.StrongComponentGaps
 import Lax263307Proofs.DistanceProjection
+import Lax263307Proofs.CoordinateCatalog
+import Lax263307Proofs.BufferedEllipsoid
