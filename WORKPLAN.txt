@@ -647,3 +647,14 @@ Computable coordinate catalog and ellipsoid geometry
   only main QPTAS open, and about 50% as a rough work estimate (not lemma
   coverage). Remaining substantial work: recursive oracle, explicit moment LP
   rows, ellipsoid integration, actual RAM wrappers, correctness and time.
+
+Catalog definition inspection correction
+  Replay at b03d8b5 passed compilation and kernel replay, but statement
+  inspection rejected the catalog: concept definitions and statement types
+  must be axiom-free, including embedded proof terms. The catalog and its
+  indexing used candidate_complete/catalog_complete/catalog_nodup axioms
+  as proof arguments. Replace these with private direct kernel proofs in
+  the concept module. This keeps the executable enumeration and indexing
+  unchanged while removing all theorem-axiom dependence from definitions.
+  The public five catalog statements still have their separate annotated
+  proofs. Main theorem and computational model remain unchanged.
