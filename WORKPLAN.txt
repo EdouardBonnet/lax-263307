@@ -420,3 +420,41 @@ Pruning and the quantitative width obstruction
   Next: integrate the registered source family with fixed-factor size
   overshoot, use cost-based sampling bounds in the obstruction, and then
   derive the sublinear class width promise and the light-separator theorem.
+
+Registered source family and conditional Lemma 11
+  Full replay at 372603d passed: 52 concepts, 85 proofs, 2m41s, no Lax
+  warnings. Added Lax920634 in both package declarations at the registered
+  source https://github.com/EdouardBonnet/lax-920634, exact revision
+  4e1ce662f8ff75f2fa86d3a3973c871d3068c4c0, subDir concepts.
+  The synchronized archive record is registered. Lax provisions the package;
+  no manifests were edited manually. Its specified source family meets each
+  size request with fixed-factor overshoot and linear treewidth-plus-one.
+  Five further claims now compile (90 supporting claims): cost-based sample
+  budgets; controlled source-family bounds; integer root bag bounds; the
+  integer growth calculation; and impossibility of sparse bounded-load
+  uniform-endpoint routes in a class with a power bag bound.
+  This finishes the sampling contradiction in conditional Lemma 11 form:
+  for fixed a,A and a hereditary class satisfying the power bag premise,
+  there is K>0 forbidding such distributions when
+    k ≥ K*(ell+1)^(4a+2), p ≥ 2*K*(ell+1)^(4a+2).
+  The source family is used only in the existence contradiction. The actual
+  separator algorithm never constructs these source graphs or projects
+  high-flow paths. Fixed enormous source constants stay symbolic in Lean;
+  generic positivity lemmas avoid evaluating the seed-degree numeral.
+  Still required: derive the power bag bound from the main separator premise;
+  use this contradiction to force the split certificate's cheap-cut branch;
+  repeated cuts and their cumulative cost; actual RAM wrappers and the
+  early-stopping ellipsoid oracle; then global QPTAS correctness/time closure.
+
+High-flow exclusion and actual certificate shores
+  ForcedSeparation.certificate_separation also compiles (91 supporting
+  claims total). It retains the same K from the route obstruction and shows
+  that every valid split flow-cut certificate with the stated large capacity
+  projects to the actual leftShore/rightShore sets, with separator cost
+  ≤4*rho*|A|*|B|/gamma. The high-flow branch would give the forbidden route
+  law whenever gamma*k≤ell*n². This condition permits the global gamma used
+  while the remaining host has more than two thirds of the original order.
+  Next: repeated-cut cost accounting and balance; then the separator-to-power
+  bag bridge, oracle correctness including ellipsoid stopping, and RAM/time
+  compilation. The main QPTAS theorem remains open; all current width and
+  flow-cut claims explicitly retain the intermediate class power-bag premise.

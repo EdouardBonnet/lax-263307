@@ -43,3 +43,9 @@ import Lax263307Proofs.IsolatedEmbeddingTransfer
 import Lax263307Proofs.RoutePruning
 import Lax263307Proofs.HostRestriction
 import Lax263307Proofs.InducedEmbeddingWidth
+import Lax263307Proofs.CostSamplingObstruction
+import Lax263307Proofs.SourceGraphs
+import Lax263307Proofs.PowerBagBounds
+import Lax263307Proofs.WidthGrowth
+import Lax263307Proofs.NoBoundedLoadRoutes
+import Lax263307Proofs.ForcedSeparation

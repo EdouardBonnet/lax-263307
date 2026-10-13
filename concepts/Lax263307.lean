@@ -50,3 +50,9 @@ import Lax263307.IsolatedEmbeddingTransfer
 import Lax263307.RoutePruning
 import Lax263307.HostRestriction
 import Lax263307.InducedEmbeddingWidth
+import Lax263307.CostSamplingObstruction
+import Lax263307.SourceGraphs
+import Lax263307.PowerBagBounds
+import Lax263307.WidthGrowth
+import Lax263307.NoBoundedLoadRoutes
+import Lax263307.ForcedSeparation
