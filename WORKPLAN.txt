@@ -930,3 +930,13 @@ Complete functional algorithm
   Next draft: /tmp/qptas-native-combinations.lean. It contains exact direct
   indexing in sublistsLen order, native Pascal-table construction, and a
   native subset membership decoder. These are not yet locally checked.
+  NativeCombinations is now locally compiled in the proof package. It
+  constructs a Pascal table (54*(n+1)*(k+1)+16 source-cost budget) and decodes
+  one ranked subset into its exact membership vector (54*n+6), preserving
+  the exact sublistsLen/candidates ordering. The decoder is proved equal to
+  encodeOutput of its selected set, and valid ranks give the actual catalog
+  entry. No full powerset is materialized. NativeZeroScan is also locally
+  checked: a reusable finite scan composes any proved native entry reader.
+  These helpers are not yet imported by the public proof root; they await
+  the native exhaustive-search composition. Next draft:
+  /tmp/qptas-native-independent-test.lean (actual matrix/membership scan).
