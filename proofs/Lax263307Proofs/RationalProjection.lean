@@ -79,6 +79,64 @@ theorem normal_cast {m n : ℕ} (dual : Fin (m + (n + n)) → ℚ) :
 
 /--
 ---
+conclusion: Lax263307.RationalProjection.classify_correct
+---
+The branch test uses the distance coordinate in the actual optimal certificate.
+The matching dual gives that exact gap. Infeasible and unbounded certificates
+are handled using the registered certificate soundness theorem.
+-/
+theorem classify_correct {m n : ℕ} (P : Program ℚ m n) (center : Fin n → ℚ) (ρ : ℚ)
+    (certificate : Certificate (m + (n + n)) (n + 1))
+    (valid : IsValidCertificate (distanceProgram P center) certificate) :
+    Lax263307.RationalProjection.Correct P center ρ
+      (Lax263307.RationalProjection.classify P ρ certificate) := by
+  cases certificate with
+  | optimal z dual =>
+    obtain ⟨primal, dual_feasible, matching⟩ := valid
+    have hp := primal_transfer (distanceProgram P center) z primal
+    have hd := dual_transfer (distanceProgram P center) dual dual_feasible
+    rw [distance_cast] at hp hd
+    have hm : primalValue (distanceProgram (toReal P) (realVector center)) (realVector z) =
+        dualValue (distanceProgram (toReal P) (realVector center)) (realVector dual) := by
+      rw [← distance_cast, cast_primal_value, cast_dual_value, matching]
+    have hg := Lax263307.DistanceProjection.optimal_gap
+      (toReal P) (realVector center) (realVector z) (realVector dual) hp hd hm
+    have hdistance : distance (realVector z) = ((distance z : ℚ) : ℝ) := rfl
+    have hpoint : point (realVector z) = realVector (point z) := rfl
+    have hold : oldMultipliers (realVector dual) = realVector (oldMultipliers dual) := rfl
+    simp only [Lax263307.RationalProjection.classify]
+    split_ifs with hnear
+    · change PrimalFeasible (toReal P) (realVector (point z)) ∧ _
+      refine ⟨by simpa only [hpoint] using hg.1, ?_⟩
+      intro j
+      have hdist : ((distance z : ℚ) : ℝ) ≤ (ρ : ℝ) := by exact_mod_cast hnear
+      exact (hg.2.2.1 j).trans hdist
+    · change (∑ j, |((normal dual j : ℚ) : ℝ)|) ≤ 1 ∧ _
+      have hfar : (ρ : ℝ) < ((distance z : ℚ) : ℝ) := by
+        exact_mod_cast (lt_of_not_ge hnear)
+      have hgap := hg.2.2.2.2.2
+      rw [normal_cast, hold, cast_dual_value, hdistance] at hgap
+      refine ⟨?_, ?_, ?_⟩
+      · simpa only [normal_cast] using hg.2.2.2.1
+      · simpa only [normal_cast, hold, cast_dual_value] using hg.2.2.2.2.1
+      · simpa only [← hgap, realVector] using hfar
+  | infeasible dual =>
+    have hbad := Lax109476.CertificateSoundness.valid_certificate_correct _ _
+      (distanceProgram P center) (.infeasible dual) valid
+    change ¬ IsFeasible (toReal (distanceProgram P center)) at hbad
+    rw [distance_cast, Lax263307.DistanceProjection.projection_feasible_iff] at hbad
+    exact hbad
+  | unbounded z direction =>
+    have hbad := Lax109476.CertificateSoundness.valid_certificate_correct _ _
+      (distanceProgram P center) (.unbounded z direction) valid
+    change IsFeasible (toReal (distanceProgram P center)) ∧
+      ¬ IsBoundedAbove (toReal (distanceProgram P center)) at hbad
+    rw [distance_cast] at hbad
+    exact False.elim (hbad.2 (Lax263307.DistanceProjection.objective_bounded
+      (toReal P) (realVector center)))
+
+/--
+---
 conclusion: Lax263307.RationalProjection.certificate_outcome
 ---
 -/

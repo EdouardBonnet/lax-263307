@@ -725,3 +725,74 @@ Precision and cut-normal integration next
   denominator clearing, integer-normal size bounds, dot-product stability,
   and preservation of scaled protected cubes by cleared central cuts.
   It is not imported or counted as an archive-verified supporting block.
+
+Rounded search and computed resource envelope
+  Eight RationalCutBuffer claims compile: positive denominator product,
+  exact real clearing, nonzero integer normal, denominator and normal
+  size bounds, dot stability, central buffer, and scaled-cube retention.
+  RoundedOracleSearch supplies a computable cached rational update and
+  bounded answer/reject/cut scan. Four claims compile: answer soundness,
+  protected-cube completeness through the actual registered sequence,
+  and linear center/matrix encoding bounds. The update mirrors the
+  registered definition directly and is proved equal to that sequence.
+  Three AlgorithmParameters claims compile: explicit load/sparsity/level
+  budgets, rational conditioning-floor identity, and dyadic protection.
+  Precision is radiusDenominator+2 instead of its logarithm. This is
+  conservative but still quasipolynomial and avoids sharp log estimates.
+  ParameterResources.resource_bound compiles. It bounds the sum of actual
+  integer formulas plus small-target enumeration by
+  2^(C*(D*(log2(2n)+1))^d), with fixed positive C,d before n,D.
+  Constants: c=2K(12B+1)^(4a+2), d0=4a+3,
+  A=c(c+2)+2(c+3)+20, C=3A+6, d=2*d0+2.
+  The proof uses max(targetThreshold,level)=level, Q=2*n*level,
+  and bounds the catalog and Q^level by powers of two.
+  These sixteen new claims require a full strict saved replay and
+  registered closure audit. Main QPTAS remains open.
+
+Native rounded-step adapter in progress
+  /tmp/qptas-native-rounded-step.lean defines a fixed IMP command that
+  reads [n,k] followed by rational matrix/normal/center coordinates,
+  invokes the registered complete ellipsoidStep, and writes the next
+  matrix and center in canonical rational encoding. Read and write
+  specifications compile. The final composed command_spec is being checked.
+  Array relabeling swaps lp.A/lp.b/lp.c with ell.shape/ell.normal/ell.center.
+  A composed chain of nine Equiv.swap caused exponential string reduction;
+  use a direct eighteen-case name function with a proved involution.
+  Next: transfer this command through compileProgram_runsTo and prove
+  its polynomial n+k+input-height bounds; then implement the concrete
+  recursive oracle, flow trace, stack/control loop and weighted frontend.
+  Actual finite RAM execution is still required for the headline theorem.
+
+Native rounded step and deterministic certificate branching
+  NativeRoundedStep.exists_program now compiles locally: one fixed finite
+  RAM program reads the unprefixed [n,k,matrix,normal,center] input and writes
+  exactly RoundedOracleSearch.update. Its instruction count and sufficient
+  word length are both at most c*(n+h+k+1)^12 for a fixed c, for every larger
+  word length. The coordinate height bound is 2^h. The proof compiles the
+  reader, registered ellipsoidStep, and output writer through actual RunsTo.
+  The explicit guard exponent is at most 26*(n+h+k+1)^3; no oracle or
+  cost-annotated replacement machine is used for this subroutine.
+  RationalProjection.classify is a computable certificate branch using the
+  exact rational distance comparison. classify_correct compiles and proves
+  feasibility/nearby coordinates, a separating normal/gap, or infeasibility
+  for the actual selected branch. Together with the preceding sixteen
+  claims, this makes eighteen new claims awaiting strict saved replay.
+  Main theorem remains open. Next: computed LR remainder cuts and trace,
+  recursive answer-or-cut control, RAM composition, weighted frontend,
+  and the complete uniform quasipolynomial time/word bound.
+  User was told the earlier completion percentage was too confident and
+  that native composition remains substantial; do not count supporting
+  lemmas as a completion percentage for the main theorem.
+  Full strict replay passed (5m12s): 79 concepts and 153 proofs. Statement
+  inspection has only the same two advisory proof-package warnings.
+  The registered fixed-point closure closes every supporting claim; only
+  Lax263307.MainTheorem.exists_qptas remains open.
+
+Computed separator prototype
+  /tmp/qptas-computed-separators.lean contains the next unverified block:
+  sorted, computable remainder labels; actual cut decoding from the prefix
+  of a registered LR certificate; rational finite-capacity construction;
+  deterministic shore orientation; and a bounded cut-list loop. The proof
+  draft transfers the registered certificate guarantees to the selected
+  shores, then identifies the computed list with a checked cut trace.
+  This prototype is not yet part of the archive build or closure count.
