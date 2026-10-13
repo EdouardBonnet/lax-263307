@@ -90,3 +90,9 @@ import Lax263307Proofs.NativeIndependentTest
 import Lax263307Proofs.NativeMasks
 import Lax263307Proofs.NativeCatalogOrder
 import Lax263307Proofs.NativeCatalog
+import Lax263307Proofs.NativeTabulate
+import Lax263307Proofs.NativeMaskUnpack
+import Lax263307Proofs.NativeCatalogMetadata
+import Lax263307Proofs.NativeMomentRows
+import Lax263307Proofs.NativeIntegerEncoding
+import Lax263307Proofs.NativeRationalTabulate

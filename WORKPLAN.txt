@@ -990,3 +990,27 @@ Complete functional algorithm
   /tmp/qptas-native-mask-unpack.lean (membership bits and exact cardinality),
   /tmp/qptas-native-catalog-metadata.lean (cardinality and independence arrays
   aligned with the exact LP catalog). These have no public proof claim yet.
+  NativeTabulate, NativeMaskUnpack, NativeCatalogMetadata, NativeMomentRows,
+  NativeIntegerEncoding and NativeRationalTabulate now pass local Lean.
+  Unpacking returns exact membership bits and cardinality in 21*n+8 source
+  cost. Metadata aligns cardinalities and graph-tested independence flags
+  with the catalog, at cost (38*n^2+42*n+60)*N+14.
+  Native coefficient routines implement equality, insertion monotonicity
+  (18 source cost), and conditioned mass (22*n+18), with exact equality to
+  MomentLP's rational rows. The integer writer emits the registered canonical
+  sign/magnitude/denominator triple, including zero, at cost 31. Generic
+  rational tabulation appends exact entry encodings with source cost
+  (K+39)*entryCount+6 for an actual K-cost native entry reader. It preserves
+  prior initialized words and checks capacity and scalar bounds throughout.
+  The new helpers are copied/imported and await strict replay. They do not
+  yet form the complete dense MomentLP input or the large-target driver.
+  The six native LP-support modules passed full strict replay. Public
+  counts remain 90 concepts/164 proofs; the closure audit still leaves only
+  MainTheorem.exists_qptas open. Unused-helper warnings now also identify
+  these intentional native components awaiting the full LP/driver caller.
+  The local preview at http://localhost:8137/lax-263307/ returns HTTP 200.
+  Next drafts: /tmp/qptas-native-moment-access.lean (actual metadata reads
+  and row activation), /tmp/qptas-native-moment-produce.lean (bounded
+  coefficient pairs, inactive rows and negation), and
+  /tmp/qptas-native-moment-assembly.lean (exact six-family LP encoding).
+  These three drafts are not yet checked or imported.
