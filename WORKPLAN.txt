@@ -680,3 +680,16 @@ Moment LP import inspection correction
   proof-package requirement. The own MomentLP concept already imports it;
   remove the redundant proof import. No theorem statement or proof body
   changes. A full successful saved build remains required after this fix.
+
+Heavy-part recursion and rational projection certificates
+  Three heavy-part rounding claims and one rational projection certificate
+  outcome compile in prototypes. Light parts lose at most delta*k/2;
+  answers on heavy parts retain 1-4delta per recursive level. Failed
+  heavy queries yield raw gap eta*delta^2/(16n). Exact registered LP
+  certificates supply infeasibility, a rational nearby feasible point,
+  or a rational L1-normalized separating cut. Unbounded certificates
+  contradict the projection objective bound. These are oracle invariants,
+  not yet the explicit recursive RAM loop or global time bound.
+  User again asked the completion percentage: about 50%, as a rough
+  work estimate; main theorem remains open. Full replay of the expanded
+  supporting block is required after the prior import inspection fix.

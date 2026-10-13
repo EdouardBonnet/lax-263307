@@ -70,3 +70,5 @@ import Lax263307.DistanceProjection
 import Lax263307.CoordinateCatalog
 import Lax263307.BufferedEllipsoid
 import Lax263307.MomentLP
+import Lax263307.HeavyRecursiveRounding
+import Lax263307.RationalProjection
