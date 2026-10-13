@@ -81,3 +81,6 @@ import Lax263307.ComputedSeparators
 import Lax263307.ComputedRounding
 import Lax263307.RegisteredLP
 import Lax263307.NearOracle
+import Lax263307.ProjectedOracle
+import Lax263307.RecursiveAlgorithm
+import Lax263307.WeightedAlgorithm

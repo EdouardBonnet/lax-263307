@@ -835,3 +835,30 @@ Computed near-relaxation oracle
   are registered-closed; only MainTheorem.exists_qptas remains open.
   /tmp/qptas-projected-oracle.lean and /tmp/qptas-recursive-algorithm.lean
   contain the next drafts; neither has been checked yet.
+
+Complete functional algorithm
+  ProjectedOracle.exists_search now compiles: the actual LP certificate
+  selects rejection, a rational separating cut, or the near oracle.
+  Both cut branches preserve one uniform dyadic cube; nonzero normals and
+  bounded ellipsoid completeness give sound target rejection.
+  RecursiveAlgorithm.exists_solver now compiles: explicit fuel recursion,
+  exact small-target search, canonical balanced-part labels, and descending
+  target search. Induction discharges every child-query hypothesis. With
+  D=4*(depth(n)+1)*ceil(1/epsilon), the function returns an unweighted
+  (1-epsilon)-approximation.
+  WeightedAlgorithm.exists_solver now compiles in its prototype: clipped
+  weights, computable finSigmaFinEquiv copy labels, the actual unweighted
+  solve on the blow-up, projection, and removal of nonpositive weights.
+  This closes functional correctness for the complete deterministic
+  weighted algorithm. It does NOT close the main RAM QPTAS theorem.
+  These three new claims require the next strict replay. Remaining work:
+  native data/control/stack implementation, registered subroutine calls,
+  total instruction and word bounds, and final MainTheorem assembly.
+  Full strict replay passed (5m22s): 86 concepts and 160 proofs, with
+  the same two advisory warnings. Closure audit closes all support claims;
+  only MainTheorem.exists_qptas remains open. The complete functional
+  algorithm is now archived and kernel-replayed.
+  Native implementation draft: /tmp/qptas-native-frontend.lean. It starts
+  with the exact unprefixed input reader, native maximum and rounded-copy
+  arithmetic, and signed-weight clipping. This draft is not yet checked
+  or imported into the submission. No claim of complete RAM execution.

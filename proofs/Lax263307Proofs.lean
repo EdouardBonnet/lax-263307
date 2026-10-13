@@ -74,3 +74,6 @@ import Lax263307Proofs.ComputedSeparators
 import Lax263307Proofs.ComputedRounding
 import Lax263307Proofs.RegisteredLP
 import Lax263307Proofs.NearOracle
+import Lax263307Proofs.ProjectedOracle
+import Lax263307Proofs.RecursiveAlgorithm
+import Lax263307Proofs.WeightedAlgorithm
