@@ -23,13 +23,12 @@ Existing foundations — reuse, do not redevelop
     selection and construction bounds support Lemma 10. The sampled-path
     contradiction only needs existence; retain the effective construction
     when an algorithmic interface is useful.
-  Lax455465, ../leighton-rao: ongoing deterministic flow–cut development.
+  Lax455465, ../leighton-rao: registered, verified 2026-10-13.
     Canonical page: https://laxarchive.org/lax-455465/
-    User confirmed on 2026-10-13 that it may change before registration.
-    Continue independent branches; pin its registered revision when ready.
+    Pinned concepts in both packages from https://github.com/EdouardBonnet/lax-455465
+    at 9988b9c5399185cfb3ca2129ca7c807fd80c2885.
     Use RamDirectedUniformFlowCut and the paper's vertex-splitting
-    reduction for Lemma 7. The paper counts endpoint loads and singleton
-    paths; these conventions must survive the reduction.
+    reduction for Lemma 7. Preserve endpoint loads and singleton paths.
   Lax109476, ../linear-programming: registered exact LP solver and its
     rational ellipsoid implementation. Current registered revision:
     0a042604c7ae1ef4cd9a4c7d82eb902f313d4864.
@@ -252,3 +251,31 @@ Almost-embedding and sampling progress — 2026-10-13
   User reported Lax455465 registered. Archive synchronization and its live
   page now confirm registration; fetch the exact recorded source pin before
   beginning the vertex-splitting reduction.
+
+Registered flow–cut integration — 2026-10-13
+  Lax455465 is now pinned to its exact registered revision in both packages.
+  Full replay with that dependency passed: 39 concepts, 53 proofs, 2m38s.
+  Checked closure of the 53 own supporting statements; main theorem still open.
+  The split network and cut projection now compile in a new proof block:
+  two ports per vertex, vertex-capacity forward arcs, large reverse/graph
+  arcs, a nontrivial original separation from a small cut, and both shore
+  cardinality bounds. The registered solver applies to every split input
+  with its fixed actual RAM program. This is 55 compiled supporting claims.
+  Next: show cut capacity equals separator cost, choose the finite large
+  capacity, and project a high-value split flow for the contradiction.
+  Important implementation simplification: projected paths are needed only
+  for the existence contradiction. Under the promised light-separator
+  hypotheses, the flow branch is impossible, so the actual separator
+  algorithm only decodes the returned cut and projects its shores. The
+  registered ArcToPath theorem can therefore serve the analysis without
+  requiring a separate RAM implementation of path decomposition here.
+
+  VertexSplitting additionally proves the exact cut-capacity identity and
+  translates a split cut ratio rho into original separator cost at most
+  4*rho*|A|*|B|. The cut-side reduction is complete once the solver value
+  is compared to the prescribed flow threshold and the large rational
+  capacity is chosen. Four new annotated claims bring the count to 57.
+  The new split-certificate proof assumes the registered theorem
+  Lax455465.RamDirectedUniformFlowCut.exists_polynomial_time_flow_cut;
+  closure auditing must now include its registered dependency proof chain,
+  rather than count only statements proved inside this submission.

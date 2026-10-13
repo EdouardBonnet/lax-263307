@@ -37,3 +37,4 @@ import Lax263307.PathSampling
 import Lax263307.SamplingOutcomes
 import Lax263307.InducedRouteEdges
 import Lax263307.EdgeDeletionWidth
+import Lax263307.VertexSplitting

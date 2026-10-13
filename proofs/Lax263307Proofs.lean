@@ -30,3 +30,4 @@ import Lax263307Proofs.PathSampling
 import Lax263307Proofs.SamplingOutcomes
 import Lax263307Proofs.InducedRouteEdges
 import Lax263307Proofs.EdgeDeletionWidth
+import Lax263307Proofs.VertexSplitting
