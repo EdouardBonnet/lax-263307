@@ -704,3 +704,24 @@ Heavy-part recursion and rational projection certificates
   without using its proof term. Full successful replay remains required.
   Its rewrite is still syntactically needed by cast_dual_value; supply the
   definitional equality locally instead of as an unused global lemma.
+
+  Full replay at 57e10b8 passed: 74 concepts, 135 proofs, 6m09s.
+  Statement inspection passed with only the two advisory proof-package
+  dependency warnings. The registered fixed-point closure closes all 135
+  supporting claims; only Lax263307.MainTheorem.exists_qptas remains open.
+  The direct LP concept declaration admits the registered certificate
+  soundness theorem without changing its exact pin or theorem statements.
+
+Precision and cut-normal integration next
+  The registered EllipsoidSequence sequence_grid_size is 2*k+3*N+10.
+  EllipsoidStateSize.centers_encoding_size bounds each stored center
+  rational by 60+6*k+14*N bits, independently of the incoming normal.
+  Its shapes_encoding_size similarly controls stored matrix entries.
+  Reuse these to prevent precision growth from being compounded through
+  successive oracle calls. RegisteredLpInvocation.command/exists_program
+  in Lax455465Proofs supplies the fixed native solver invocation from an
+  encoded LP buffer, with explicit host-word, array-room, and time bounds.
+  New scratch /tmp/qptas-rational-cut-buffer.lean develops positive common
+  denominator clearing, integer-normal size bounds, dot-product stability,
+  and preservation of scaled protected cubes by cleared central cuts.
+  It is not imported or counted as an archive-verified supporting block.
