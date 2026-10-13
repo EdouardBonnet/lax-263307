@@ -315,3 +315,25 @@ Next flow-side proof — preserve the endpoint convention
   Then prove the repeated cut procedure (≤n cuts, disjoint removed B shores),
   choose a rational finite large capacity using an integer universal constant,
   and implement the split-input/cut-output wrappers on the registered RAM.
+
+Split path projection — current proof block
+  Three more annotated claims compile (61 supporting statements total):
+    - every positive-capacity simple split path with minus/plus endpoints
+      is the expansion of a simple original graph route;
+    - its capacity-arc occurrence counts every original route vertex once,
+      including endpoints;
+    - every retained positive path in a feasible split path flow satisfies
+      these conditions, by the arc-load capacity inequality.
+  The route expansion is executable. The reconstruction is by induction on
+  path length; reverse arcs would repeat the immediately preceding input
+  port and are excluded by Nodup. A zero-length original edge route is the
+  singleton vertex route, represented by its two distinct split ports.
+  Next: normalize the n² retained commodities. A convenient analysis-only
+  distribution uses outcomes (u,v,P) with P in the finite split-flow support,
+  giving weight FP/(routed(u-minus,v-plus)*n²) when endpoints match, zero
+  otherwise. Choose the projected original route on positive outcomes and
+  the empty route on zero outcomes. Each pair's weights sum to 1/n².
+  Since routed≥f≥1/gamma, normalization factors are ≤gamma. Uniqueness of
+  each positive path's endpoint pair and the proved capacity-arc count then
+  bound each vertex-use probability by gamma*x_v/n². No RAM path conversion
+  is required; this distribution is used only in the contradiction.
