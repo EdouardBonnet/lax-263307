@@ -69,3 +69,4 @@ import Lax263307.StrongComponentGaps
 import Lax263307.DistanceProjection
 import Lax263307.CoordinateCatalog
 import Lax263307.BufferedEllipsoid
+import Lax263307.MomentLP

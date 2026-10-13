@@ -658,3 +658,17 @@ Catalog definition inspection correction
   unchanged while removing all theorem-axiom dependence from definitions.
   The public five catalog statements still have their separate annotated
   proofs. Main theorem and computational model remain unchanged.
+
+Explicit moment LP
+  The corrected catalog passed concept inspection (partial build 37s), and
+  #print axioms confirmed catalog/indexing use only the three background
+  axioms; catalog_complete itself adds only its own statement axiom.
+  Six moment LP claims compile in the prototype: both encoding inverses;
+  singleton row evaluation; exact real primal/relaxation feasibility
+  characterization; nonempty feasible-set equivalence; and native dot-product
+  equivalence for integer component normals. The program is computable and
+  uses N variables and 2+4N+Nn rational inequality rows. Normalization and
+  mass use paired rows. Primal nonnegativity supplies lower moment bounds.
+  Next: strict replay of all 131 supporting claims, rational optimal LP
+  certificate casting and oracle outcomes, protected rounded ellipsoid
+  stopping, heavy-part recursive rounding, and RAM/global time closure.
