@@ -77,3 +77,5 @@ import Lax263307Proofs.NearOracle
 import Lax263307Proofs.ProjectedOracle
 import Lax263307Proofs.RecursiveAlgorithm
 import Lax263307Proofs.WeightedAlgorithm
+import Lax263307Proofs.NativeFrontend
+import Lax263307Proofs.NativeMaximum

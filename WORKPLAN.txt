@@ -862,3 +862,30 @@ Complete functional algorithm
   with the exact unprefixed input reader, native maximum and rounded-copy
   arithmetic, and signed-weight clipping. This draft is not yet checked
   or imported into the submission. No claim of complete RAM execution.
+  NativeFrontend helper module now compiles in its prototype: exact
+  unprefixed input buffering (12*tailLength+30 source-cost budget), signed
+  weight reads/clipping, exact natural division for copy multiplicities,
+  maximum-pair updates, rational encoding indices, and a complete maximum
+  scan step with a 48-cost budget. Copied into proofs and imported by the
+  proof root; no new public theorem or completed RAM solver is asserted.
+  Next: compose the maximum scan and multiplicity pass, construct the
+  numbered blow-up, then implement the recursive RAM driver and bounds.
+  NativeMaximum prototype now compiles: a full scan with source cost
+  52*n+10, preservation of the input buffer, positive denominators, bounded
+  stored numerators/denominators, and exact agreement with maximumWeight
+  of clipped weights. Copied to the proof package; both native helper
+  modules still await strict replay. Multiplicity pass is next.
+  Full replay with NativeFrontend and NativeMaximum passed (5m25s).
+  Counts remain 86 concepts/160 public proofs. In addition to the two
+  proof-package warnings, inspection reports 23 intentionally unused
+  native helpers: they await the final native algorithm proof. The closure
+  audit still leaves only MainTheorem.exists_qptas open.
+  Current unchecked drafts: /tmp/qptas-native-multiplicities.lean (full
+  count loop, semantic equality to copies, accuracy reader), and
+  /tmp/qptas-native-oracle-calls.lean (generic fixed-function invocation).
+  Important coupling: use SparseRam.polynomial_execution on the SAME
+  LP/flow functions chosen by WeightedAlgorithm.exists_solver. A fresh
+  RegisteredLpInvocation.exists_program witness may choose another valid
+  certificate/function, so cannot establish exact function refinement.
+  The generic invocation draft preserves f x exactly and reuses native
+  input preparation and virtual execution with polynomial bounds.
