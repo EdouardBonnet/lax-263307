@@ -1035,3 +1035,24 @@ Complete functional algorithm
   main QPTAS theorem open. The 65 warnings include intentional native
   helpers awaiting their caller. Next draft for the actual six-family
   entry readers: /tmp/qptas-native-moment-family.lean.
+  NativeMomentFamily, NativeMomentMatrix, NativeMomentVectors,
+  NativeMomentInput, NativeMomentSetup and NativeArrayBounds now pass local
+  Lean. All six native matrix-family loops and the bound/objective loop
+  compose into the exact registered encodeProgram (MomentLP.program G k r).
+  The constructor prepares the actual catalog and graph-tested metadata.
+  NativeMomentProgram also passes local Lean: physical graph input through
+  complete output, one fixed compiled RAM program, and uniform quartic
+  time/sufficient-width c*(n+k+r+N+2)^4. The source proof includes scalar
+  overflow, initialized prefixes, actual array capacity and output bounds.
+  A public NativeMomentLP concept and proof mapping have now been added.
+  These seven modules and the new public theorem require strict replay.
+  Remaining: native distance-LP wrapper and certificate processing, actual
+  large-target conditioning/separator/child/cut/update execution, recursive
+  stack/control, and combined global QPTAS bounds and main theorem.
+  The full native moment-LP program passed strict replay (6.7 minutes):
+  91 concepts and 165 public proofs. The closure audit confirms the new
+  program theorem is closed and leaves only MainTheorem.exists_qptas open.
+  Next unchecked drafts, not copied or imported:
+  /tmp/qptas-native-rational-read.lean (buffer-parametric canonical reader),
+  /tmp/qptas-native-distance-entries.lean (runtime-index distance LP formulas),
+  /tmp/qptas-native-lp-read.lean (native reads of base LP and center entries).

@@ -99,3 +99,10 @@ import Lax263307Proofs.NativeRationalTabulate
 import Lax263307Proofs.NativeMomentAccess
 import Lax263307Proofs.NativeMomentProduce
 import Lax263307Proofs.NativeMomentAssembly
+import Lax263307Proofs.NativeMomentFamily
+import Lax263307Proofs.NativeMomentMatrix
+import Lax263307Proofs.NativeMomentVectors
+import Lax263307Proofs.NativeMomentInput
+import Lax263307Proofs.NativeMomentSetup
+import Lax263307Proofs.NativeArrayBounds
+import Lax263307Proofs.NativeMomentProgram
