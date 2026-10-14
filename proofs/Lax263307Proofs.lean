@@ -232,3 +232,15 @@ import Lax263307Proofs.NativeRoundedState
 import Lax263307Proofs.NativeRoundedUpdate
 import Lax263307Proofs.NativeIntegerTable
 import Lax263307Proofs.NativeInitialCoordinates
+import Lax263307Proofs.NativeRoundedInitial
+import Lax263307Proofs.NativeLogarithms
+import Lax263307Proofs.NativeMachineSegment
+import Lax263307Proofs.NativeNodeParameters
+import Lax263307Proofs.NativeNodeResource
+import Lax263307Proofs.NativeNodePrecision
+import Lax263307Proofs.NativeProgramCache
+import Lax263307Proofs.NativeLargeSetup
+import Lax263307Proofs.NativeScaleFraction
+import Lax263307Proofs.NativeProjectionCenter
+import Lax263307Proofs.NativeNodeTolerance
+import Lax263307Proofs.NativeProjectionPrepare

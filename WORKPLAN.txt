@@ -1288,3 +1288,28 @@ Checked persistent rounded updates and finite machine traces — 2026-10-14
   setup, component reply collection/cuts, actual recursive machine phases
   and their execution traces, global resource composition, and the final
   weighted main theorem.
+
+Checked node budgets and projection preparation — 2026-10-14
+  Added NativeRoundedInitial, NativeLogarithms, NativeMachineSegment,
+  NativeNodeParameters, NativeNodeResource, NativeNodePrecision,
+  NativeProgramCache, NativeLargeSetup, NativeScaleFraction,
+  NativeProjectionCenter, NativeNodeTolerance, NativeProjectionPrepare.
+  Complete rounded initialization computes the identity shape and zero
+  center with actual cost 105*N*N+91*N+50. Native commands compute both
+  logarithms, class-dependent load/sparsity/conditioning budgets, radius,
+  precision, and the numeric iteration limit. Their formulas agree with
+  AlgorithmParameters; parameter-loading guards are bounded polynomially
+  by its checked common resource.
+  Large-node initialization builds/caches its moment LP, computes search
+  budgets and stores the initial rounded state. Projection preparation
+  restores this cache, scales the actual current center by 4*N, reduces
+  its rational coordinates, and computes the exact projection tolerance.
+  Execution segments can be composed at child-return continuations.
+  Strict lax build --replay --profile passed (91 concepts, 165 public
+  proofs; 246 directly imported own proof modules). Closure audit leaves
+  only MainTheorem.exists_qptas open. No new external assumptions.
+  Still required: full node-entry and recursive phase handlers, rounded
+  search execution and component reply collection/cuts, global resource
+  composition, and the weighted main theorem. Attempt-reply, small-node,
+  scalar-alias and complete large-node drafts in /tmp are not checked
+  and are outside this replay.
