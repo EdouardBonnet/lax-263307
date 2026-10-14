@@ -141,3 +141,15 @@ import Lax263307Proofs.NativeClearNormal
 import Lax263307Proofs.NativeCutResources
 import Lax263307Proofs.NativeProjectionCut
 import Lax263307Proofs.NativeIntegerProjection
+import Lax263307Proofs.NativeSumHeight
+import Lax263307Proofs.NativeSignedAccumulate
+import Lax263307Proofs.NativeWordLookup
+import Lax263307Proofs.NativeSignedSum
+import Lax263307Proofs.NativeMomentValue
+import Lax263307Proofs.NativeConditioningVector
+import Lax263307Proofs.NativeMomentStorage
+import Lax263307Proofs.NativeQuadraticProduct
+import Lax263307Proofs.NativeQuadraticTerms
+import Lax263307Proofs.NativeQuadraticVector
+import Lax263307Proofs.NativeQuadraticSum
+import Lax263307Proofs.NativeQuadraticResources

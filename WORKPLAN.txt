@@ -1129,3 +1129,29 @@ Complete functional algorithm
   Next unchecked drafts in /tmp/qptas-native-*.lean: word-lookup,
   moment-value, moment-storage, conditioning-vector, sum-height,
   signed-accumulate, signed-sum. These are not copied or imported yet.
+
+  NativeWordLookup, NativeMomentValue, NativeMomentStorage,
+  NativeConditioningVector, NativeSumHeight, NativeSignedAccumulate,
+  NativeSignedSum, NativeQuadraticProduct, NativeQuadraticTerms,
+  NativeQuadraticVector, NativeQuadraticSum and NativeQuadraticResources
+  pass local Lean. Catalog lookups use O(N) entries rather than masks as
+  addresses; the nearby LP point is copied in exact catalog order;
+  all moments y(A union {v}) are read by their actual catalog positions.
+  The native quadratic sum reads the graph's actual adjacency bits,
+  multiplies exact signed rationals, and accumulates every ordered term.
+  The returned value equals the mathematical edge-product sum.
+  For coordinates of height <=2^h, source cost is bounded by
+  1000*(h+1)*(n+1)^4; the arithmetic guard is met with
+  2*((2*h+1)*(n*n+1))+10 bits. Rational partial sums have bounds derived
+  from their input heights, without repeated squaring of those bounds.
+  This twelve-module batch requires full strict replay. Next: the heavy
+  conditioning predicate and candidate scan, native separator and child
+  processing, component cuts, rounded search, recursive stack/control,
+  and global resource closure. MainTheorem.exists_qptas remains open.
+  The twelve-module conditioning arithmetic batch passed full strict
+  replay: 91 concepts, 165 public proofs; kernel replay about 9.2m.
+  Closure audit again leaves exactly MainTheorem.exists_qptas open.
+  No new external assumptions or dependency changes. Next unchecked
+  drafts in /tmp/qptas-native-*.lean: natural-power, conditioning-floor,
+  conditioning-predicate, conditioning-test, conditioning-numerator,
+  heavy-candidate, first-scan. These are not copied or imported yet.
