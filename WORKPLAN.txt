@@ -1155,3 +1155,28 @@ Complete functional algorithm
   drafts in /tmp/qptas-native-*.lean: natural-power, conditioning-floor,
   conditioning-predicate, conditioning-test, conditioning-numerator,
   heavy-candidate, first-scan. These are not copied or imported yet.
+
+  NativeNaturalPower, NativeConditioningFloor, NativeConditioningPredicate,
+  NativeConditioningTest, NativeConditioningNumerator, NativeHeavyCandidate,
+  NativeConditioningOrder, NativeFirstScan, NativeConditioningResources,
+  NativeConditioningEntry, NativeHeavySearch, NativeHeavyResources,
+  NativePositiveQuotient and NativeNearCosts pass local Lean. The complete
+  native conditioning search returns the same first candidate (or none)
+  as findHeavyConditioning. Its integer floor, actual moment reads, edge
+  products, exact predicate, and ordered scan are all implemented.
+  At moment height <=2^h, with S=n+r+k+p+N+h+20, 36*S^4+10 word bits
+  suffice, and source time is at most 2000*(n+r+N+h+20)^6. These are
+  derived uniform bounds, not assumed candidate-specific inequalities.
+  The next native command constructs the exact nonnegative conditioned
+  costs max(0,y(A union {v})/y(A)) and stores them in near.costs. Its
+  rational height is <=2^(2*h), including zero and signed inputs.
+  This fourteen-module batch requires full strict replay. Remaining:
+  native separator and child processing, component cuts, rounded search,
+  recursive stack/control, global resources and MainTheorem.exists_qptas.
+  The fourteen-module conditioning/search/cost-vector batch passed full
+  strict replay: 11.4m total, 6m43s kernel replay; 91 concepts and 165 public
+  proofs. The closure audit leaves exactly MainTheorem.exists_qptas open.
+  No new external assumptions or changed dependency pins. Unchecked next
+  drafts in /tmp/qptas-native-*.lean: restriction-order, selected-vertices,
+  restriction-read, large-capacity, matrix-order, split-entry, split-vectors,
+  split-input. These drafts are not imported or included in this replay.
