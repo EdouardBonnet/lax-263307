@@ -1180,3 +1180,31 @@ Complete functional algorithm
   drafts in /tmp/qptas-native-*.lean: restriction-order, selected-vertices,
   restriction-read, large-capacity, matrix-order, split-entry, split-vectors,
   split-input. These drafts are not imported or included in this replay.
+
+  NativeMatrixOrder, NativeOracleScalars, NativeLargeCapacity,
+  NativeRestrictionOrder, NativeSelectedVertices, NativeRestrictionRead,
+  NativeOutputRead, NativeShoreMasks, NativeSplitEntry, NativeShoreUpdate,
+  NativeSplitVectors, NativeOutputLength, NativeFlowShores, NativeSplitInput,
+  NativeSplitOracle, NativeShoreOrientation, NativeFlowCut and
+  NativeFlowPrepare pass local Lean. The vertex table follows the exact
+  increasing label map of the induced graph, and graph/cost reads access
+  the actual stored arrays. Split capacities and unit vertex weights are
+  serialized in the registered flow solver's precise input format.
+  NativeFlowCut invokes the same chosen flow function, decodes its output
+  with the functional getD convention, lifts both shores through the label
+  map and applies the exact cardinality-based orientation. Oracle output
+  length is proved polynomially bounded, without assuming a well-formed
+  certificate. NativeFlowPrepare constructs labels and the finite capacity
+  directly from the remaining-set mask and the algorithm's parameters.
+  Query construction costs 488*r*r+56*r+36 source steps, decoding and
+  orientation cost 59*r+42*n+42, and preparation costs
+  43*n+12*(2*n).size+78. Oracle time/word polynomials are explicit in the
+  invocation contract; closing all resource guards uniformly remains work.
+  The eighteen-module batch passed full strict replay: 9.6m total,
+  7m36s kernel replay; 91 concepts and 165 public proofs. The closure
+  audit leaves exactly MainTheorem.exists_qptas open. No new external
+  assumptions, changed dependency pins, or public axioms. Remaining:
+  repeated cuts and pieces, child processing, component cuts, rounded
+  search, recursive stack/control, global resources and the main theorem.
+  New unchecked drafts in /tmp/qptas-native-*.lean: set-masks, cut-records,
+  cut-test and cut-trace. They are not imported or part of this replay.
