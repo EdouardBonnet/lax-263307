@@ -1382,3 +1382,36 @@ weighted main theorem remain open. See PROOF_HANDOFF.md for current check logs.
 2026-10-14: Integrated registered lax-62 proof framework. Added 13 checked follow-up modules (292 own imports): collection, actual recursive oracle/trajectory guards, child return composition, uniform-program transfer, real LP encoding/query and normal heights, and final weighted growth bound. Main theorem remains open; full phase/node specification and global program resource invariant still required. Disk recovered by removing obsolete generated Hadwiger builds and sharing warm mathlib.
 
 2026-10-14: 292-module strict replay passed, including lax-62 integration and final weighted envelope. Closure audit still leaves only MainTheorem.exists_qptas open. No new mathematical assumptions.
+
+2026-10-15: 300-module root build passed (exit 0), log
+  /tmp/qptas-weighted-program-root-build.log. Eight new modules provide
+  canonical solver agreement, oracle precision, partial polynomial budget,
+  actual empty/projected weighted output, machine bounds, and the complete
+  fixed weighted program definition. RecursiveAlgorithm correctness was
+  extracted for arbitrary fixed correct solvers. Complete program Spec,
+  global resource invariant and main theorem remain open. Strict replay
+  and checkpoint commit for this batch are pending.
+
+2026-10-15: NativeCollectionContext and NativeCollectionChild locally checked
+  (exit 0). Concrete parent data/stack invariant and actual light iteration;
+  actual heavy call/pop/reply preserve it, with the smaller-fuel execution
+  still supplied by recursion. Child lifting temporarily changes graph.n;
+  final restoration is proved explicitly rather than using a write-footprint
+  assumption. Root imports now 302; full build is running.
+
+2026-10-15: 302-module strict kernel replay passed, but final inspection found
+  one undeclared direct import of RAM Fill in NativeEmptyOutput. Fixed via
+  declared Lax62Proofs.Refine.Codegen.Harness. Added NativeInputBounds, checked
+  the complete NativeQptasZero branch, heavy collection entry, and original
+  order <= positive copy order. Frontend now retains original input.n in its
+  Spec. Full 304-module root build passed (exit 0):
+  /tmp/qptas-weighted-zero-root-build.log. Final Lax inspection is running;
+  main theorem is still open. New 304-module state has NOT been strict-replayed.
+
+2026-10-15 checkpoint: full 304-module root build and post-Lax restoration
+  passed (exit 0). Lax build --profile passed (exit 0), 91 concepts/165 public
+  proofs; closure audit leaves only MainTheorem.exists_qptas open. Selected
+  status log /tmp/qptas-weighted-zero-inspection-summary.log. Kernel replay
+  covered 302 modules before the import correction; final 304-module state
+  was built and inspected, not strict-replayed again. Full next obligations
+  and the frontend accuracy-field interface are in PROOF_HANDOFF.md.

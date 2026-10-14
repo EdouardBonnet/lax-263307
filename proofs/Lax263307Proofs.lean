@@ -291,3 +291,15 @@ import Lax263307Proofs.NativeMomentEncodingHeight
 import Lax263307Proofs.NativeNormalHeight
 import Lax263307Proofs.NativeProjectionQueryBounds
 import Lax263307Proofs.NativeFinalBounds
+import Lax263307Proofs.NativeOraclePrecision
+import Lax263307Proofs.NativeEmptyOutput
+import Lax263307Proofs.NativePolynomialBudget
+import Lax263307Proofs.NativeImageOutput
+import Lax263307Proofs.NativeWeightedOutput
+import Lax263307Proofs.NativeMachineBounds
+import Lax263307Proofs.NativeSolverSemantics
+import Lax263307Proofs.NativeQptasProgram
+import Lax263307Proofs.NativeCollectionContext
+import Lax263307Proofs.NativeCollectionChild
+import Lax263307Proofs.NativeInputBounds
+import Lax263307Proofs.NativeQptasZero

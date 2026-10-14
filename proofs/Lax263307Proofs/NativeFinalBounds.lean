@@ -112,4 +112,31 @@ theorem final_time (C d q e n N ℓ : ℕ) (ε : ℚ) (hε : 0<ε)
     exact Nat.mul_le_mul (by omega) (Nat.pow_le_pow_right hX (le_max_left _ _))
   · exact Nat.mul_le_mul (by omega) (Nat.pow_le_pow_right (by omega) (le_max_right _ _))
 
+/-- A maximum-weight vertex alone receives at least n copies. This places
+original-order frontend/output work inside the positive blow-up's envelope. -/
+theorem original_order_le_copy_order {n : ℕ} (w : Fin n → ℚ) (ε : ℚ)
+    (hn : 0<n) (hε : 0<ε) (hε1 : ε≤1) (hW : 0<WeightRounding.maximumWeight w) :
+    n≤∑ v,WeightRounding.copies w ε v := by
+  classical
+  have hmem : WeightRounding.maximumWeight w∈insert 0 (Finset.univ.image w) :=
+    Finset.max'_mem _ _
+  obtain ⟨v,hv⟩ : ∃ v,w v=WeightRounding.maximumWeight w := by
+    rcases Finset.mem_insert.mp hmem with hz|himage
+    · exact False.elim (by linarith)
+    · obtain ⟨v,_,he⟩ := Finset.mem_image.mp himage
+      exact ⟨v,he⟩
+  have hquot : w v/WeightRounding.scale w ε=2*(n : ℚ)/ε := by
+    rw [hv]
+    unfold WeightRounding.scale
+    have hnQ : (n : ℚ)≠0 := by exact_mod_cast hn.ne'
+    field_simp [hW.ne',hε.ne',hnQ]
+  have hc : n≤WeightRounding.copies w ε v := by
+    dsimp [WeightRounding.copies,WeightRounding.roundedCopies]
+    apply Nat.le_floor
+    rw [hquot]
+    apply (le_div_iff₀ hε).mpr
+    have hmul := mul_le_mul_of_nonneg_left hε1 (show (0 : ℚ)≤n by positivity)
+    nlinarith
+  exact hc.trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ v))
+
 end Lax263307Proofs.NativeFinalBounds

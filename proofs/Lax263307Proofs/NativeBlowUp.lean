@@ -464,7 +464,7 @@ theorem prepare_spec {n : ℕ} (B M : ℕ) (hM : 1≤M) (hn : n≤M)
       N*N≤(σ.arrs "blowup.matrix").length) prepare
       (fun σ τ => Prefix (numberedMatrix G cs) "blowup.matrix" τ ∧
         Prefix (owners cs) "blowup.owner" τ ∧ τ.vars "blowup.length"=N ∧
-        Prefix (tailInput G w ε) "input.data" τ ∧ τ.out=σ.out) (cost n N) := by
+        Prefix (tailInput G w ε) "input.data" τ ∧ τ.out=σ.out ∧ τ.vars "input.n"=n) (cost n N) := by
   dsimp only
   let cs := copies (fun v => max (w v) 0) ε
   let N := ∑ v,cs v
@@ -483,9 +483,10 @@ theorem prepare_spec {n : ℕ} (B M : ℕ) (hM : 1≤M) (hn : n≤M)
   obtain ⟨τ,r2,p2⟩ := construct_spec B G cs (by simpa only [cs,pow_two] using hgraph) ν
     ⟨hnν,hcounts,hfront,by rwa [Lax455465Proofs.RamFrames.run_array_length r1],
       by rwa [Lax455465Proofs.RamFrames.run_array_length r1]⟩
-  refine ⟨τ,(r1.seq r2).mono (by dsimp [cost,N,cs]; omega),p2.1,p2.2.1,p2.2.2,?_,?_⟩
+  refine ⟨τ,(r1.seq r2).mono (by dsimp [cost,N,cs]; omega),p2.1,p2.2.1,p2.2.2,?_,?_,?_⟩
   · simpa only [Prefix,r2.frame_arr "input.data" (by decide)] using hinput
   · exact (r1.seq r2).out_eq (by decide)
+  · exact (r2.frame_var _ (by decide)).trans hnν
 
 def emit : Com := .seq (.write (.var "blowup.length"))
   (.seq (.assign "emit.count" (.mul (.var "blowup.length") (.var "blowup.length")))
@@ -534,7 +535,7 @@ theorem command_spec {n : ℕ} (B M : ℕ) (hM : 1≤M) (hn : n≤M)
   let cs := copies (fun v => max (w v) 0) ε
   let N := ∑ v,cs v
   intro σ hσ
-  obtain ⟨ν,r1,hmat,_,hN,_,hout⟩ := prepare_spec B M hM hn G w ε hεpos hw hε hB hsize hgraph σ hσ
+  obtain ⟨ν,r1,hmat,_,hN,_,hout,_⟩ := prepare_spec B M hM hn G w ε hεpos hw hε hB hsize hgraph σ hσ
   have hm : (numberedMatrix G cs).length=N*N := matrix_length _
   have hwords : ∀ z∈numberedMatrix G cs,z<B := by
     intro z hz

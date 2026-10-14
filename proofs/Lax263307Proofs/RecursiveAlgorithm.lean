@@ -159,26 +159,17 @@ theorem accuracy_budget (n : ℕ) (ε : ℚ) (hε : 0 < ε) :
 
 open Lax263307.PowerBagBounds
 
-/--
----
-conclusion: Lax263307.RecursiveAlgorithm.exists_solver
----
-Induct on the balanced-recursion depth, transfer independent sets through the
-canonical part labels, and use the target-search invariant. The explicit
-accuracy denominator bounds the accumulated multiplicative loss.
--/
-theorem exists_solver (C : GraphClass) (hereditary : IsHereditary C)
-    (a A : ℕ) (ha : 0 < a) (hA : 0 < A) (class_bound : HasPowerBagBound C a A) :
-    ∃ (lp flow : List ℕ → List ℕ) (K B : ℕ),
-      Lax759944.RamPolytime.RamPolytime lp ∧ Lax759944.RamPolytime.RamPolytime flow ∧
-      0 < K ∧ 0 < B ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
-      G ∈ C n → ∀ ε : ℚ, 0 < ε → ε < 1 →
-      Lax263307.WeightedIndependentSet.IsApproximation G (fun _ => 1) ε
-        (independentSet lp flow a K B G ε) := by
-  obtain ⟨lp, flow, K, B, hpolyLP, hpolyFlow, hK, hB, horacle⟩ :=
-    Lax263307.ProjectedOracle.exists_search C hereditary a A ha hA class_bound
-  refine ⟨lp, flow, K, B, hpolyLP, hpolyFlow, hK, hB, ?_⟩
-  intro n G _ hG ε hε hεsmall
+theorem independentSet_correct (C : GraphClass) (hereditary : IsHereditary C)
+    (lp flow : List ℕ → List ℕ) (a K B : ℕ)
+    (horacle : ∀ n (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],G ∈ C n → 0<n →
+      ∀ D k h,4≤D → cutoff a K B n D<k →
+      ∀ child,Lax263307.NearOracle.ChildCorrect G D h child →
+        Lax263307.ProjectedOracle.SearchCorrect G k h D
+          (Lax263307.ProjectedOracle.search lp flow a K B D G k child))
+    {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (hG : G ∈ C n)
+    (ε : ℚ) (hε : 0<ε) (hεsmall : ε<1) :
+    Lax263307.WeightedIndependentSet.IsApproximation G (fun _ => 1) ε
+      (independentSet lp flow a K B G ε) := by
   let D := accuracyDenominator n ε
   let depth := Lax263307.RecursionDepth.depth n
   have hD := (accuracy_budget n ε hε).1
@@ -213,5 +204,28 @@ theorem exists_solver (C : GraphClass) (hereditary : IsHereditary C)
   have hDq : (4:ℚ) ≤ D := Nat.cast_le.mpr hD
   have hDpos : (0:ℚ) < D := Nat.cast_pos.mpr (by omega)
   exact (div_le_one hDpos).mpr hDq
+
+
+/--
+---
+conclusion: Lax263307.RecursiveAlgorithm.exists_solver
+---
+Induct on the balanced-recursion depth, transfer independent sets through the
+canonical part labels, and use the target-search invariant. The explicit
+accuracy denominator bounds the accumulated multiplicative loss.
+-/
+theorem exists_solver (C : GraphClass) (hereditary : IsHereditary C)
+    (a A : ℕ) (ha : 0 < a) (hA : 0 < A) (class_bound : HasPowerBagBound C a A) :
+    ∃ (lp flow : List ℕ → List ℕ) (K B : ℕ),
+      Lax759944.RamPolytime.RamPolytime lp ∧ Lax759944.RamPolytime.RamPolytime flow ∧
+      0 < K ∧ 0 < B ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+      G ∈ C n → ∀ ε : ℚ, 0 < ε → ε < 1 →
+      Lax263307.WeightedIndependentSet.IsApproximation G (fun _ => 1) ε
+        (independentSet lp flow a K B G ε) := by
+  obtain ⟨lp, flow, K, B, hpolyLP, hpolyFlow, hK, hB, horacle⟩ :=
+    Lax263307.ProjectedOracle.exists_search C hereditary a A ha hA class_bound
+  refine ⟨lp, flow, K, B, hpolyLP, hpolyFlow, hK, hB, ?_⟩
+  intro n G _ hG ε hε hεsmall
+  exact independentSet_correct C hereditary lp flow a K B horacle G hG ε hε hεsmall
 
 end Lax263307Proofs.RecursiveAlgorithm
