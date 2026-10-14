@@ -244,3 +244,9 @@ import Lax263307Proofs.NativeScaleFraction
 import Lax263307Proofs.NativeProjectionCenter
 import Lax263307Proofs.NativeNodeTolerance
 import Lax263307Proofs.NativeProjectionPrepare
+import Lax263307Proofs.NativeNodeAliases
+import Lax263307Proofs.NativeAttemptReply
+import Lax263307Proofs.NativeLargeNode
+import Lax263307Proofs.NativeSmallAttempt
+import Lax263307Proofs.NativePrecisionResources
+import Lax263307Proofs.NativeRecursionDepth

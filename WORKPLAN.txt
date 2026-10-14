@@ -1313,3 +1313,27 @@ Checked node budgets and projection preparation — 2026-10-14
   composition, and the weighted main theorem. Attempt-reply, small-node,
   scalar-alias and complete large-node drafts in /tmp are not checked
   and are outside this replay.
+
+Checked complete node setup, base returns, and precision resources — 2026-10-14
+  Added NativeNodeAliases, NativeAttemptReply, NativeSmallAttempt,
+  NativeLargeNode, NativePrecisionResources, NativeRecursionDepth.
+  One fixed large-node command computes the class-dependent parameters,
+  loads the scalar interfaces, creates the catalog and LP, caches the LP,
+  computes precision/iterations, and builds the initial rounded state.
+  The exhaustive base case now returns its exact chosen-set mask through
+  the recursive return protocol. The actual precision guard is bounded
+  by 400*(resource+1)^2. Balanced-recursion depth is computed by native
+  integer reduction, at cost 14*depth(n)+8.
+  Strict lax build --replay --profile passed (91 concepts, 165 public
+  proofs; 252 directly imported own proof modules). Closure audit leaves
+  only MainTheorem.exists_qptas open. No new external assumptions.
+  Still required: actual dispatcher entry/search/component/child-return
+  phases and their complete traces, global word/time composition, the
+  weighted frontend/output integration, and the main theorem.
+  Root-accuracy initialization is drafted in /tmp and outside this replay.
+  It must use the unweighted solver's half-accuracy ceil(2/epsilon),
+  matching WeightedAlgorithm.solve. LP/flow calls change vm.width;
+  reset it from a computed global rounded-update width before each update.
+  NativeTargetDriver's static callback protection conflicts with the
+  exhaustive helper's target.* writes: use a separate root target scalar
+  in the finite dispatcher, or prove semantic restoration of that state.
