@@ -1208,3 +1208,22 @@ Complete functional algorithm
   search, recursive stack/control, global resources and the main theorem.
   New unchecked drafts in /tmp/qptas-native-*.lean: set-masks, cut-records,
   cut-test and cut-trace. They are not imported or part of this replay.
+
+Checked native separator pipeline — 2026-10-14
+  Added NativeCutTest, NativeSetMasks, NativeCutRecords, NativeCutTrace,
+  NativeCutLoop, NativeFlowQueryResources, NativeLargeResources,
+  NativeUniformWordGuards, NativeSeparatorContext, NativeUniformFlow,
+  NativeCutPairRead, NativeSeparatorProgram, NativeCutPieces,
+  NativeFullSetMask and NativeSeparatorOutput.
+  One fixed source command initializes the full vertex set, repeatedly
+  invokes the chosen registered flow solver with uniformly discharged
+  word/workspace guards, records the exact functional cut sequence, and
+  materializes every component mask. Its costs and storage bounds are
+  explicit and independent of the individual remaining subsets.
+  Strict lax build --replay --profile passed (91 concepts, 165 public
+  proofs; 202 directly imported own proof modules). No new external
+  assumptions or admitted proof steps. MainTheorem.exists_qptas is open.
+  Next: child graph construction and answer lifting, recursion-frame
+  save/restore, rounded-search and recursive control, global resources,
+  and assembly of the main theorem. Child/frame drafts under /tmp have
+  not yet been checked and are not part of this replay.
