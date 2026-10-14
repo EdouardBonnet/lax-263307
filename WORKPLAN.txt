@@ -1107,3 +1107,25 @@ Complete functional algorithm
   cut-read, denominator-product, scaled-integer, cut-coefficient, cut-vector,
   clear-normal, cut-resources. These implement exact denominator clearing
   in linear source time and control the required number of word bits.
+
+  NativeDenominatorData, NativeCutRead, NativeScaledInteger,
+  NativeDenominatorProduct, NativeCutCoefficient, NativeCutVector,
+  NativeClearNormal, NativeCutResources, NativeProjectionCut and
+  NativeIntegerProjection now pass local Lean. The denominator-clearing
+  command has source cost 145*n+28 and returns the canonical rational
+  encoding of the exact integer normal. All intermediate products fit
+  words with (n+1)*(h+1)+10 bits for input height at most 2^h.
+  The complete projection call now composes distance-LP construction,
+  invocation of the same registered LP solver, certificate processing,
+  and integer clearing of the far result, preserving base LP and center.
+  NativeProjectionOracle exposes its existing solver output word bound;
+  the integer projection guard follows from that bound, without any
+  assumed certificate height. Ten new modules and this strengthening
+  require strict replay. MainTheorem.exists_qptas remains open.
+  The complete projection/integer-cut batch passed full strict replay:
+  11.5m total, 8m34s kernel replay; 91 concepts, 165 public proofs.
+  Closure audit leaves exactly MainTheorem.exists_qptas open. No new
+  external assumptions, changed pins, or public axioms.
+  Next unchecked drafts in /tmp/qptas-native-*.lean: word-lookup,
+  moment-value, moment-storage, conditioning-vector, sum-height,
+  signed-accumulate, signed-sum. These are not copied or imported yet.

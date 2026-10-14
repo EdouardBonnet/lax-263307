@@ -46,6 +46,9 @@ result matches the functional projection branch on every bounded input. -/
 theorem exists_invocation (f : List ℕ → List ℕ) (hf : RamPolytime f) (he : NativeEncodedLP.Encoded f) :
     ∃ (p : Lax808846.Ram.Program) (wp tp : Polynomial ℕ) (coeff : List ℕ),
     (∀ z : ℕ,RamPolynomial.value coeff z=wp.eval z) ∧
+    (∀ (m n : ℕ) (P : Program ℚ m n) (x : Fin n → ℚ),
+      FitsInWords (wp.eval (bitSize (encodeProgram (distanceProgram P x))))
+        (f (encodeProgram (distanceProgram P x)))) ∧
     ∀ (m n : ℕ) (P : Program ℚ m n) (x : Fin n → ℚ) (ρ : ℚ) (M B : ℕ),
     let query := encodeProgram (distanceProgram P x)
     shapeSize m n<B → Bounded B P x →
@@ -67,7 +70,9 @@ theorem exists_invocation (f : List ℕ → List ℕ) (hf : RamPolytime f) (he :
         (NativeDistanceOracle.cost m n p coeff (tp.eval (bitSize query)) (bitSize query)+25+
           NativeProjectionResult.cost M n) := by
   obtain ⟨p,wp,tp,coeff,hcoeff,hcall⟩ := NativeDistanceOracle.exists_invocation f hf
-  refine ⟨p,wp,tp,coeff,hcoeff,?_⟩
+  refine ⟨p,wp,tp,coeff,hcoeff,?_,?_⟩
+  · intro m n P x v hv
+    exact (hcall m n P x).1 v (List.mem_append_right _ hv)
   intro m n P x ρ M B
   dsimp only
   let query := encodeProgram (distanceProgram P x)

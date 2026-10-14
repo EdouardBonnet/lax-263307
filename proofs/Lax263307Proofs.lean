@@ -131,3 +131,13 @@ import Lax263307Proofs.NativeEncodedLP
 import Lax263307Proofs.NativeProjectionResult
 import Lax263307Proofs.NativeProjectionTolerance
 import Lax263307Proofs.NativeProjectionOracle
+import Lax263307Proofs.NativeCutRead
+import Lax263307Proofs.NativeScaledInteger
+import Lax263307Proofs.NativeDenominatorData
+import Lax263307Proofs.NativeDenominatorProduct
+import Lax263307Proofs.NativeCutCoefficient
+import Lax263307Proofs.NativeCutVector
+import Lax263307Proofs.NativeClearNormal
+import Lax263307Proofs.NativeCutResources
+import Lax263307Proofs.NativeProjectionCut
+import Lax263307Proofs.NativeIntegerProjection
