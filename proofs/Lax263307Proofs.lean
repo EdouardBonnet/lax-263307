@@ -119,3 +119,15 @@ import Lax263307Proofs.NativeDistanceVectors
 import Lax263307Proofs.NativeDistanceInput
 import Lax263307Proofs.NativeOracleFrame
 import Lax263307Proofs.NativeDistanceOracle
+import Lax263307Proofs.NativeSignedArithmetic
+import Lax263307Proofs.NativeSlice
+import Lax263307Proofs.NativeCertificateRead
+import Lax263307Proofs.NativeRationalBounds
+import Lax263307Proofs.NativeProjectionNormal
+import Lax263307Proofs.NativeProjectionNear
+import Lax263307Proofs.NativeProjectionDecide
+import Lax263307Proofs.NativeProjectionVectors
+import Lax263307Proofs.NativeEncodedLP
+import Lax263307Proofs.NativeProjectionResult
+import Lax263307Proofs.NativeProjectionTolerance
+import Lax263307Proofs.NativeProjectionOracle

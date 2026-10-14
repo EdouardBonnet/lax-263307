@@ -1079,3 +1079,31 @@ Complete functional algorithm
   drafts are in /tmp/qptas-native-{signed-arithmetic,certificate-read,slice,
   rational-bounds,projection-normal,projection-decide,projection-vectors,
   projection-near,projection-result}.lean; these are not checked or imported.
+  NativeSignedArithmetic, NativeSlice, NativeCertificateRead,
+  NativeRationalBounds, NativeProjectionNormal, NativeProjectionNear,
+  NativeProjectionDecide, NativeProjectionVectors, NativeEncodedLP,
+  NativeProjectionResult, NativeProjectionTolerance and NativeProjectionOracle
+  now pass local Lean. The complete fixed native projection command builds
+  the exact distance LP, invokes the same canonical registered LP function,
+  reads its actual certificate, compares the distance to the tolerance, and
+  returns the primal point or separating normal, or rejects. It matches the
+  functional classify result as consumed by ProjectedOracle; the unused
+  numerical dual bound is not stored. Base LP and center survive the call.
+  Certificate coordinate bounds follow from the solver's FitsInWords theorem;
+  signed sums/differences are bounded by 2*M^2, and the native certificate
+  processor costs at most (36*size(M^2)+300)*(n+1)+200 source instructions.
+  Together with native distance construction and virtual solver bounds this
+  supplies the complete projection-call Spec, including physical arrays,
+  capacities, exact output encodings, and intermediate overflow conditions.
+  These 12 modules require strict replay. Remaining: rational-to-integer
+  cut conversion; near-oracle conditioning/separator/child/cut code;
+  rounded-search and recursive native drivers; global resource closure.
+  The full native projection pipeline passed strict replay: 91 concepts,
+  165 public proofs; 8m07s kernel replay. Dependency closure again leaves
+  exactly MainTheorem.exists_qptas open. The pipeline keeps one fixed chosen
+  LP function, derives certificate coordinate bounds from its registered
+  word bound, and preserves the original LP and center across invocation.
+  Next unchecked drafts in /tmp/qptas-native-*.lean: denominator-data,
+  cut-read, denominator-product, scaled-integer, cut-coefficient, cut-vector,
+  clear-normal, cut-resources. These implement exact denominator clearing
+  in linear source time and control the required number of word bits.
