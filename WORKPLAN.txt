@@ -1,5 +1,10 @@
 Lax263307 — QPTAS for maximum-weight independent set
 
+Resume point
+  Read PROOF_HANDOFF.md first for the current checked checkpoint,
+  pending changes, integration constraints, and immediate next task.
+  This file retains the chronological work record.
+
 Scope
   Theorem 2 of Bonnet–Chang is the single headline result.
   Proof work authorized 2026-10-12 after the initial concept draft.
@@ -1337,3 +1342,28 @@ Checked complete node setup, base returns, and precision resources — 2026-10-1
   NativeTargetDriver's static callback protection conflicts with the
   exhaustive helper's target.* writes: use a separate root target scalar
   in the finite dispatcher, or prove semantic restoration of that state.
+
+Locally checked root accuracy — 2026-10-14
+  NativeRootAccuracy computes ceil(2/epsilon), the exact balanced depth,
+  and RecursiveAlgorithm.accuracyDenominator(n,epsilon/2), matching the
+  weighted solver's half-accuracy call. Its complete native command has
+  source cost 14*depth(n)+28, with explicit guards for the accuracy words
+  and all scalar intermediates. Scratch Lean and module lake build passed.
+  Imported as the 253rd own module; not yet included in strict replay.
+  MainTheorem.exists_qptas remains open.
+
+Locally checked recursive phase handlers — 2026-10-14
+  Added NativeComponentCoefficient, NativeComponentNormal, NativeOracleCut,
+  NativeComponentControl, NativeNodeDispatch, NativeCollectionSemantics,
+  NativeRoundedControl, NativeStackReturn, NativeChildCall.
+  The exact component normal is built in catalog order; failed target t
+  generates the cut bound t-1. Successful child answers are lifted and
+  accumulated. Sequential collection agrees with ComputedRounding.collect.
+  Node routing, width reset/rounded-limit control, parent restoration and
+  child activation all have native execution proofs and explicit costs.
+  All nine individual Lean checks passed. With NativeRootAccuracy, the root
+  imports 262 own modules. Root build and strict replay passed (exit 0).
+  Closure audit: 91 concepts, 165 public proofs, only main theorem open.
+  Replay log: /tmp/qptas-recursive-handlers-replay.log.
+  MainTheorem.exists_qptas remains open. Next: complete fixed dispatcher
+  wiring and traces, computed global resources, weighted integration.

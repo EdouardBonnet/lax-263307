@@ -250,3 +250,13 @@ import Lax263307Proofs.NativeLargeNode
 import Lax263307Proofs.NativeSmallAttempt
 import Lax263307Proofs.NativePrecisionResources
 import Lax263307Proofs.NativeRecursionDepth
+import Lax263307Proofs.NativeRootAccuracy
+import Lax263307Proofs.NativeComponentCoefficient
+import Lax263307Proofs.NativeComponentNormal
+import Lax263307Proofs.NativeOracleCut
+import Lax263307Proofs.NativeComponentControl
+import Lax263307Proofs.NativeNodeDispatch
+import Lax263307Proofs.NativeCollectionSemantics
+import Lax263307Proofs.NativeRoundedControl
+import Lax263307Proofs.NativeStackReturn
+import Lax263307Proofs.NativeChildCall
