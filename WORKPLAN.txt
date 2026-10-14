@@ -1378,3 +1378,7 @@ bounds. Strengthened projection specs to retain the dimension used by far cuts.
 weighted main theorem remain open. See PROOF_HANDOFF.md for current check logs.
 
 2026-10-14: 279-module controller-trace checkpoint: full root build and strict replay passed. Closure audit still leaves only MainTheorem.exists_qptas open. Follow-up collection/trajectory/exhaustive resource drafts are unverified in /tmp.
+
+2026-10-14: Integrated registered lax-62 proof framework. Added 13 checked follow-up modules (292 own imports): collection, actual recursive oracle/trajectory guards, child return composition, uniform-program transfer, real LP encoding/query and normal heights, and final weighted growth bound. Main theorem remains open; full phase/node specification and global program resource invariant still required. Disk recovered by removing obsolete generated Hadwiger builds and sharing warm mathlib.
+
+2026-10-14: 292-module strict replay passed, including lax-62 integration and final weighted envelope. Closure audit still leaves only MainTheorem.exists_qptas open. No new mathematical assumptions.

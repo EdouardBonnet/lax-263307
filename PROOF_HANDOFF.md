@@ -17,7 +17,7 @@ arguments and many native RAM components are checked. The fixed unweighted contr
 execution proof and global resource bound have not been assembled. The residual difficulty appears to be this formal
 composition; that is not a proof that no mathematical issue can remain.
 
-Last strict replay: 279 own modules, 91 concepts, 165 public proofs. Closure
+Last strict replay: 292 own modules, 91 concepts, 165 public proofs. Closure
 audit left only the main theorem open. A count of 165/166 public statements
 is not an estimate of remaining effort: the open statement contains
 substantial implementation and resource obligations.
@@ -124,7 +124,7 @@ All 17 additions are now imported by the proof root (279 own modules).
 Root build passed: `/tmp/qptas-controller-traces-build.log`.
 Strict replay passed: `/tmp/qptas-controller-traces-replay.log` (10m05s kernel replay).
 Closure audit: 91 concepts, 165 public proofs, only `MainTheorem.exists_qptas` open.
-Three unverified follow-up drafts remain in `/tmp/qptas-native-{collection-trace,trajectory-resources,exhaustive-resources}.lean`.
+Those three drafts are now checked and imported (see the next checkpoint below).
 The projection result/invocation specs now additionally retain `projection.n`,
 needed by the far-cut handler; `NativeIntegerProjection` was adapted and checked.
 `NativeLargeNode` has reusable Input/Output predicates; same concrete spec.
@@ -147,6 +147,84 @@ Integration facts:
 - Avoid `assumption` over many large dimension/resource inequalities: it can
   spend a million heartbeats unfolding mismatched dimensions. Supply the named
   bound explicitly. This fixed `large_input_frame` without weakening it.
+
+## Refinement framework and follow-up batch (292 own modules)
+
+The user identified **lax-62**, A Refinement Framework for the Word RAM.
+It was previously missed. The proof-only dependency is now explicitly pinned
+in `proofs/lakefile.toml` to registered commit
+`0503df0eaf4e41104b9a3aa31e3e028b5adf7a0e`, `refinement-tower/proofs`.
+Its RAM pin is exactly the existing `9394e531...`; Lean/mathlib also match.
+`Lax62Proofs.Refine.Codegen.Cash` built successfully. Its NREST/Autoref/Sepref
+layers were inspected; this batch uses `Codegen.solves_of_spec` in the final
+uniform-program transfer. Existing native `Com` components remain usable.
+Do not claim that importing the framework automatically closes the missing
+algorithm specification.
+
+All following additions passed local checks; the root build is recorded in
+`/tmp/qptas-refinement-final-bounds-build.log`. The root build passed (exit 0). Strict replay passed (exit 0), log
+`/tmp/qptas-refinement-final-bounds-replay.log`. Closure audit: 91 concepts,
+165 public proofs, only `MainTheorem.exists_qptas` open. The first sandboxed
+attempt failed fetching Lax62 (DNS), not a proof failure; the authorized rerun
+succeeded. Restore root oleans before checking the following drafts.
+Unverified drafts prepared during replay (not imported):
+`/tmp/qptas-native-empty-output.lean` (actual empty-output routine and nonpositive correctness),
+`/tmp/qptas-native-oracle-precision.lean` (actual canonical LP certificate and both-cut
+normal heights in one root-polynomial bound), and
+`/tmp/qptas-native-polynomial-budget.lean` (fixed monomial majorants and a computed
+rounded workspace/precision budget). These have not been checked yet.
+
+The 292-module batch contains:
+
+- `NativeCollectionTrace`: complete collection-loop induction and identification
+  with `ComputedRounding.collect`; its actual-iteration premise remains to close.
+- `NativeTrajectoryResources`: numeric iterate height and positive quadratic
+  form from the registered rounded trajectory and nonzero-cut theorem.
+- `NativeExhaustiveResources`: binomial table word bounds and cubic exhaustive
+  time in the uniform root resource.
+- `NativeRecursiveOracle`: one fixed canonical encoded LP solver and flow solver,
+  recursive child correctness, **actual recursive oracle cuts are nonzero**,
+  and actual recursive trajectories satisfy height/positivity guards.
+- `NativeQptasTransfer`: uses lax-62 to close descent from a complete command Spec
+  plus explicit bounds to **one fixed RAM program**, at every larger width.
+  The complete command Spec is still a premise, not a proved main algorithm.
+- `NativeChildExecution`: actual call + recursive segment + actual pop/return;
+  proves full parent restoration outside stack/return metadata.
+- `NativeRoundedTrace`: actual phase 13 realizes the rounded cut outcome.
+- `NativeOutputBounds`: genuine bounded command executions bound emitted words.
+- `NativeDistanceQueryResources`: all program-field word bounds and genuine
+  distance-projection query bit size from rational height.
+- `NativeMomentEncodingHeight`: the checked native constructor bounds **all real
+  moment-LP words** by height `100*(n+k+r+dimension+2)^3+10`.
+- `NativeNormalHeight`: actual far certificate normal height, linear-bit
+  denominator clearing, and failed-child integer-normal height `2*n+1`.
+- `NativeProjectionQueryBounds`: actual scaled trajectory + real moment LP satisfy
+  the projection height interface; query bits <= `10^6*(R+1)^6` uniformly.
+- `NativeFinalBounds`: actual rounded blow-up order <= `2*n^2*ceil(inv epsilon)`;
+  half-accuracy denominator <= `24*ceil(inv epsilon)*logarithm(N)`;
+  converts root envelope on the blow-up plus polynomial rational-input work
+  to the exact main-theorem QPTAS time expression with fixed constants.
+
+`NativeChildResources.selected_costs` now proves the cost <= 1 premise from
+feasibility and the actual successful heavy search. This discharges the
+semantic premise used by the active-child target bound.
+
+Local successful logs include `/tmp/qptas-collection-trajectory-build.log`,
+`/tmp/qptas-recursive-oracle-build.log`, `/tmp/qptas-transfer-child-build.log`,
+`/tmp/qptas-recursive-trajectory-check.log`, `/tmp/qptas-native-rounded-trace-check.log`,
+`/tmp/qptas-query-height-build.log`, `/tmp/qptas-source-fields-build.log`,
+`/tmp/qptas-native-normal-height-build.log`, `/tmp/qptas-native-final-bounds-check.log`.
+The polynomial query bound is also included in the final root build.
+
+Disk recovery: Lake's dependency-update cache hook filled the disk with a
+second mathlib build. Generated builds in `hadwiger-counterexample` were
+removed at the user's request; sources were preserved. The duplicate
+`round-or-cut/proofs/.lake/packages/mathlib/.lake/build` was removed and replaced
+with a symlink to the existing matching warm mathlib build. Last check: 13 GB
+free. No project source or registered dependency pin was deleted.
+The user explicitly extends standing command authorization to **lake**, as
+well as git, gh, and lax. Keep this preference in the global instructions,
+not in repository agent files.
 
 ## Remaining obligations
 
@@ -262,3 +340,5 @@ Update after each checked milestone or change of next task, and before a
 handoff/context compaction. Replace stale current-state entries instead of
 appending another long history. Record check scope and outcome precisely;
 distinguish drafts, local passes, strict replay and main theorem completion.
+
+Related tool inspected: lax-218471 supplies compositional black-box **stack Turing-machine** programs. Not adopted; the existing real RAM oracle/frame machinery is already checked.

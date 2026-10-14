@@ -277,3 +277,17 @@ import Lax263307Proofs.NativeNearTrace
 import Lax263307Proofs.NativeSeparatorTrace
 import Lax263307Proofs.NativeComponentTrace
 import Lax263307Proofs.NativeChildTrace
+
+import Lax263307Proofs.NativeCollectionTrace
+import Lax263307Proofs.NativeTrajectoryResources
+import Lax263307Proofs.NativeExhaustiveResources
+import Lax263307Proofs.NativeRecursiveOracle
+import Lax263307Proofs.NativeQptasTransfer
+import Lax263307Proofs.NativeChildExecution
+import Lax263307Proofs.NativeRoundedTrace
+import Lax263307Proofs.NativeOutputBounds
+import Lax263307Proofs.NativeDistanceQueryResources
+import Lax263307Proofs.NativeMomentEncodingHeight
+import Lax263307Proofs.NativeNormalHeight
+import Lax263307Proofs.NativeProjectionQueryBounds
+import Lax263307Proofs.NativeFinalBounds
