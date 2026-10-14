@@ -214,3 +214,11 @@ import Lax263307Proofs.NativeFrameRestore
 import Lax263307Proofs.NativeFrameBufferRestore
 import Lax263307Proofs.NativeRecursionFrame
 import Lax263307Proofs.NativeChildReturn
+import Lax263307Proofs.NativeComponentCosts
+import Lax263307Proofs.NativeRawOracle
+import Lax263307Proofs.NativeComponentTarget
+import Lax263307Proofs.NativeComponentSum
+import Lax263307Proofs.NativeRoundedInvocation
+import Lax263307Proofs.NativeComponentResources
+import Lax263307Proofs.NativeComponentDecision
+import Lax263307Proofs.NativeTargetDriver

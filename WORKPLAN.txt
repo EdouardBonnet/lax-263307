@@ -1249,3 +1249,23 @@ Checked child processing and recursion frames — 2026-10-14
   realization/resource composition with the final weighted main theorem.
   Component arithmetic and a raw RAM-call bridge are drafted under /tmp;
   they are not yet checked or included in this replay.
+
+Checked component decisions and descending targets — 2026-10-14
+  Added NativeComponentCosts, NativeComponentSum, NativeComponentTarget,
+  NativeComponentResources, NativeComponentDecision, NativeRawOracle,
+  NativeRoundedInvocation, and NativeTargetDriver.
+  Component cost sums, the heavy/light comparison, and the exact rounded
+  target are now computed by one native command with a subset-independent
+  word/time bound. The raw RAM-call bridge invokes the checked rounded
+  update on its actual encoding, charging its numeric iteration index.
+  The bounded descending-target loop realizes TargetSearch.search and
+  retains the first successful answer; its callback remains to be
+  instantiated with the complete recursive node dispatcher.
+  Strict lax build --replay --profile passed (91 concepts, 165 public
+  proofs; 224 directly imported own proof modules). Closure audit leaves
+  only MainTheorem.exists_qptas open. No new external assumptions.
+  Still required: persistent rounded-state serialization/initialization
+  and search, component-reply collection/cuts, node parameter setup and
+  the complete recursive dispatcher, then global resource composition
+  and the weighted main theorem. Query/state/dispatcher drafts in /tmp
+  have not yet been checked and are outside this replay.
