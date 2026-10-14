@@ -1269,3 +1269,22 @@ Checked component decisions and descending targets — 2026-10-14
   the complete recursive dispatcher, then global resource composition
   and the weighted main theorem. Query/state/dispatcher drafts in /tmp
   have not yet been checked and are outside this replay.
+
+Checked persistent rounded updates and finite machine traces — 2026-10-14
+  Added NativeAppendBuffer, NativeMachineTrace, NativeQueryBlocks,
+  NativeOutputWords, NativeRoundedQuery, NativeRawFrame,
+  NativeRoundedState, NativeRoundedUpdate, NativeIntegerTable,
+  and NativeInitialCoordinates.
+  Actual RAM commands serialize the persistent rounded state, invoke
+  one fixed checked rounded-update program, and store its exact output.
+  The coordinate generators compute the identity shape and zero center;
+  complete initialization is drafted separately and not yet checked.
+  A finite phase dispatcher executes checked traces with explicit time
+  overhead, avoiding a recursively expanded source-command syntax.
+  Strict lax build --replay --profile passed (91 concepts, 165 public
+  proofs; 234 directly imported own proof modules). Closure audit leaves
+  only MainTheorem.exists_qptas open. No new external assumptions.
+  Still required: complete rounded initialization/search, node parameter
+  setup, component reply collection/cuts, actual recursive machine phases
+  and their execution traces, global resource composition, and the final
+  weighted main theorem.

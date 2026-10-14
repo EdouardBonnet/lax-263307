@@ -222,3 +222,13 @@ import Lax263307Proofs.NativeRoundedInvocation
 import Lax263307Proofs.NativeComponentResources
 import Lax263307Proofs.NativeComponentDecision
 import Lax263307Proofs.NativeTargetDriver
+import Lax263307Proofs.NativeAppendBuffer
+import Lax263307Proofs.NativeMachineTrace
+import Lax263307Proofs.NativeQueryBlocks
+import Lax263307Proofs.NativeOutputWords
+import Lax263307Proofs.NativeRoundedQuery
+import Lax263307Proofs.NativeRawFrame
+import Lax263307Proofs.NativeRoundedState
+import Lax263307Proofs.NativeRoundedUpdate
+import Lax263307Proofs.NativeIntegerTable
+import Lax263307Proofs.NativeInitialCoordinates
