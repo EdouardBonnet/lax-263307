@@ -1367,3 +1367,14 @@ Locally checked recursive phase handlers — 2026-10-14
   Replay log: /tmp/qptas-recursive-handlers-replay.log.
   MainTheorem.exists_qptas remains open. Next: complete fixed dispatcher
   wiring and traces, computed global resources, weighted integration.
+
+2026-10-14: Concrete controller trace batch (local checks passed, strict replay pending).
+Defined the fixed 16-phase controller and resource-budget computation. Proved
+conditional root/round scans; concrete node entry/base, projection, conditioning,
+separator, component, child-call and return traces; frame coverage and complete
+parent restoration. Active child targets fit child order under conditional-cost
+bounds. Strengthened projection specs to retain the dimension used by far cuts.
+279 own modules imported. Full recursive/global-resource composition and the
+weighted main theorem remain open. See PROOF_HANDOFF.md for current check logs.
+
+2026-10-14: 279-module controller-trace checkpoint: full root build and strict replay passed. Closure audit still leaves only MainTheorem.exists_qptas open. Follow-up collection/trajectory/exhaustive resource drafts are unverified in /tmp.

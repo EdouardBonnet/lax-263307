@@ -94,7 +94,7 @@ theorem command_spec (B M m n : ℕ) (P : Program ℚ m n)
     Spec B (fun σ => Prefix (encodeProgram P) "lp.input" σ ∧
       Prefix (encodeCertificate c) "vm.output" σ ∧ Stored "projection.tolerance" ρ σ ∧
       3*n<(σ.arrs "lp.word").length) command
-      (fun _ τ => Output (classify P ρ c) τ ∧ Prefix (encodeProgram P) "lp.input" τ)
+      (fun _ τ => Output (classify P ρ c) τ ∧ Prefix (encodeProgram P) "lp.input" τ ∧ τ.vars "projection.n"=n)
       (cost M n) := by
   rintro σ ⟨hp,hcert,hT,hr⟩
   obtain ⟨ν,r1,p1⟩ := NativeDistanceMetadata.read_dimensions_spec B m n P (by omega) σ hp
@@ -119,16 +119,19 @@ theorem command_spec (B M m n : ℕ) (P : Program ℚ m n)
     obtain ⟨τ,r3,p3⟩ := finish_optimal_spec B M m n P z y ρ hB hs hc.1 hc.2 μ ⟨⟨hcertμ,hm,hn⟩,p2,hroom⟩
     have rr := r1.seq (r2.seq r3)
     exact ⟨τ,rr.mono (by dsimp [cost]; omega),p3,
-      by simpa only [Prefix,rr.frame_arr "lp.input" (by decide)] using hp⟩
+      by simpa only [Prefix,rr.frame_arr "lp.input" (by decide)] using hp,
+      (r3.frame_var "projection.n" (by decide)).trans hn⟩
   | infeasible y =>
     obtain ⟨τ,r3,p3⟩ := finish_reject_spec B (by omega) μ p2
     have rr := r1.seq (r2.seq r3)
     exact ⟨τ,rr.mono (by dsimp [cost]; omega),p3,
-      by simpa only [Prefix,rr.frame_arr "lp.input" (by decide)] using hp⟩
+      by simpa only [Prefix,rr.frame_arr "lp.input" (by decide)] using hp,
+      (r3.frame_var "projection.n" (by decide)).trans hn⟩
   | unbounded z d =>
     obtain ⟨τ,r3,p3⟩ := finish_reject_spec B (by omega) μ p2
     have rr := r1.seq (r2.seq r3)
     exact ⟨τ,rr.mono (by dsimp [cost]; omega),p3,
-      by simpa only [Prefix,rr.frame_arr "lp.input" (by decide)] using hp⟩
+      by simpa only [Prefix,rr.frame_arr "lp.input" (by decide)] using hp,
+      (r3.frame_var "projection.n" (by decide)).trans hn⟩
 
 end Lax263307Proofs.NativeProjectionResult

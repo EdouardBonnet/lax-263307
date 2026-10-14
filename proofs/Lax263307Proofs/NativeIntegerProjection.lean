@@ -93,6 +93,6 @@ theorem exists_invocation (f : List ℕ → List ℕ) (hf : RamPolytime f)
     ⟨p1.2.1,p1.1,by rwa [RamFrames.run_array_length r1],
       by rw [RamFrames.run_array_length r1]; exact hlength.trans_lt hr⟩
   refine ⟨τ,r1.seq r2,p2.1,p2.2,?_⟩
-  simpa only [Prefix,r2.frame_arr "projection.center" (by decide)] using p1.2.2
+  simpa only [Prefix,r2.frame_arr "projection.center" (by decide)] using p1.2.2.1
 
 end Lax263307Proofs.NativeIntegerProjection

@@ -82,7 +82,7 @@ def command (arrays scalars : List String) (root : ℕ) : Com :=
 theorem root_spec (B root : ℕ) (arrays scalars : List String) (hB : root+1<B) :
     Spec B (fun σ => σ.vars "stack.words"=0) (command arrays scalars root)
       (fun σ τ => τ.vars "machine.phase"=root ∧ τ.vars "recursion.return.tag"=σ.vars "recursion.return.tag" ∧
-        τ.vars "recursion.return.mask"=σ.vars "recursion.return.mask") 6 := by
+        τ.vars "recursion.return.mask"=σ.vars "recursion.return.mask" ∧ τ=σ.setVar "machine.phase" root) 6 := by
   intro σ hs
   let τ := σ.setVar "machine.phase" root
   have rr : Run B (.assign "machine.phase" (.lit root)) σ τ 2 := Run.assign (evalB_lit (show root<B by omega))
@@ -91,6 +91,39 @@ theorem root_spec (B root : ℕ) (arrays scalars : List String) (hB : root+1<B) 
       (by rw [evalB_var_iff]; exact ⟨hs.symm,hs ▸ (by omega : 0<B)⟩) (evalB_lit (show 0<B by omega))
     simpa using hh
   exact ⟨τ,(Run.ite_true (d:=pop arrays scalars) hc rr).mono (by simp [Cond.size,Expr.size]),
-    by simp [τ],rr.frame_var _ (by simp [Com.wvars]),rr.frame_var _ (by simp [Com.wvars])⟩
+    by simp [τ],rr.frame_var _ (by simp [Com.wvars]),rr.frame_var _ (by simp [Com.wvars]),rfl⟩
+
+/-- The nonempty stack branch of the actual return dispatcher pops exactly
+one parent frame and retains the child's return value. -/
+theorem child_spec (B S root : ℕ) (arrays scalars : List String) (front : List ℕ) (saved : Env)
+    (ha : "recursion.frames"∉arrays) (harrays : arrays.Nodup) (hscalars : scalars.Nodup)
+    (hv : "stack.read.i"∉scalars) (hw : "stack.words"∉scalars)
+    (htag : "recursion.return.tag"∉scalars) (hmask : "recursion.return.mask"∉scalars)
+    (hsaved : NativeStateBounds.Bounded B saved)
+    (hext : ∀ a∈arrays,(saved.arrs a).length=S)
+    (hpos : 0<front.length+S*arrays.length+scalars.length)
+    (hB : front.length+S*arrays.length+scalars.length+2<B) :
+    Spec B (fun σ => Prefix (front++NativeRecursionFrame.words arrays scalars saved) "recursion.frames" σ ∧
+      σ.vars "stack.words"=front.length+S*arrays.length+scalars.length ∧
+      σ.vars "frame.length"=S*arrays.length+scalars.length ∧ σ.vars "recursion.stride"=S ∧
+      ∀ a∈arrays,(σ.arrs a).length=S) (command arrays scalars root)
+      (fun σ τ => Prefix front "recursion.frames" τ ∧
+        (∀ a∈arrays,τ.arrs a=saved.arrs a) ∧ (∀ s∈scalars,τ.vars s=saved.vars s) ∧
+        τ.vars "stack.words"=front.length ∧ τ.vars "recursion.return.tag"=σ.vars "recursion.return.tag" ∧
+        τ.vars "recursion.return.mask"=σ.vars "recursion.return.mask")
+      ((16*S+16)*arrays.length+7*scalars.length+12) := by
+  intro σ hσ
+  obtain ⟨τ,rr,hτ⟩ := pop_spec B S arrays scalars front saved ha harrays hscalars hv hw htag hmask
+    hsaved hext hB σ hσ
+  have hc : (Cond.eq (.var "stack.words") (.lit 0)).evalB B σ=some false := by
+    have hh := evalB_condEq
+      (show (Expr.var "stack.words").evalB B σ=some (front.length+S*arrays.length+scalars.length) by
+        rw [evalB_var_iff]; exact ⟨hσ.2.1.symm,hσ.2.1 ▸ (by omega)⟩)
+      (evalB_lit (show 0<B by omega))
+    have hz : (front.length+S*arrays.length+scalars.length == 0)=false := by
+      exact beq_eq_false_iff_ne.mpr (by omega)
+    simpa only [hz] using hh
+  exact ⟨τ,(Run.ite_false (c:=.assign "machine.phase" (.lit root)) hc rr).mono
+    (by simp [Cond.size,Expr.size]; omega),hτ⟩
 
 end Lax263307Proofs.NativeStackReturn

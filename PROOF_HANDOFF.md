@@ -13,12 +13,11 @@ The fixed paper snapshot is `round-or-cut.pdf`. Applications and corollaries
 are outside the current scope.
 
 **MainTheorem.exists_qptas is still open.** The mathematical correctness
-arguments and many native RAM components are checked. A complete fixed RAM
-program, its recursive execution proof, and its global resource bound have
-not been assembled. The residual difficulty appears to be this formal
+arguments and many native RAM components are checked. The fixed unweighted controller is now defined; its complete recursive
+execution proof and global resource bound have not been assembled. The residual difficulty appears to be this formal
 composition; that is not a proof that no mathematical issue can remain.
 
-Last strict replay: 262 own modules, 91 concepts, 165 public proofs. Closure
+Last strict replay: 279 own modules, 91 concepts, 165 public proofs. Closure
 audit left only the main theorem open. A count of 165/166 public statements
 is not an estimate of remaining effort: the open statement contains
 substantial implementation and resource obligations.
@@ -75,48 +74,84 @@ Other local check logs: `/tmp/qptas-component-coefficient-check.log`,
 All nine check processes exited successfully. Workplan/root imports and this
 handoff are also modified. No main theorem proof has been added.
 
-## Immediate next task
+## Current locally checked work after the strict checkpoint
 
-Root build, strict replay and closure audit passed. Olean restoration is running
-in `/tmp/qptas-recursive-handlers-restore.log` (wait for the active build to finish). Four drafts were written under /tmp during replay and
-have NOT been checked or added to the proof root:
+Commit `4cf6dec` is the 262-module strict checkpoint described above. Olean
+restoration completed successfully. The following additions pass local Lean
+checks (most also targeted lake builds); the full root build and strict replay passed (exit 0):
 
-- `/tmp/qptas-native-core-machine.lean`: complete 16-phase unweighted
-  controller wiring existing handlers, root target/reply transitions, and
-  fixed frame arrays/scalars derived from command write footprints. Workspace
-  and accuracy initialization are preconditions; full execution still unproved.
-- `/tmp/qptas-native-root-resource.lean`: root envelope uniformly bounds child
-  parameters, fixed polynomial budgets and recursive amplification.
-- `/tmp/qptas-native-machine-frame.lean`: scalar/array framing and invariant
-  buffer lengths across entire finite phase segments.
-- `/tmp/qptas-native-component-load.lean`: load each stored part, unpack its
-  mask, compute labels and invoke the checked cost/heavy/target decision.
+- `NativeComponentLoad`: actual part load, labels, cost/heavy/target decision.
+- `NativeCoreMachine`: complete fixed 16-phase unweighted controller; frame
+  footprints fixed before inputs. This defines the program, not its correctness.
+- `NativeRootResource`: uniform positive-child bounds, polynomial envelopes and
+  recursion amplification.
+- `NativeMachineFrame`: frame/length invariants for phase segments. One-step handler extraction/frame lemmas are also checked.
+- `NativeRootTransitions`, `NativeRootTrace`: concrete root transitions and
+  descending-target trace, **conditional on recursive node traces**.
+- `NativeRootBudget`: native computation of R, W=Q*(R+1)^e and stride 2*(W+1),
+  including scalar-guard and time bounds.
+- `NativeRoundTrace`: bounded scan trace, **conditional on concrete oracle/child
+  steps**; its premise has not yet been instantiated.
+- `NativeNodeTrace`: actual exhaustive/reject branches equal the functional
+  attempt; large entry and full LP/catalog/rounded initialization reach phase 4.
+- `NativeReturnTrace`: actual root-return and child-pop segments; the latter
+  restores saved parent state/phase 12 and preserves the child's answer.
+- `NativeProjectionTrace`: phase 4 preparation/invocation (using the existing
+  solver spec), then all phase 5 branches, including the exact stored far cut.
+- `NativeChildResources`: active child targets fit within positive child order,
+  assuming the conditional costs lie in [0,1].
+- `NativeCoreFrame`: all writes of the wrapped recursive controller are covered
+  by its derived frame or explicit metadata exclusions; whole parent restoration
+  follows from the saved frame plus preservation of fields outside it.
+- `NativeNearTrace`: actual phases 6/7 store the LP point, select conditioning,
+  reject if absent, or copy its mask and compute the cost vector.
+- `NativeSeparatorTrace`: phase 8 invokes the known separator spec and initializes
+  component traversal with the exact functional part order.
+- `NativeComponentTrace`: actual phases 9/10/12, including part load/decision,
+  light skip, heavy dispatch, collection completion, successful child lift/union
+  and failed-child target-minus-one cut.
+- `NativeChildTrace`: phase 11 prepares the induced graph, pushes the real parent
+  snapshot at phase 12, and enters the child at phase 1 with decreased fuel.
+  Its snapshot Run is the premise needed by `NativeCoreFrame.parent_restored`.
 
-Check these drafts next (likely minor Lean API adjustments), then continue
-constructing actual complete execution segments using the controller. Missing wiring includes projection preparation/invocation/reply,
-near-point storage/conditioning/costs, separator output, component loading and
-heavy/light branching, frame layout and root target transitions.
+Successful logs: `/tmp/qptas-round-budget-build.log`,
+`/tmp/qptas-node-trace-check.log`, `/tmp/qptas-concrete-traces-build.log`,
+`/tmp/qptas-projection-dimension-build.log`, `/tmp/qptas-core-frame-build.log`,
+`/tmp/qptas-near-trace-build.log`, `/tmp/qptas-separator-trace-check.log`.
+Additional checks passed: `/tmp/qptas-frame-separator-build.log`,
+`/tmp/qptas-component-trace-build.log`, `/tmp/qptas-child-trace-check.log`.
+All 17 additions are now imported by the proof root (279 own modules).
+Root build passed: `/tmp/qptas-controller-traces-build.log`.
+Strict replay passed: `/tmp/qptas-controller-traces-replay.log` (10m05s kernel replay).
+Closure audit: 91 concepts, 165 public proofs, only `MainTheorem.exists_qptas` open.
+Three unverified follow-up drafts remain in `/tmp/qptas-native-{collection-trace,trajectory-resources,exhaustive-resources}.lean`.
+The projection result/invocation specs now additionally retain `projection.n`,
+needed by the far-cut handler; `NativeIntegerProjection` was adapted and checked.
+`NativeLargeNode` has reusable Input/Output predicates; same concrete spec.
+`NativeStackReturn` has a checked nonempty command branch and exact root result.
 
-Concrete integration facts:
+Next: recursive collection/rounded-step composition and the common global
+resource invariant. Individual concrete phase traces are now available;
+NativeRoundedControl supplies the phase-13 update Run directly. Do not mistake
+conditional root/round contracts or known oracle invocation premises for the
+missing complete recursive execution/resource theorem.
 
-- Heavy search returns `conditioning.choice`; near costs reads
-  `conditioning.mask`. Copy the selected choice before computing costs.
-- Child preparation reads `unpack.mask`; load it from `component.mask`.
-- `NativeChildCall` assumes the child graph and canonical vertex labels have
-  already been prepared; its snapshot includes the child-reply continuation.
-- `NativeStackReturn.pop_spec` proves actual restoration. Wrap it in the
-  nonempty branch of its `command` when constructing whole-machine segments.
-- `NativeComponentControl.childReply` expects the parent frame restored.
-- The fixed arrays/scalars to snapshot still need to be selected from handler
-  footprints. Exclude stack controls and return tag/mask; include parent phase.
-- `NativeRoundedControl` now handles resetting the rounded virtual width and
-  search-limit transitions; do not duplicate that logic.
+Integration facts:
+
+- Heavy selection -> copy `conditioning.choice` to `conditioning.mask`.
+- Part load -> `component.mask` and `unpack.mask`, canonical vertex labels.
+- Phase 11 prepares child graph, snapshots parent at continuation 12, activates
+  child and decreases fuel; child finishes at 14 and pop restores phase 12.
+- Frame excludes stack controls and return tag/mask; includes parent phase/running.
+- Rounded update resets `vm.width`; LP and flow calls overwrite it.
+- Avoid `assumption` over many large dimension/resource inequalities: it can
+  spend a million heartbeats unfolding mismatched dimensions. Supply the named
+  bound explicitly. This fixed `large_input_frame` without weakening it.
 
 ## Remaining obligations
 
-1. Assemble the fixed dispatcher and remaining wiring: projection, near replies,
-   component loading/branching, frame layout, and root target loop. Individual
-   entry/cut/child/update/return handlers are now locally checked.
+1. Prove the concrete phase wiring satisfies the node/round/component
+   contracts, including frame preservation across nested child executions.
 2. Complete execution segments, by recursion fuel and bounded search/component
    loops, realizing `RecursiveAlgorithm.attempt` and descending targets.
 3. One computed global workspace, word precision and time budget; instantiate
@@ -136,8 +171,8 @@ All names below live in `proofs/Lax263307Proofs/`.
 
 - `NativeMachineTrace`, `NativeMachineSegment`: fixed finite phase driver,
   segment append/child continuations, final concrete execution bound
-  `total + (4*cases.length+4)*steps + 4`. Framework only; full handlers and
-  traces are missing. Avoid recursively expanding command syntax.
+  `total + (4*cases.length+4)*steps + 4`. Root and bounded-round traces are checked conditionally; recursive
+  node and concrete oracle-step traces remain missing. Avoid recursively expanding command syntax.
 - `NativeNodeParameters`, `NativeNodeAliases`, `NativeLargeNode`: actual
   class-dependent setup, catalog, moment LP/cache, precision and initial state.
 - `NativeRecursionDepth`, `NativeRootAccuracy`: depth and half-accuracy setup.

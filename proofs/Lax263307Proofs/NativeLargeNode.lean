@@ -31,6 +31,28 @@ theorem aliases_frame {B a K b n D k t : ℕ} {σ τ : Env}
 /-- The large-node setup program computes every parameter and builds
 every initial LP/state buffer from the encoded graph and runtime target.
 Only class constants occur as source-program parameters. -/
+def Input {n : ℕ} (B a K b D k : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (σ : Env) : Prop :=
+  let r := level a K b n D
+  let N := dimension n r
+  σ.vars "graph.n"=n ∧ σ.vars "node.D"=D ∧ σ.vars "node.k"=k ∧
+      Prefix (NativeWeightReduction.adjacency G) "search.graph" σ ∧ NativeArrayBounds.Bounded B σ ∧
+      (n+1)*(r+3)≤(σ.arrs "choose.table").length ∧ n≤(σ.arrs "subset.bits").length ∧
+      N≤(σ.arrs "catalog.mask").length ∧ N≤(σ.arrs "catalog.card").length ∧ N≤(σ.arrs "catalog.independent").length ∧
+      NativeMomentInput.length n r≤(σ.arrs "lp.input").length ∧
+      NativeMomentInput.length n r≤(σ.arrs "moment.program").length ∧
+      3*(N*N)+3*N≤(σ.arrs "lp.input").length ∧ 3*(N*N)≤(σ.arrs "round.shape").length ∧
+      3*N≤(σ.arrs "round.center").length
+
+def Output {n : ℕ} (a K b D k : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (τ : Env) : Prop :=
+  let r := level a K b n D
+  let N := dimension n r
+  NativeNodeAliases.Output a K b n D k τ ∧ NativeMomentFamily.Data G k r τ ∧
+        Prefix (encodeProgram (MomentLP.program G k r)) "moment.program" τ ∧
+        τ.vars "node.programLength"=NativeMomentInput.length n r ∧
+        NativeNodePrecision.Output n D N (floorDenominator a K b n D) r τ ∧
+        Prefix (NativeRoundedQuery.shape ((1,0) : State N)) "round.shape" τ ∧
+        Prefix (NativeRoundedQuery.center ((1,0) : State N)) "round.center" τ ∧ τ.vars "round.i"=0
+
 theorem command_spec {n : ℕ} (B a K b D k : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (hn : 0<n) (hK : 0<K)
     (hparams : NativeNodeParameters.guard a K b n D+k+b+5<B)
@@ -41,20 +63,7 @@ theorem command_spec {n : ℕ} (B a K b D k : ℕ) (G : SimpleGraph (Fin n)) [De
       3*dimension n (level a K b n D)+20<B) :
     let r := level a K b n D
     let N := dimension n r
-    Spec B (fun σ => σ.vars "graph.n"=n ∧ σ.vars "node.D"=D ∧ σ.vars "node.k"=k ∧
-      Prefix (NativeWeightReduction.adjacency G) "search.graph" σ ∧ NativeArrayBounds.Bounded B σ ∧
-      (n+1)*(r+3)≤(σ.arrs "choose.table").length ∧ n≤(σ.arrs "subset.bits").length ∧
-      N≤(σ.arrs "catalog.mask").length ∧ N≤(σ.arrs "catalog.card").length ∧ N≤(σ.arrs "catalog.independent").length ∧
-      NativeMomentInput.length n r≤(σ.arrs "lp.input").length ∧
-      NativeMomentInput.length n r≤(σ.arrs "moment.program").length ∧
-      3*(N*N)+3*N≤(σ.arrs "lp.input").length ∧ 3*(N*N)≤(σ.arrs "round.shape").length ∧
-      3*N≤(σ.arrs "round.center").length) (command a K b)
-      (fun _ τ => NativeNodeAliases.Output a K b n D k τ ∧ NativeMomentFamily.Data G k r τ ∧
-        Prefix (encodeProgram (MomentLP.program G k r)) "moment.program" τ ∧
-        τ.vars "node.programLength"=NativeMomentInput.length n r ∧
-        NativeNodePrecision.Output n D N (floorDenominator a K b n D) r τ ∧
-        Prefix (NativeRoundedQuery.shape ((1,0) : State N)) "round.shape" τ ∧
-        Prefix (NativeRoundedQuery.center ((1,0) : State N)) "round.center" τ ∧ τ.vars "round.i"=0)
+    Spec B (Input B a K b D k G) (command a K b) (fun _ τ => Output a K b D k G τ)
       (cost a n r) := by
   dsimp only
   rintro σ ⟨horder,hD,hk,hgraph,hbounded,htable,hbits,hmask,hcard,hind,hinput,hcache,hroundinput,hshape,hcenter⟩

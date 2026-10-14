@@ -66,7 +66,8 @@ theorem exists_invocation (f : List ℕ → List ℕ) (hf : RamPolytime f) (he :
         (command p coeff)
         (fun _ τ => NativeProjectionResult.Output
             (classify P ρ (Lax263307.RegisteredLP.certificate f (distanceProgram P x))) τ ∧
-          Prefix (encodeProgram P) "lp.input" τ ∧ Prefix (encodeVector x) "projection.center" τ)
+          Prefix (encodeProgram P) "lp.input" τ ∧ Prefix (encodeVector x) "projection.center" τ ∧
+          τ.vars "projection.n"=n)
         (NativeDistanceOracle.cost m n p coeff (tp.eval (bitSize query)) (bitSize query)+25+
           NativeProjectionResult.cost M n) := by
   obtain ⟨p,wp,tp,coeff,hcoeff,hcall⟩ := NativeDistanceOracle.exists_invocation f hf
@@ -109,7 +110,7 @@ theorem exists_invocation (f : List ℕ → List ℕ) (hf : RamPolytime f) (he :
     rw [RamFrames.run_array_length (r1.seq r2)]
     exact hlength.trans_lt hr
   obtain ⟨τ,r3,p3⟩ := NativeProjectionResult.command_spec B M m n P c ρ hB hs hc hρ μ ⟨hsource,hcert,p2,hroom⟩
-  refine ⟨τ,(r1.seq (r2.seq r3)).mono (by omega),p3.1,p3.2,?_⟩
+  refine ⟨τ,(r1.seq (r2.seq r3)).mono (by omega),p3.1,p3.2.1,?_,p3.2.2⟩
   simpa only [Prefix,(r2.seq r3).frame_arr "projection.center" (by decide)] using p1.2.2.2.2
 
 end Lax263307Proofs.NativeProjectionOracle
