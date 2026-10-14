@@ -1227,3 +1227,25 @@ Checked native separator pipeline — 2026-10-14
   save/restore, rounded-search and recursive control, global resources,
   and assembly of the main theorem. Child/frame drafts under /tmp have
   not yet been checked and are not part of this replay.
+
+Checked child processing and recursion frames — 2026-10-14
+  Added NativeChildGraph, NativeChildPrepare, NativeChildActivate,
+  NativeChildLift, NativeChildReturn, NativeStateBounds, NativeBlockAppend,
+  NativeBlockRestore, NativeFrameScalars, NativeFrameRestore,
+  NativeFrameBuffers, NativeFrameBufferRestore, NativeRecursionFrame,
+  and NativeRecursionBudget.
+  Child graphs and canonical labels are constructed from actual masks;
+  returned child masks are decoded and lifted to the parent labels.
+  Fixed lists of working buffers and scalars can be saved and restored
+  exactly around child work, preserving earlier recursion frames.
+  Bounded executions preserve word bounds on every working cell.
+  Polynomial local work and branching in the checked parameter resource
+  remain quasipolynomial after logarithmic recursive amplification.
+  Strict lax build --replay --profile passed (91 concepts, 165 public
+  proofs; 216 directly imported own proof modules). Closure audit leaves
+  only MainTheorem.exists_qptas open. No new external assumptions.
+  Still required: component costs/targets and reply collection, node
+  setup and rounded-search loop, complete recursive dispatcher, and
+  realization/resource composition with the final weighted main theorem.
+  Component arithmetic and a raw RAM-call bridge are drafted under /tmp;
+  they are not yet checked or included in this replay.

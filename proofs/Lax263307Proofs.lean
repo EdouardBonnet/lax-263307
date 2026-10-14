@@ -200,3 +200,17 @@ import Lax263307Proofs.NativeSeparatorProgram
 import Lax263307Proofs.NativeCutPieces
 import Lax263307Proofs.NativeFullSetMask
 import Lax263307Proofs.NativeSeparatorOutput
+import Lax263307Proofs.NativeChildActivate
+import Lax263307Proofs.NativeChildLift
+import Lax263307Proofs.NativeStateBounds
+import Lax263307Proofs.NativeBlockAppend
+import Lax263307Proofs.NativeBlockRestore
+import Lax263307Proofs.NativeChildGraph
+import Lax263307Proofs.NativeFrameScalars
+import Lax263307Proofs.NativeChildPrepare
+import Lax263307Proofs.NativeRecursionBudget
+import Lax263307Proofs.NativeFrameBuffers
+import Lax263307Proofs.NativeFrameRestore
+import Lax263307Proofs.NativeFrameBufferRestore
+import Lax263307Proofs.NativeRecursionFrame
+import Lax263307Proofs.NativeChildReturn
