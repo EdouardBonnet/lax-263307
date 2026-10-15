@@ -336,3 +336,9 @@ import Lax263307Proofs.NativeSelectedExecution
 import Lax263307Proofs.NativeCoreOutput
 import Lax263307Proofs.NativeUnweightedExecution
 import Lax263307Proofs.NativeQptasImplementation
+import Lax263307Proofs.NativeQptasPositive
+import Lax263307Proofs.NativeQptasWordBounds
+import Lax263307Proofs.NativeWeightedExecution
+import Lax263307Proofs.NativeQptasRuntime
+import Lax263307Proofs.NativeQptasComplexity
+import Lax263307Proofs.MainTheorem

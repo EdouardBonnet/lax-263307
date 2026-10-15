@@ -9,7 +9,7 @@ Scope
   Theorem 2 of Bonnet–Chang is the single headline result.
   Proof work authorized 2026-10-12 after the initial concept draft.
   The headline statement and its mathematical definitions are unchanged;
-  the main proof obligation remains open.
+  the headline proof is complete and strict kernel replay passed.
   The induced-minor corollary, vertex-cover consequence, and other
   applications are outside this initial scope.
 
@@ -1451,3 +1451,21 @@ signatures. NativeSelectedParts checks actual piece balance, unit costs,
 nearby-point height/feasibility and child-domain obligations.
 NativeEntryResources.bounds constructs all native entry guards/allocations
 from a fixed polynomial envelope. Individual builds passed; root 320 pending.
+
+2026-10-15 — Complete weighted implementation and headline proof
+  MainTheorem.exists_qptas now has a checked proof with conclusion metadata.
+  NativeWeightedExecution proves the full source program for every signed
+  rational-weight input, including zero-copy instances. NativeQptasWordBounds
+  discharges every word/allocation guard. NativeQptasRuntime and Complexity
+  prove the uniform word/layout/time estimate, and the final theorem descends
+  through registered lax-62 codegen to one fixed RAM program.
+  Full343-module Lean root build passed exit0. Final Lax strict replay is
+  running; see PROOF_HANDOFF.md for its log and completion checklist.
+
+2026-10-15 — Final proof validated
+  lax build --replay --profile PASSED actual exit0 in12m53s, including
+  11m04s strict kernel replay. Inspection:91 concepts,166 proofs.
+  Registered-external-seeded closure audit:166 statements, zero open;
+  Lax263307.MainTheorem.exists_qptas is closed. No proof-package admissions
+  or axiom declarations. Normal343-module root build restored after replay.
+  Theorem2 is finished; no push or external publication performed.
