@@ -9,16 +9,16 @@ open WeightedAlgorithm WeightRounding PositiveWeights WeightedIndependentSet
 /-- Choose the canonical byte-level LP backend and the correct flow backend
 once for the blow-up class. The same fixed functions satisfy both native
 reader interfaces and the weighted algorithm's functional correctness. -/
-theorem exists_solvers (C : GraphClass) (hereditary : IsHereditary C)
+theorem exists_solvers_with_parts (C : GraphClass) (hereditary : IsHereditary C)
     (separators : HasStronglyEdgeSublinearSeparators C) :
     ∃ (lp flow : List ℕ → List ℕ) (a A K b : ℕ),
       Lax759944.RamPolytime.RamPolytime lp ∧ NativeEncodedLP.Encoded lp ∧
       Lax759944.RamPolytime.RamPolytime flow ∧ 0<a ∧ 0<A ∧ 0<K ∧ 0<b ∧
-      HasPowerBagBound (blowUpClass C) a A ∧ NativeRecursiveOracle.OracleCorrect (blowUpClass C) lp flow a K b ∧
+      HasPowerBagBound (blowUpClass C) a A ∧ NearOracle.SeparatorCorrect (blowUpClass C) flow a K b ∧ NativeRecursiveOracle.OracleCorrect (blowUpClass C) lp flow a K b ∧
       ∀ n (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],G ∈ C n →
         ∀ weights ε,0<ε → ε<1 → IsApproximation G weights ε (solve lp flow a K b G weights ε) := by
   obtain ⟨a,A,ha,hA,hbound⟩ := BlowUpBagBounds.blowup_power_bag_bound C hereditary separators
-  obtain ⟨lp,flow,K,b,hpolyLP,hlp,hpolyFlow,hK,hb,ho⟩ := NativeRecursiveOracle.exists_solvers
+  obtain ⟨lp,flow,K,b,hpolyLP,hlp,hpolyFlow,hK,hb,hsep,ho⟩ := NativeRecursiveOracle.exists_solvers_with_parts
     (blowUpClass C) (hereditary_closure C) a A ha hA hbound
   have hunweighted : ∀ n (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],G ∈ blowUpClass C n →
       ∀ ε : ℚ,0<ε → ε<1 → IsApproximation G (fun _ => 1) ε (RecursiveAlgorithm.independentSet lp flow a K b G ε) := by
@@ -26,7 +26,7 @@ theorem exists_solvers (C : GraphClass) (hereditary : IsHereditary C)
     exact Lax263307Proofs.RecursiveAlgorithm.independentSet_correct (blowUpClass C) (hereditary_closure C)
       lp flow a K b (fun m H _ hH hm D k h hD hlarge child hc =>
         NativeRecursiveOracle.search_correct ho H hH hm D k h hD hlarge child hc) G hG ε hε hε1
-  refine ⟨lp,flow,a,A,K,b,hpolyLP,hlp,hpolyFlow,ha,hA,hK,hb,hbound,ho,?_⟩
+  refine ⟨lp,flow,a,A,K,b,hpolyLP,hlp,hpolyFlow,ha,hA,hK,hb,hbound,hsep,ho,?_⟩
   intro n G _ hG w ε hε hεsmall
   dsimp only [solve]
   split_ifs with htrivial
@@ -46,5 +46,17 @@ theorem exists_solvers (C : GraphClass) (hereditary : IsHereditary C)
     apply WeightedProjection.approximation_transfer G (positiveWeights w) ε
       (fun v => le_max_right _ _) hn hε hεsmall hmax
     exact Lax263307Proofs.WeightedAlgorithm.relabel_approximation G cp (ε/2) _ happrox
+
+theorem exists_solvers (C : GraphClass) (hereditary : IsHereditary C)
+    (separators : HasStronglyEdgeSublinearSeparators C) :
+    ∃ (lp flow : List ℕ → List ℕ) (a A K b : ℕ),
+      Lax759944.RamPolytime.RamPolytime lp ∧ NativeEncodedLP.Encoded lp ∧
+      Lax759944.RamPolytime.RamPolytime flow ∧ 0<a ∧ 0<A ∧ 0<K ∧ 0<b ∧
+      HasPowerBagBound (blowUpClass C) a A ∧ NativeRecursiveOracle.OracleCorrect (blowUpClass C) lp flow a K b ∧
+      ∀ n (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],G ∈ C n →
+        ∀ weights ε,0<ε → ε<1 → IsApproximation G weights ε (solve lp flow a K b G weights ε) := by
+  obtain ⟨lp,flow,a,A,K,b,hpolyLP,hlp,hpolyFlow,ha,hA,hK,hb,hbound,hsep,ho,hcorrect⟩ :=
+    exists_solvers_with_parts C hereditary separators
+  exact ⟨lp,flow,a,A,K,b,hpolyLP,hlp,hpolyFlow,ha,hA,hK,hb,hbound,ho,hcorrect⟩
 
 end Lax263307Proofs.NativeSolverSemantics

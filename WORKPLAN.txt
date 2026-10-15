@@ -1444,3 +1444,10 @@ callbacks. Proved RootData and graph preservation through complete search.
 NativeCoreExecution.command_spec now checks the entire unweighted core,
 conditional on explicit numerical/solver Resources. Resource constructor and
 positive weighted Spec remain. Root 317-module build pending.
+
+2026-10-15: Added actual recursive domain and heavy-child-only interface;
+retained selected flow separator guarantee while preserving public theorem
+signatures. NativeSelectedParts checks actual piece balance, unit costs,
+nearby-point height/feasibility and child-domain obligations.
+NativeEntryResources.bounds constructs all native entry guards/allocations
+from a fixed polynomial envelope. Individual builds passed; root 320 pending.

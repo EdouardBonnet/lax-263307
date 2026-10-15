@@ -25,18 +25,30 @@ theorem costs_cast {n r : ℕ} (y : RationalVector n r) (A : Finset (Fin n))
 theorem order_complete (q : ℕ) (i : Option (Fin q)) : i ∈ order q := by
   cases i <;> simp [order]
 
-/--
----
-conclusion: Lax263307.NearOracle.exists_oracle
----
-Conditioning, separator construction, and child-answer selection are connected
-at their computed outputs. The parameter budgets give the common moment floor,
-part balance, separator cost, and cut gap required by rounding.
--/
-theorem exists_oracle (C : GraphClass) (hereditary : IsHereditary C)
+/-- The selected backend's separator guarantee, retained for actual
+recursive child-domain and resource proofs. -/
+def SeparatorCorrect (C : GraphClass) (flow : List ℕ → List ℕ) (a K B : ℕ) : Prop :=
+  ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+      G ∈ C n → 0 < n → ∀ (x : Fin n → ℚ≥0) (k p ℓ : ℕ),
+      0 < k → 0 < p → 0 < ℓ →
+      (∀ v, (x v : ℝ) ≤ 1) → (∑ v, (x v : ℝ)) ≤ k →
+      Lax263307.Entropy.edgeCost G (fun v => (x v : ℝ)) ≤ (k : ℝ) ^ 2 / p →
+      (K : ℝ) * ((ℓ : ℝ) + 1) ^ (4 * a + 2) ≤ k →
+      (2 * K : ℝ) * ((ℓ : ℝ) + 1) ^ (4 * a + 2) ≤ p →
+      let cs := cuts (step flow G x B ℓ k) n Finset.univ
+      cs.length ≤ n ∧
+        Lax263307.EdgeSublinearSeparators.IsBalancedSeparator G
+          (Lax263307.ComputedSeparators.separator cs) ∧
+        cost (fun v => (x v : ℝ)) (Lax263307.ComputedSeparators.separator cs) ≤
+          12 * (ratio B n : ℝ) * k / ℓ ∧
+        ∃ P : Lax263307.SeparatorComponents.Partition G
+            (Lax263307.ComputedSeparators.separator cs) (Option (Fin cs.length)),
+          (∀ i, P.vertices i = pieces cs i) ∧ ∀ i, 3 * (P.vertices i).card ≤ 2 * n
+
+theorem exists_oracle_with_parts (C : GraphClass) (hereditary : IsHereditary C)
     (a A : ℕ) (ha : 0 < a) (hA : 0 < A) (class_bound : HasPowerBagBound C a A) :
     ∃ (flow : List ℕ → List ℕ) (K B : ℕ), Lax759944.RamPolytime.RamPolytime flow ∧
-      0 < K ∧ 0 < B ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+      0 < K ∧ 0 < B ∧ SeparatorCorrect C flow a K B ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
       G ∈ C n → 0 < n → ∀ (D k h : ℕ), 4 ≤ D → cutoff a K B n D < k →
       ∀ (y : RationalVector n (level a K B n D)),
       IsFeasible G k (level a K B n D) (realVector y) →
@@ -47,7 +59,7 @@ theorem exists_oracle (C : GraphClass) (hereditary : IsHereditary C)
       Correct G k h D (momentFloor a K B n D) x (run flow a K B D G k y child) := by
   obtain ⟨flow, K, B, hpoly, hK, hB, hsep⟩ :=
     Lax263307.ComputedSeparators.light_separator C hereditary a A ha hA class_bound
-  refine ⟨flow, K, B, hpoly, hK, hB, ?_⟩
+  refine ⟨flow, K, B, hpoly, hK, hB, hsep, ?_⟩
   intro n G _ hG hn D k h hD hlarge y hfeasible x hnear child hchild
   let r := level a K B n D
   let p := sparsity a K B n D
@@ -145,5 +157,29 @@ theorem exists_oracle (C : GraphClass) (hereditary : IsHereditary C)
     rw [hout] at hcol
     change A.card ≤ r ∧ _
     exact ⟨hsize, by simpa only [hδcast] using hcol⟩
+
+/--
+---
+conclusion: Lax263307.NearOracle.exists_oracle
+---
+Conditioning, separator construction, and child-answer selection are connected
+at their computed outputs. The parameter budgets give the common moment floor,
+part balance, separator cost, and cut gap required by rounding.
+-/
+theorem exists_oracle (C : GraphClass) (hereditary : IsHereditary C)
+    (a A : ℕ) (ha : 0 < a) (hA : 0 < A) (class_bound : HasPowerBagBound C a A) :
+    ∃ (flow : List ℕ → List ℕ) (K B : ℕ), Lax759944.RamPolytime.RamPolytime flow ∧
+      0 < K ∧ 0 < B ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+      G ∈ C n → 0 < n → ∀ (D k h : ℕ), 4 ≤ D → cutoff a K B n D < k →
+      ∀ (y : RationalVector n (level a K B n D)),
+      IsFeasible G k (level a K B n D) (realVector y) →
+      ∀ (x : MomentVector n (level a K B n D)),
+      (∀ T, |x T - realVector y T| ≤ (momentFloor a K B n D : ℝ) *
+        (1 / (D : ℝ)) ^ 2 / (32 * (n : ℝ) ^ 2)) →
+      ∀ (child : Finset (Fin n) → ℕ → Option (Finset (Fin n))), ChildCorrect G D h child →
+      Correct G k h D (momentFloor a K B n D) x (run flow a K B D G k y child) := by
+  obtain ⟨flow,K,B,hpoly,hK,hB,hsep,hcorrect⟩ :=
+    exists_oracle_with_parts C hereditary a A ha hA class_bound
+  exact ⟨flow,K,B,hpoly,hK,hB,hcorrect⟩
 
 end Lax263307Proofs.NearOracle

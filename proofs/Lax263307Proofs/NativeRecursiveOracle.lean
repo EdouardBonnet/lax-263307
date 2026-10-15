@@ -2,6 +2,7 @@ import Lax263307Proofs.NativeEncodedLP
 import Lax263307Proofs.RecursiveAlgorithm
 import Lax263307Proofs.ProjectedOracle
 import Lax263307Proofs.NativeTrajectoryResources
+import Lax263307Proofs.NearOracle
 
 set_option maxHeartbeats 1000000
 
@@ -21,18 +22,26 @@ def OracleCorrect (C : GraphClass) (lp flow : List ℕ → List ℕ) (a K b : �
 
 /-- Choose the actual solvers once, retaining the canonical LP bytes
 required by native readers as well as correctness at every recursive node. -/
-theorem exists_solvers (C : GraphClass) (hereditary : IsHereditary C)
+theorem exists_solvers_with_parts (C : GraphClass) (hereditary : IsHereditary C)
     (a A : ℕ) (ha : 0<a) (hA : 0<A) (hclass : PowerBagBounds.HasPowerBagBound C a A) :
     ∃ lp flow K b, Lax759944.RamPolytime.RamPolytime lp ∧ NativeEncodedLP.Encoded lp ∧
-      Lax759944.RamPolytime.RamPolytime flow ∧ 0<K ∧ 0<b ∧ OracleCorrect C lp flow a K b := by
+      Lax759944.RamPolytime.RamPolytime flow ∧ 0<K ∧ 0<b ∧ NearOracle.SeparatorCorrect C flow a K b ∧ OracleCorrect C lp flow a K b := by
   obtain ⟨lp,hpoly,hlp⟩ := NativeEncodedLP.exists_solver
-  obtain ⟨flow,K,b,hflow,hK,hb,hnear⟩ := NearOracle.exists_oracle C hereditary a A ha hA hclass
-  refine ⟨lp,flow,K,b,hpoly,hlp,hflow,hK,hb,?_⟩
+  obtain ⟨flow,K,b,hflow,hK,hb,hsep,hnear⟩ := NearOracle.exists_oracle_with_parts C hereditary a A ha hA hclass
+  refine ⟨lp,flow,K,b,hpoly,hlp,hflow,hK,hb,hsep,?_⟩
   intro n G _ hG hn D k h hD hlarge child hc center
   apply Lax263307Proofs.ProjectedOracle.run_correct lp flow a K b D G k h hK hn hD
     (fun m N P => (hlp m N P).2) child
   intro y hy x hx
   exact hnear n G hG hn D k h hD hlarge y hy x hx child hc
+
+theorem exists_solvers (C : GraphClass) (hereditary : IsHereditary C)
+    (a A : ℕ) (ha : 0<a) (hA : 0<A) (hclass : PowerBagBounds.HasPowerBagBound C a A) :
+    ∃ lp flow K b, Lax759944.RamPolytime.RamPolytime lp ∧ NativeEncodedLP.Encoded lp ∧
+      Lax759944.RamPolytime.RamPolytime flow ∧ 0<K ∧ 0<b ∧ OracleCorrect C lp flow a K b := by
+  obtain ⟨lp,flow,K,b,hpoly,hlp,hflow,hK,hb,hsep,ho⟩ :=
+    exists_solvers_with_parts C hereditary a A ha hA hclass
+  exact ⟨lp,flow,K,b,hpoly,hlp,hflow,hK,hb,ho⟩
 
 theorem search_correct {C : GraphClass} {lp flow : List ℕ → List ℕ} {a K b : ℕ}
     (ho : OracleCorrect C lp flow a K b) {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]

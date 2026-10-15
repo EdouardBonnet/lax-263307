@@ -156,7 +156,8 @@ theorem near_segment {n r : ℕ} (D k p b load F fuel S v limit M h T w space fl
     (recursive : ∀ A,findHeavyConditioning G k p (MomentLP.decode x)=some A →
       let costs := NearOracle.costs (MomentLP.decode x) A
       let cs := cuts (step flow G costs b load k) n Finset.univ
-      ∀ i∈NearOracle.order cs.length,∀ base σ,
+      ∀ i∈NearOracle.order cs.length,
+      (1/(D : ℚ))*k/(4*(n : ℚ))<(∑ v∈pieces cs i,(costs v : ℚ)) → ∀ base σ,
       Protocol (2^w) D S v cfg extent front σ →
       NativeCollectionExecution.Invariant (2^w) D k r fuel S G costs
         ((NearOracle.order cs.length).map (pieces cs)) A extent front base σ →
@@ -253,7 +254,7 @@ theorem near_segment {n r : ℕ} (D k p b load F fuel S v limit M h T w space fl
       (fun i _ => htarget A choice (pieces cs i)) bounds.frameExtents bounds.stack bounds.child bounds.graph
       bounds.bits bounds.labels (by have hh := bounds.word; omega) (by have hn := bounds.positive; have hh := bounds.sum; nlinarith)
       bounds.input bounds.normal
-      (fun i hi σ hσ hd hm ht hr hp => recursive A choice i hi ρ σ
+      (fun i hi heavy σ hσ hd hm ht hr hp => recursive A choice i hi heavy ρ σ
         (NativeOracleContext.collection_protocol hcρ hσ) hσ hd hm ht hr hp)
       ρ ⟨⟨collectionInput,NativeCollectionAnchor.refl ρ⟩,indexρ,by simpa [NativeMasks.mask,NativeCatalog.subsetMask] using unionρ,hrρ,hpρ⟩
     have hcτ := NativeOracleContext.collection hcρ last out.1.2 out.1.1.order out.1.1.stack out.1.1.cursor
@@ -309,7 +310,8 @@ structure Setup {n r : ℕ} (D k p b load fuel S v M h T w space flowTime childS
   recursive : ∀ A,findHeavyConditioning G k p (MomentLP.decode x)=some A →
       let costs := NearOracle.costs (MomentLP.decode x) A
       let cs := cuts (step flow G costs b load k) n Finset.univ
-      ∀ i∈NearOracle.order cs.length,∀ base σ,
+      ∀ i∈NearOracle.order cs.length,
+      (1/(D : ℚ))*k/(4*(n : ℚ))<(∑ v∈pieces cs i,(costs v : ℚ)) → ∀ base σ,
       Protocol (2^w) D S v cfg extent front σ →
       NativeCollectionExecution.Invariant (2^w) D k r fuel S G costs
         ((NearOracle.order cs.length).map (pieces cs)) A extent front base σ →

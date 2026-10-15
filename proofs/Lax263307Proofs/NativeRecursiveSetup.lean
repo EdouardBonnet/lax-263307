@@ -36,7 +36,8 @@ structure Near {n r : ℕ} (D k p b load fuel S v M h T w space flowTime childSt
   children : ∀ A,findHeavyConditioning G k p (MomentLP.decode x)=some A →
     let costs := NearOracle.costs (MomentLP.decode x) A
     let cs := cuts (step flow G costs b load k) n Finset.univ
-    ∀ i∈NearOracle.order cs.length,eligible fuel (pieces cs i).card (restriction G (pieces cs i))
+    ∀ i∈NearOracle.order cs.length,
+    (1/(D : ℚ))*k/(4*(n : ℚ))<(∑ v∈pieces cs i,(costs v : ℚ)) → eligible fuel (pieces cs i).card (restriction G (pieces cs i))
       (ComputedRounding.target (1/(D : ℚ)) (∑ v∈pieces cs i,(costs v : ℚ)))
       (front.length+S*(frameArrays cfg).length+(frameScalars cfg).length)
 
@@ -95,8 +96,8 @@ theorem Near.to_setup {n r D k p b load fuel S v M h T w space flowTime childSte
   refine ⟨data.bounds,data.hx,data.hselected,data.htarget,data.hspace,data.flowCall,?_⟩
   intro A choice
   dsimp only
-  intro i hi base σ hp hσ hd hm ht hr phase
-  exact ih _ _ σ (data.children A choice i hi) hp phase
+  intro i hi heavy base σ hp hσ hd hm ht hr phase
+  exact ih _ _ σ (data.children A choice i hi heavy) hp phase
 
 theorem Oracle.to_setup {n r D k p b load F fuel S v w M farM nearM h T space
     oracleTime callCost flowTime childSteps childTime : ℕ}

@@ -62,7 +62,7 @@ theorem iterations {n : ℕ} {ι : Type} (D k r fuel S h T childSteps childTime 
     (hword : 3*n<extent "lp.word") (hsum : 3*n≤extent "sum.input")
     (hlp : 3*NativeCatalogMetadata.N n r≤extent "lp.input")
     (hnormal : 3*NativeCatalogMetadata.N n r≤extent "round.normal")
-    (recursive : ∀ i∈order,∀ σ,
+    (recursive : ∀ i∈order,(1/(D : ℚ))*k/(4*(n : ℚ))<(∑ v∈parts i,(x v : ℚ)) → ∀ σ,
       Invariant (2^w) D k r fuel S G x (order.map parts) A extent front base σ →
       NativeRestrictionRead.Data G (fun v => (x v : ℚ)) (parts i) σ →
       σ.vars "component.mask"=mask (parts i) →
@@ -98,7 +98,7 @@ theorem iterations {n : ℕ} {ι : Type} (D k r fuel S h T childSteps childTime 
       A (parts i) U extent front (child (parts i) (target (1/(D : ℚ)) (∑ v∈parts i,(x v : ℚ))))
       (by omega) hm hext hstack (hsq.trans hchild) (hsq.trans hsearch) (hc.trans hbits) hlp hnormal
       ν contextν dataν maskν targetν indexν unionν runningν phaseν
-      (recursive i hi ν ⟨contextν,anchorν⟩ dataν maskν targetν runningν phaseν)
+      (recursive i hi heavy ν ⟨contextν,anchorν⟩ dataν maskν targetν runningν phaseν)
     have anchorτ := NativeCollectionAnchor.trans anchorν anchorLast
     refine ⟨τ,2+s,43*n+33+NativeComponentDecision.timeBound n h+t,
       NativeMachineSegment.append first last,by omega,?_,?_⟩
@@ -141,7 +141,7 @@ theorem collect_segment {n : ℕ} {ι : Type} [Fintype ι] (D k r fuel S h T chi
     (hword : 3*n<extent "lp.word") (hsum : 3*n≤extent "sum.input")
     (hlp : 3*NativeCatalogMetadata.N n r≤extent "lp.input")
     (hnormal : 3*NativeCatalogMetadata.N n r≤extent "round.normal")
-    (recursive : ∀ i∈order,∀ σ,
+    (recursive : ∀ i∈order,(1/(D : ℚ))*k/(4*(n : ℚ))<(∑ v∈parts i,(x v : ℚ)) → ∀ σ,
       Invariant (2^w) D k r fuel S G x (order.map parts) A extent front base σ →
       NativeRestrictionRead.Data G (fun v => (x v : ℚ)) (parts i) σ →
       σ.vars "component.mask"=mask (parts i) →
