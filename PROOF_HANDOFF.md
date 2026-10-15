@@ -5,7 +5,7 @@ chronological history, including earlier incomplete checkpoints.
 
 ## Current status
 
-### Draft cleanup completed locally (2026-10-15)
+### Draft cleanup completed and submitted (2026-10-15)
 
 The user requested submitter credit for Édouard Bonnet, Codex 6, and Codex
 6.1; lemma labels for supporting results; removal of unused proof-network
@@ -53,8 +53,17 @@ Logs and audits:
 - `/tmp/QptasConceptFingerprints.lean` produces normalized fingerprints;
   the reference is `/tmp/qptas-concept-fingerprints-before.json`.
 
-Next: commit, push, and update the existing Lax draft; archive validation
-and publication are pending. Registration is not requested.
+Cleanup committed and pushed as
+`4f3776370f2bb234b6692c2aa7aa71b25847836d`.
+`lax submit --no-color` finished with actual exit 0. Local submission build:
+1m49s; independent archive validation: 31m06s; publication: 1m32s.
+- Successful workflow: https://github.com/lax-archive/lax/actions/runs/38761988229
+- Archive commit: `9f5b88f29f9f7b8d59b46c70cf2ef04e8a3a0783`.
+- Draft: https://laxarchive.org/lax-263307/
+- Issue 201 reports the immutable source accepted and the website rebuild
+  event accepted. The same 42 nonblocking warnings remain.
+The cleanup is complete. Registration is not requested or performed.
+Later documentation-only commits do not change the validated source above.
 
 ### Completed original proof and first submission
 

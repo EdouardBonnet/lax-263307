@@ -1477,3 +1477,10 @@ previously hidden by direct proof calls. All 135 remaining claims are closed
 and in the headline ancestry. Concept graph: one component, 85 concepts.
 Namespace cleanup preserves all 663 retained declaration fingerprints; the
 runtime formula is now separate from HasQPTAS. Local Lax validation passes.
+
+2026-10-15 — Cleanup draft update accepted
+Source 4f3776370f2bb234b6692c2aa7aa71b25847836d passed independent archive
+validation in 31m06s; publication completed in 1m32s. lax submit exited 0.
+Workflow 38761988229 succeeded; archive commit
+9f5b88f29f9f7b8d59b46c70cf2ef04e8a3a0783. The updated submission remains a
+draft. PROOF_HANDOFF.md records the full audit and source/publication links.
