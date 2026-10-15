@@ -23,6 +23,25 @@ private theorem none_order {B K : ℕ} {σ τ : Env}
     have r : Run B (NativeOracleCut.failedChild 13) σ τ _ := ⟨_,Nat.le_refl _,step⟩
     exact r.frame_var _ (by decide)
 
+/-- Recursive execution required only at the actual child entry. -/
+def Recursive {n : ℕ} (B S fuel childSteps childTime : ℕ) (cfg : Config)
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (C : Finset (Fin n))
+    (target : ℕ) (front : List ℕ) (σ : Env) (answer : Option (Finset (Fin C.card))) : Prop :=
+  ∀ saved entry,
+      Run B (.seq NativeChildGraph.command (go 12)) σ saved (36*(C.card*C.card)+12) →
+      Segment B (phases cfg) 1
+        ((16*S+8)*(frameArrays cfg).length+7*(frameScalars cfg).length+52*(C.card*C.card)+36) σ entry →
+      Prefix (front++NativeRecursionFrame.words (frameArrays cfg) (frameScalars cfg) saved) "recursion.frames" entry →
+      entry.vars "stack.words"=front.length+S*(frameArrays cfg).length+(frameScalars cfg).length →
+      Prefix (NativeWeightReduction.adjacency (ComputedSeparators.restriction G C)) "search.graph" entry →
+      entry.vars "graph.n"=C.card → entry.vars "node.k"=target → entry.vars "recursion.fuel"=fuel →
+      entry.vars "machine.running"=1 → entry.vars "machine.phase"=1 →
+      ∃ done steps total,Segment B (phases cfg) steps total entry done ∧ steps≤childSteps ∧ total≤childTime ∧
+        NativeRoundTrace.Stopped answer done ∧
+        Prefix (front++NativeRecursionFrame.words (frameArrays cfg) (frameScalars cfg) saved) "recursion.frames" done ∧
+        done.vars "stack.words"=front.length+S*(frameArrays cfg).length+(frameScalars cfg).length ∧
+        done.vars "frame.length"=S*(frameArrays cfg).length+(frameScalars cfg).length ∧ done.vars "recursion.stride"=S
+
 /-- This executes the actual call, pop, and component reply. The sole
 recursive premise concerns the actual smaller-fuel entry produced by the
 call. In particular, restoration of the parent context and construction of
@@ -44,25 +63,13 @@ theorem child_iteration {n : ℕ} (B S D k r fuel i target childSteps childTime 
     (hmask : σ.vars "component.mask"=mask C) (htarget : σ.vars "component.target"=target)
     (hi : σ.vars "component.i"=i) (hu : σ.vars "component.union"=mask U)
     (hr : σ.vars "machine.running"=1) (hp : σ.vars "machine.phase"=11)
-    (recursive : ∀ saved entry,
-      Run B (.seq NativeChildGraph.command (go 12)) σ saved (36*(C.card*C.card)+12) →
-      Segment B (phases cfg) 1
-        ((16*S+8)*(frameArrays cfg).length+7*(frameScalars cfg).length+52*(C.card*C.card)+36) σ entry →
-      Prefix (front++NativeRecursionFrame.words (frameArrays cfg) (frameScalars cfg) saved) "recursion.frames" entry →
-      entry.vars "stack.words"=front.length+S*(frameArrays cfg).length+(frameScalars cfg).length →
-      Prefix (NativeWeightReduction.adjacency (ComputedSeparators.restriction G C)) "search.graph" entry →
-      entry.vars "graph.n"=C.card → entry.vars "node.k"=target → entry.vars "recursion.fuel"=fuel →
-      entry.vars "machine.running"=1 → entry.vars "machine.phase"=1 →
-      ∃ done steps total,Segment B (phases cfg) steps total entry done ∧ steps≤childSteps ∧ total≤childTime ∧
-        NativeRoundTrace.Stopped answer done ∧
-        Prefix (front++NativeRecursionFrame.words (frameArrays cfg) (frameScalars cfg) saved) "recursion.frames" done ∧
-        done.vars "stack.words"=front.length+S*(frameArrays cfg).length+(frameScalars cfg).length ∧
-        done.vars "frame.length"=S*(frameArrays cfg).length+(frameScalars cfg).length ∧ done.vars "recursion.stride"=S) :
+    (recursive : Recursive B S fuel childSteps childTime cfg G C target front σ answer) :
     ∃ τ steps total,Segment B (phases cfg) steps total σ τ ∧ steps≤childSteps+3 ∧
       total≤((16*S+8)*(frameArrays cfg).length+7*(frameScalars cfg).length+52*(C.card*C.card)+36)+
         childTime+((16*S+16)*(frameArrays cfg).length+7*(frameScalars cfg).length+12)+
         ((45*C.card+38)+((28*n+104)*NativeCatalogMetadata.N n r+30)) ∧
-      match answer with
+      NativeCollectionAnchor.Anchor σ τ ∧
+      match (generalizing := false) answer with
       | some I => NativeCollectionTrace.At (Context B D k r fuel S G x parts A extent front)
           (i+1) (U∪I.image (ComputedSeparators.label C)) τ
       | none => NativeCollectionTrace.ResultOutput (Context B D k r fuel S G x parts A extent front)
@@ -84,6 +91,8 @@ theorem child_iteration {n : ℕ} (B S D k r fuel i target childSteps childTime 
       (36*(C.card*C.card)+12) snapshot hsaved
       (by intro a ha; rw [csaved.lengths]; exact hext a ha) (by omega) rsaved psaved call recur reply
       ⟨stackDone,wordsDone,lengthDone,strideDone⟩
+  have savedAnchor := NativeCollectionAnchor.frame snapshot (NativeCollectionAnchor.refl σ) (by decide) (by decide)
+  have returnedAnchor := NativeCollectionAnchor.restored savedAnchor varsν arraysν
   have cν := NativeCollectionContext.restored csaved returned hc.bounded hc.lengths varsν arraysν frontν wordsν
   have indexν : ν.vars "component.i"=i :=
     (varsν _ (by decide)).trans ((snapshot.frame_var _ (by decide)).trans hi)
@@ -106,6 +115,7 @@ theorem child_iteration {n : ℕ} (B S D k r fuel i target childSteps childTime 
     have rr := NativeMachineFrame.single_run last ⟨12,by change 12<16; decide⟩ phaseν
     change Run B (NativeComponentControl.childReply 9 13) ν τ _ at rr
     refine ⟨τ,_,_,NativeMachineSegment.append returned last,by omega,by omega,
+      NativeCollectionAnchor.frame rr returnedAnchor (by decide) (by decide),
       NativeCollectionContext.frame_order rr cν orderτ (by decide) (by decide),indexτ,unionτ,runningτ,phaseτ⟩
   | none =>
     obtain ⟨τ,last,normalτ,runningτ,phaseτ⟩ := NativeComponentTrace.child_none_segment B r cfg A C target
@@ -114,6 +124,7 @@ theorem child_iteration {n : ℕ} (B S D k r fuel i target childSteps childTime 
     have rr := NativeMachineFrame.single_run last ⟨12,by change 12<16; decide⟩ phaseν
     change Run B (NativeComponentControl.childReply 9 13) ν τ _ at rr
     refine ⟨τ,_,_,NativeMachineSegment.append returned last,by omega,by omega,
+      NativeCollectionAnchor.frame rr returnedAnchor (by decide) (by decide),
       NativeCollectionContext.frame_order rr cν ((none_order rr (by omega) replyν).trans cν.order)
         (by decide) (by decide),runningτ,phaseτ,normalτ⟩
 

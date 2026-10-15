@@ -17,99 +17,117 @@ correctness and many actual machine phases are checked; conditional trace
 lemmas must still be instantiated. Module/statement counts are not an effort
 percentage. Do not claim completion from a successful Lax build.
 
-## Checkpoint and current changes
+## Checkpoint and current work
 
-Project: /home/ebonnet/Bitbucket/lax/round-or-cut, its own Git repo, main.
-Lean cwd: proofs. Root: proofs/Lax263307Proofs.lean, now 304 own imports.
-Latest strict checkpoint: 135ab62, 292 modules, 91 concepts, 165 public proofs;
-closure audit left only the main theorem open. Logs:
-- /tmp/qptas-refinement-final-bounds-build.log: exit 0.
-- /tmp/qptas-292-module-replay.log: exit 0.
-- /tmp/qptas-refinement-final-bounds-restore.log: exit 0.
-Prior strict checkpoints: 5ee0ddd (279 modules), 4cf6dec (262 modules).
+Project /home/ebonnet/Bitbucket/lax/round-or-cut, branch main. Previous checkpoint
+237f1d1 had 304 modules (root build and inspection). The assembled search
+batch is checked by Lean and archive inspection.
+Root now imports 313 own modules. The main theorem is STILL OPEN.
+Last fully successful strict checkpoint remains 135ab62 (292 modules).
 
-Current checked batch: twelve new modules and three existing-module updates.
-Full root build and final Lax inspection passed; final strict replay remains
-for a later completed milestone. See precise check scope below.
-The 300-module root build /tmp/qptas-weighted-program-root-build.log passed,
-exit 0. The two collection modules passed local Lean checks; 302-module root
-build /tmp/qptas-collection-child-root-build.log passed, exit 0.
-302-module strict replay completed: KERNEL REPLAY PASSED, inspection FAILED
-solely because NativeEmptyOutput directly imported undeclared RAM Fill.
-Fixed import to declared Lax62Proofs.Refine.Codegen.Harness. Log:
-/tmp/qptas-refinement-final-bounds-replay.log. Root restoration passed, exit 0,
-/tmp/qptas-collection-child-restore.log. No fully successful new strict replay yet.
-Full 304-module root build passed, exit 0:
-/tmp/qptas-weighted-zero-root-build.log. Lax build --profile passed, exit 0;
-selected status log /tmp/qptas-weighted-zero-inspection-summary.log. Closure:
-91 concepts, 165 public proofs; ONLY MainTheorem.exists_qptas remains open.
-Post-Lax restoration passed, exit 0: /tmp/qptas-weighted-zero-restore.log.
-Last FULL strict checkpoint remains 135ab62 / 292 modules. The newer
-302-module run passed kernel replay but failed import inspection; that import
-was fixed, and final inspection passed on the 304-module state. Do not describe
-304 modules as fully strict-replayed. No build/replay is currently running.
+Five new modules and three existing-module changes are currently uncommitted:
+- NativeCollectionAnchor: a frame covering all parent data outside actual
+  collection work and metadata exclusions. Child activation is deliberately
+  NOT excluded; its changes are undone by proved stack restoration. Includes
+  exact preservation of NativeRoundedTrace.StoredState.
+- NativeCollectionExecution: actual light/heavy iteration composition,
+  functional list-index alignment (duplicates permitted), and complete
+  collect_segment with explicit transition/time bounds. Its invariant is
+  Context plus Anchor. The ONLY recursive premise is actual smaller-fuel
+  child execution at the entry produced by the actual child call. This
+  instantiates NativeCollectionTrace.Iterations; no abstract Iterations
+  premise remains in the complete collector theorem.
+- NativeFlowBudget: polynomial bounds for actual large-capacity height,
+  flow query size, wordHeight, spaceBound and complete separator time;
+  one fixed root monomial covers all three flow guard/space/time bounds.
+- NativeOracleBudget: one fixed Q,e covers LP query workspace, certificate-
+  derived cut height, rounded VM precision, LP word/time polynomials, fixed
+  allowances, and actual flow guard/workspace/complete separator time.
+  Still requires n/load/k<=R and flow input bit height bounded by the selected
+  LP height polynomial. It is NOT yet the complete global invariant/time proof.
+- NativeOriginalAccuracy: actual 18-cost read of original epsilon numerator
+  and denominator from retained input.data at original n*n+3*n+[1,2].
+  This closes the accuracy-field interface without relying on an unexposed
+  frontend postcondition.
+- NativeCollectionContext light_iteration and heavy_entry now also return
+  Anchor from their initial environment to the final environment.
+- NativeCollectionChild now names Recursive, uses a non-generalizing result
+  match, and returns Anchor initial/final in addition to the reply. The actual
+  child call/pop/reply restores parent trajectory/cache data as a conclusion.
+- NativeQptasProgram positive branch explicitly calls NativeOriginalAccuracy
+  after copyGraph and before NativeRootAccuracy. Zero-copy Spec still checks.
 
-- NativeOraclePrecision: actual canonical LP certificate heights and cleared
-  far/component normal heights, using a polynomial in root resource R.
-- NativeEmptyOutput: actual zero membership-vector emission, cost 24*n+14.
-- NativePolynomialBudget: fixed polynomial majorants; covers query, rounded
-  height, and rounded VM precision. Does NOT yet cover all other guards/work.
-- NativeImageOutput: actual mask projection/emission for arbitrary repeated
-  owner labels, cost 24*n+28*N+20.
-- NativeWeightedOutput: actual blowup-owner projection, cost 24*n+44*N+36;
-  proves it agrees with the functional nonpositive-weight filter.
-- NativeMachineBounds: boundedness of all cells/arrays across phase segments.
-- NativeSolverSemantics: same fixed canonical LP/flow choices support both
-  native invocation and weighted functional approximation correctness.
-- NativeQptasProgram: complete finite source/compiled program, checked layout,
-  graph activation, and functional answer for zero-size blowup. Complete Spec
-  remains open. Output array has exact original input order n as its length.
-- NativeCollectionContext: concrete graph/cost/catalog/buffer/stack invariant,
-  actual two-phase light iteration, and restoration from saved parent data.
-- NativeCollectionChild: actual phase-11 call, child execution, stack pop and
-  phase-12 reply preserve that invariant; success lifts/accumulates and failure
-  writes the target-minus-one normal. Only the actual smaller-fuel child
-  execution remains a premise. Does not yet instantiate all Iterations.
-- NativeInputBounds: original order <= rational encoding length; all input
-  words and parameter magnitudes bounded by 2^(ell+1). Local Lean check exit 0.
-- NativeQptasZero: complete frontend/zero-copy/output branch Spec, including
-  exact functional answer and original-length membership output; root checked.
-- NativeCollectionContext.heavy_entry: actual two-phase heavy entry trace; full root checked.
-- NativeFinalBounds.original_order_le_copy_order: n <= number of copies
-  when maximum >0 and 0<epsilon<=1; local Lean check exit 0.
-- NativeBlowUp.prepare_spec now also returns input.n=n. NativeBlowUp
-  target rebuilt successfully; existing command_spec destructuring adjusted.
-- RecursiveAlgorithm.independentSet_correct: extracted existing correctness
-  argument for any fixed solvers with SearchCorrect; public claim unchanged.
+Successful checks (actual exit 0):
+- /tmp/qptas-collection-framing-build.log
+- /tmp/qptas-collection-execution-check.log
+- /tmp/qptas-full-collection-root-build.log (306 modules)
+- /tmp/qptas-flow-budget-build.log
+- /tmp/qptas-oracle-budget-check.log
+- /tmp/qptas-original-accuracy-build.log
+- /tmp/qptas-collection-oracle-root-build.log (FULL 309-module root build)
 
-The 292-module checkpoint includes NativeCollectionTrace, NativeChildExecution,
-NativeRecursiveOracle, NativeRoundedTrace, NativeTrajectoryResources,
-NativeNormalHeight, NativeProjectionQueryBounds, NativeFinalBounds and
-NativeQptasTransfer. Its transfer uses registered lax-62 Codegen.solves_of_spec;
-it still requires the complete source program Spec and bounds.
+Validation of the 309-module batch completed successfully: lax build --profile
+(actual exit 0), 91 concepts / 165 public proofs; closure audit found only
+MainTheorem.exists_qptas open. Restored lake build Lax263307Proofs successfully
+(actual exit 0), /tmp/qptas-assembled-collection-restore.log. No process running.
+No full strict replay has been done on this 309-module batch.
+
+Previous checked components remain in source: canonical NativeSolverSemantics,
+NativeQptasZero, NativeWeightedOutput, NativeInputBounds, NativeOraclePrecision,
+NativePolynomialBudget, NativeQptasTransfer and all native phase traces. The
+last closure audit was 91 concepts / 165 public proofs, only the main open.
+
+## Current assembly (2026-10-15, latest user: “so assemble them”)
+
+Four new modules are being added to the prior batch:
+- NativeOracleContext: common parent catalog/moment/LP cache, fixed scalar
+  data, array extents, stack protocol and rounded VM width. Frame proofs
+  for actual forward phases and restoration from complete collection. of_large
+  derives this context and StoredState 0 (1,0) from NativeLargeNode.Output
+  plus the incoming workspace/stack protocol.
+- NativeNearExecution: actual phases 6/7/8 plus complete collection and
+  recursive children. Computes the exact functional near result; derives
+  preservation of the complete parent context and stored rounded state.
+  Bounds/Setup contain inequalities, solver Specs and the smaller-fuel child
+  premise; no assumed conditioning/separator/collection phase executions.
+- NativeOracleExecution: phase 4 plus all phase-5 branches and complete
+  near execution. Produces stopped result or the exact normal at phase 13.
+  actual_reply identifies this computation with ProjectedOracle.run and
+  RecursiveAlgorithm.attempt on canonically relabeled child graphs.
+- NativeOracleRounds: actual rounded update plus the complete oracle
+  instantiates NativeRoundTrace.Steps. Invariant includes exact functional
+  trajectory, stored state and common parent context. Fixed rounded program
+  contract is supplied by NativeRoundedControl.exists_program. search_segment
+  assembles the complete bounded search without an assumed Steps premise.
+
+CHECKED (actual exit 0): /tmp/qptas-oracle-execution-build.log,
+/tmp/qptas-oracle-rounds-build.log and FULL 313-module root build
+/tmp/qptas-composed-search-root-build.log, including Setup/search_segment/of_large.
+No sorry/axiom in the new modules. Lax build --profile inspection passed
+(actual exit 0), 91 concepts / 165 public proofs; selected status log:
+/tmp/qptas-composed-search-inspection-summary.log. Closure audit: ONLY
+MainTheorem.exists_qptas remains open. No strict replay on this batch.
+Root restore lake build Lax263307Proofs passed actual exit 0:
+/tmp/qptas-composed-search-restore.log. No process running. Checked batch
+checkpoint: Assemble complete oracle execution and bounded native search.
 
 ## Next actual obligations
 
-1. Instantiate NativeCollectionTrace.Iterations from the checked light
-   iteration, heavy entry and child_iteration, supplying the recursive
-   smaller-fuel execution. Align each list index with its functional part.
-   Preserve the parent graph/catalog/trajectory and collection context.
-2. Compose projection/conditioning/separator/collection into actual oracle
-   steps, instantiate NativeRoundTrace.Steps, then complete recursive node
-   execution by induction on fuel. Preserve stack prefix/cursor on return.
-3. Supply NativeRootTrace.Attempts with those node executions.
-4. One uniform root envelope and polynomial working budget W=Q*(R+1)^e must
-   cover ALL query, certificate, conditioning, separator, component, rounded
-   guards, buffers, and local work. Current polynomial budget is only partial.
-5. Complete NativeQptasProgram Spec: zero-size branch is now proved; assemble
-   the positive-size frontend, graph
-   activation/accuracy/budget/core/output, using the SAME canonical solvers.
-   NativeRootAccuracy needs accuracy.n/d. The frontend stores them, but the
-   current NativeBlowUp.prepare_spec exposes only input.n and tailInput prefix;
-   derive their preservation or explicitly reload them from that prefix.
-6. Absorb input/blowup/accuracy/resource bounds into final QPTAS bounds,
-   apply NativeQptasTransfer.qptas_of_spec, add MainTheorem proof, strict replay
-   and closure audit. No MainTheorem proof file exists yet.
+1. Use NativeOracleContext.of_large and NativeOracleRounds.search_segment
+   to assemble the large branch of NativeNodeTrace. Complete node execution by induction on fuel,
+   supplying the smaller-fuel child premises in the setups. Derive balanced
+   child class/depth and target bounds from actual selected costs/cuts.
+2. Instantiate NativeRootTrace.Attempts with complete node executions.
+3. Prove the common resource setups for actual trajectories and certificates:
+   use NativeOracleBudget for the LP/flow/rounded joint monomial, extend it
+   to non-oracle arithmetic guards, conditioning, buffer extents, stack
+   storage and recursive time amplification. No complete global resource
+   invariant/time proof exists yet. Avoid certificate/host-width circularity.
+4. Assemble the positive-size NativeQptasProgram Spec: frontend, graph
+   activation, explicit accuracy read, root accuracy/budget, core and weighted
+   output. Zero-size branch checked in NativeQptasZero.
+5. Apply NativeFinalBounds and NativeQptasTransfer.qptas_of_spec, add actual
+   MainTheorem proof, strict replay and closure audit with zero open statements.
 
 ## Integration constraints and resources
 

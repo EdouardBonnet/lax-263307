@@ -1,6 +1,7 @@
 import Lax263307Proofs.NativeCoreMachine
 import Lax263307Proofs.NativeBlowUp
 import Lax263307Proofs.NativeRootAccuracy
+import Lax263307Proofs.NativeOriginalAccuracy
 import Lax263307Proofs.NativeRootBudget
 import Lax263307Proofs.NativeEmptyOutput
 import Lax263307Proofs.NativeWeightedOutput
@@ -24,8 +25,8 @@ complete recursive command specification and common resource invariant. -/
 def command (cfg : NativeCoreMachine.Config) (C d Q e : ℕ) : Com :=
   .seq NativeBlowUp.prepare (.seq order
     (.ite (.eq (.var "graph.n") (.lit 0)) NativeEmptyOutput.command
-      (.seq copyGraph (.seq NativeRootAccuracy.command (.seq (NativeRootBudget.command C d Q e)
-        (.seq (NativeCoreMachine.command cfg) NativeWeightedOutput.command))))))
+      (.seq copyGraph (.seq NativeOriginalAccuracy.command (.seq NativeRootAccuracy.command (.seq (NativeRootBudget.command C d Q e)
+        (.seq (NativeCoreMachine.command cfg) NativeWeightedOutput.command)))))))
 
 def layout (cfg : NativeCoreMachine.Config) (C d Q e : ℕ) : Layout :=
   RamAutomaticLayout.layout (command cfg C d Q e)

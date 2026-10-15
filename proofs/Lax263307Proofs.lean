@@ -303,3 +303,12 @@ import Lax263307Proofs.NativeCollectionContext
 import Lax263307Proofs.NativeCollectionChild
 import Lax263307Proofs.NativeInputBounds
 import Lax263307Proofs.NativeQptasZero
+import Lax263307Proofs.NativeCollectionAnchor
+import Lax263307Proofs.NativeCollectionExecution
+import Lax263307Proofs.NativeFlowBudget
+import Lax263307Proofs.NativeOracleBudget
+import Lax263307Proofs.NativeOriginalAccuracy
+import Lax263307Proofs.NativeOracleContext
+import Lax263307Proofs.NativeNearExecution
+import Lax263307Proofs.NativeOracleExecution
+import Lax263307Proofs.NativeOracleRounds

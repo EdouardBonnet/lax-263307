@@ -1,6 +1,7 @@
 import Lax263307Proofs.NativeCollectionTrace
 import Lax263307Proofs.NativeChildExecution
 import Lax263307Proofs.NativeMachineBounds
+import Lax263307Proofs.NativeCollectionAnchor
 
 set_option maxHeartbeats 1000000
 set_option maxRecDepth 20000
@@ -120,7 +121,7 @@ theorem light_iteration (n D k r fuel stride h : ℕ) (cfg : Config)
     (U : Finset (Fin n)) (σ : Env)
     (hin : NativeCollectionTrace.At (Context (2^w) D k r fuel stride G x parts A extent front) i U σ) :
     ∃ τ,Segment (2^w) (phases cfg) 2 (43*n+37+NativeComponentDecision.timeBound n h) σ τ ∧
-      NativeCollectionTrace.At (Context (2^w) D k r fuel stride G x parts A extent front) (i+1) U τ := by
+      NativeCollectionTrace.At (Context (2^w) D k r fuel stride G x parts A extent front) (i+1) U τ ∧ NativeCollectionAnchor.Anchor σ τ := by
   let hc := hin.1
   obtain ⟨ν,load,hd,hm,hiν,ht,active,hr,hp⟩ :=
     NativeComponentTrace.load_segment n D k h cfg G x hn hD hx w hw parts hparts i hi hB σ
@@ -142,8 +143,9 @@ theorem light_iteration (n D k r fuel stride h : ℕ) (cfg : Config)
   have totalEq : (43*n+27+NativeComponentDecision.timeBound n h)+10=
     43*n+37+NativeComponentDecision.timeBound n h := by omega
   refine ⟨τ,by simpa only [totalEq,Nat.reduceAdd] using NativeMachineSegment.append load advance,
-    frame runAdvance cν (by decide) (by decide),idx,
-    (runAdvance.frame_var _ (by decide)).trans unionν,running,phase⟩
+    ⟨frame runAdvance cν (by decide) (by decide),idx,
+      (runAdvance.frame_var _ (by decide)).trans unionν,running,phase⟩,
+    NativeCollectionAnchor.frame (runLoad.seq runAdvance) (NativeCollectionAnchor.refl σ) (by decide) (by decide)⟩
 
 /-- The two actual phases for a heavy part reach the recursive-call phase
 with the parent's context, selected labels and target intact. -/
@@ -166,7 +168,7 @@ theorem heavy_entry (n D k r fuel stride h : ℕ) (cfg : Config)
       τ.vars "component.mask"=mask parts[i] ∧ τ.vars "component.i"=i ∧
       τ.vars "component.union"=mask U ∧
       τ.vars "component.target"=ComputedRounding.target (1/(D : ℚ)) (∑ v∈parts[i],(x v : ℚ)) ∧
-      τ.vars "machine.running"=1 ∧ τ.vars "machine.phase"=11 := by
+      τ.vars "machine.running"=1 ∧ τ.vars "machine.phase"=11 ∧ NativeCollectionAnchor.Anchor σ τ := by
   let hc := hin.1
   obtain ⟨ν,load,hd,hm,hiν,ht,active,hr,hp⟩ :=
     NativeComponentTrace.load_segment n D k h cfg G x hn hD hx w hw parts hparts i hi hB σ
@@ -188,7 +190,8 @@ theorem heavy_entry (n D k r fuel stride h : ℕ) (cfg : Config)
   have totalEq : (43*n+27+NativeComponentDecision.timeBound n h)+6=
     43*n+33+NativeComponentDecision.timeBound n h := by omega
   refine ⟨τ,by simpa only [totalEq,Nat.reduceAdd] using NativeMachineSegment.append load advance,
-    frame runAdvance cν (by decide) (by decide),?_,?_,?_,?_,?_,running,phase⟩
+    frame runAdvance cν (by decide) (by decide),?_,?_,?_,?_,?_,running,phase,
+    NativeCollectionAnchor.frame (runLoad.seq runAdvance) (NativeCollectionAnchor.refl σ) (by decide) (by decide)⟩
   · exact NativeRestrictionRead.frame runAdvance hd (by decide) (by decide)
   · exact (runAdvance.frame_var _ (by decide)).trans hm
   · have rr : Run (2^w) (go 11) ν τ 2 := by

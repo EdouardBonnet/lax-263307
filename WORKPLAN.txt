@@ -1415,3 +1415,25 @@ weighted main theorem remain open. See PROOF_HANDOFF.md for current check logs.
   covered 302 modules before the import correction; final 304-module state
   was built and inspected, not strict-replayed again. Full next obligations
   and the frontend accuracy-field interface are in PROOF_HANDOFF.md.
+
+2026-10-15: Full component collector is now composed from actual light/heavy
+  traces and actual child call/pop/reply, with only smaller-fuel child
+  execution as recursive premise. Anchor frame preserves parent rounded
+  trajectory and caches. Actual flow guard/space/time have fixed polynomial
+  bounds and a joint LP/flow/rounded monomial budget now checks. Weighted
+  program explicitly reloads epsilon from retained original input (18 cost).
+  Full 309-module root build passed, exit 0. Lax inspection is running; main
+  theorem remains open. Full current obligations are in PROOF_HANDOFF.md.
+
+2026-10-15: User asked to assemble the existing phases. Added NativeOracleContext,
+NativeNearExecution, NativeOracleExecution and NativeOracleRounds. Complete
+near and projection branches preserve parent data through actual nested child
+runs; actual_reply identifies the computation with ProjectedOracle.run. Actual
+oracle plus selected rounded update instantiates NativeRoundTrace.Steps. Added
+complete bounded search composition and large-initializer context conversion.
+Main theorem still open; final root/inspection checks pending.
+Full 313-module root build passed including the actual search and initial
+context conversion (/tmp/qptas-composed-search-root-build.log). Lax inspection
+passed exit 0: 91 concepts / 165 proofs. Closure audit found only the main
+theorem open. No strict replay on this batch. Root restore pending.
+Root restore passed actual exit 0 (/tmp/qptas-composed-search-restore.log).
