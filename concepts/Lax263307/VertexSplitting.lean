@@ -5,7 +5,7 @@ import Mathlib.Tactic
 /-!
 ---
 title: Vertex splitting for the directed flow–cut algorithm
-type: theorem
+type: lemma
 ---
 Replace each original vertex $v$ by two ports $v^-$ and $v^+$.
 The capacity of $v^-\to v^+$ is its cost $x_v$. Reverse port arcs and arcs
@@ -34,6 +34,8 @@ Leighton–Rao algorithm in Lax455465.
 
 namespace Lax263307.VertexSplitting
 
+open Lax455465.FlowCutCertificate (Certificate encodeCertificate)
+open Lax759944.RamPolytime (RamPolytime)
 open scoped NNReal NNRat
 open Lax455465.RationalEncoding Lax455465.ProductNetwork Lax455465.ConcurrentFlow
 
@@ -97,12 +99,12 @@ axiom separator_cost_bound {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.A
 
 /-- Apply the existing directed uniform solver to every split network. -/
 axiom split_certificate :
-  ∃ (solve : List ℕ → List ℕ) (C : ℝ), Lax759944.RamPolytime.RamPolytime solve ∧ 0 < C ∧
+  ∃ (solve : List ℕ → List ℕ) (C : ℝ), RamPolytime solve ∧ 0 < C ∧
     ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
       (x : Fin n → ℚ≥0) (large : ℚ≥0), 0 < n →
       let I := splitInstance G x large
-      ∃ certificate : Lax455465.FlowCutCertificate.Certificate (2 * n),
-        solve (encodeInput .directed I) = Lax455465.FlowCutCertificate.encodeCertificate certificate ∧
+      ∃ certificate : Certificate (2 * n),
+        solve (encodeInput .directed I) = encodeCertificate certificate ∧
         AdmissibleCut I.weights certificate.cut ∧
         IsArcConcurrentFlow .directed I.network I.weights
           (certificate.flow.value : ℝ≥0) certificate.flow.flow ∧
@@ -112,7 +114,7 @@ axiom split_certificate :
 /-- A split flow–cut certificate yields a high-value flow or a cheap separation. -/
 axiom flow_or_separation {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (x : Fin n → ℚ≥0) (large : ℚ≥0)
-    (certificate : Lax455465.FlowCutCertificate.Certificate (2 * n)) (ρ γ : ℝ)
+    (certificate : Certificate (2 * n)) (ρ γ : ℝ)
     (nonnegative : 0 ≤ ρ) (positive : 0 < γ)
     (admissible : AdmissibleCut (splitInstance G x large).weights certificate.cut)
     (flow_valid : IsArcConcurrentFlow .directed (splitInstance G x large).network

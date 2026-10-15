@@ -7,7 +7,7 @@ import Lax263307.SampledAlmostEmbeddings
 /-!
 ---
 title: A class width bound obstructs induced route sampling
-type: theorem
+type: lemma
 ---
 Suppose every graph in a hereditary class has a decomposition whose bag
 size is bounded by a monotone function $W$ of its edge count. An induced
@@ -23,8 +23,8 @@ family of linear treewidth.
 
 # Formalization notes
 
-The monotone class bag bound is an explicit hypothesis here. Its derivation
-from the main theorem's separator hypothesis is a separate proof obligation.
+The monotone class bag bound is an explicit hypothesis here. The main theorem derives it
+from its separator hypothesis.
 
 # Attribution
 
@@ -33,8 +33,11 @@ Bonnet–Chang, the width contradiction after route sampling in Lemma 11.
 
 namespace Lax263307.InducedEmbeddingWidth
 
-open Lax263307.AlmostEmbeddings Lax263307.InducedRouteEdges Lax228581.Treewidth
-open Lax263307.GraphClasses
+open PathSampling (adjacencyProbability collisionProbability expectedSize)
+open RouteDistributions (Distribution)
+open RoutePruning (longEdges)
+open AlmostEmbeddings InducedRouteEdges Lax228581.Treewidth
+open GraphClasses
 
 def HasBagBound (C : GraphClass) (W : ℕ → ℕ) : Prop :=
   ∀ n (G : SimpleGraph (Fin n)), G ∈ C n →
@@ -54,16 +57,16 @@ axiom treewidth_after_pruning {t n : ℕ} (C : GraphClass) (hereditary : IsHered
     (member : G ∈ C n) (E : AlmostEmbedding H G) (induced : IsInduced E) (d L : ℕ)
     (degree_bound : ∀ v, H.degree v ≤ d) :
     treewidth H + 1 ≤ max 1 (2 * d * W (d * H.edgeSet.ncard * L ^ 2)) +
-      (Lax263307.RoutePruning.longEdges E L).card
+      (longEdges E L).card
 
 axiom sampled_width_bound {t n q : ℕ} (C : GraphClass) (hereditary : IsHereditary C)
     (W : ℕ → ℕ) (monotone : Monotone W) (class_bound : HasBagBound C W)
     (H : SimpleGraph (Fin t)) [DecidableRel H.Adj] (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-    (member : G ∈ C n) (D : Lax263307.RouteDistributions.Distribution G q) (hn : 0 < n)
+    (member : G ∈ C n) (D : Distribution G q) (hn : 0 < n)
     (d L : ℕ) (degree_bound : ∀ v, H.degree v ≤ d) (M : ℝ) (positive : 0 < M)
-    (bad_budget : (H.edgeSet.ncard : ℝ) ^ 2 * (Lax263307.PathSampling.collisionProbability D.toSampling +
-      Lax263307.PathSampling.adjacencyProbability G D.toSampling) ≤ 1 / 4)
-    (length_budget : (H.edgeSet.ncard : ℝ) * Lax263307.PathSampling.expectedSize D.toSampling ≤ M) :
+    (bad_budget : (H.edgeSet.ncard : ℝ) ^ 2 * (collisionProbability D.toSampling +
+      adjacencyProbability G D.toSampling) ≤ 1 / 4)
+    (length_budget : (H.edgeSet.ncard : ℝ) * expectedSize D.toSampling ≤ M) :
     ∃ removed : ℕ, (L : ℝ) * removed ≤ 4 * M ∧
       treewidth H + 1 ≤ max 1 (2 * d * W (d * H.edgeSet.ncard * L ^ 2)) + removed
 

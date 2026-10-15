@@ -5,18 +5,17 @@ import Mathlib.Data.List.Sublists
 /-!
 ---
 title: Exhaustive search for small independent-set targets
-type: theorem
+type: lemma
 ---
 For a small target $k$, enumerate exactly the $k$-element vertex sets and
 test independence. The first success has size exactly $k$. If the search
-fails, every independent set has size less than $k$. There are exactly
-$\binom nk\le n^k$ candidates.
+fails, every independent set has size less than $k$.
 
 # Formalization notes
 
 The executable enumeration generates sublists of length $k$, without
-materializing all vertex subsets. The candidate count is separate from
-the eventual RAM instruction bound.
+materializing all vertex subsets. The two claims give completeness of
+the candidate list and correctness of the search.
 
 # Attribution
 
@@ -37,10 +36,6 @@ def findIndependentSet {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
 /-- Every size-`k` vertex set occurs, and no other cardinality occurs. -/
 axiom candidate_complete (n k : ℕ) (I : Finset (Fin n)) :
   I ∈ candidates n k ↔ I.card = k
-
-/-- Exact candidate count and its bound by a power of the graph order. -/
-axiom candidate_count (n k : ℕ) :
-  (candidates n k).length = n.choose k ∧ (candidates n k).length ≤ n ^ k
 
 /-- Search success is exact; search failure excludes every larger independent set. -/
 axiom search_correct {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k : ℕ) :

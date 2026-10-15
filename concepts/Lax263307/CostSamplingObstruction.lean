@@ -3,7 +3,7 @@ import Lax263307.InducedEmbeddingWidth
 /-!
 ---
 title: A width obstruction from sparse costs and bounded route loads
-type: theorem
+type: lemma
 ---
 Assume vertex costs lie in $[0,1]$, have total mass at most $k>0$, and
 edge cost at most $k^2/p$. A route distribution with vertex loads at most
@@ -15,9 +15,9 @@ $Lq\le4m\ell$ and the pruned source treewidth-plus-one bound.
 
 # Formalization notes
 
-The class bag bound is still an explicit intermediate hypothesis. This
-combines the proved probability estimates and sampled width obstruction;
-it does not yet derive the class bound from separators.
+The class bag bound is an explicit intermediate hypothesis. This lemma
+combines the probability estimates with the sampled width obstruction.
+The main theorem obtains the bag bound from its separator hypothesis.
 
 # Attribution
 
@@ -26,17 +26,20 @@ Bonnet–Chang, the sparse-cost sampling contradiction in Lemma 11.
 
 namespace Lax263307.CostSamplingObstruction
 
-open Lax263307.GraphClasses Lax263307.InducedEmbeddingWidth Lax228581.Treewidth
+open Entropy (edgeCost)
+open PathSampling (load)
+open RouteDistributions (Distribution)
+open GraphClasses InducedEmbeddingWidth Lax228581.Treewidth
 
 axiom cost_width_obstruction {t n q : ℕ} (C : GraphClass) (hereditary : IsHereditary C)
     (W : ℕ → ℕ) (monotone : Monotone W) (class_bound : HasBagBound C W)
     (H : SimpleGraph (Fin t)) [DecidableRel H.Adj] (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-    (member : G ∈ C n) (D : Lax263307.RouteDistributions.Distribution G q) (hn : 0 < n)
+    (member : G ∈ C n) (D : Distribution G q) (hn : 0 < n)
     (d L : ℕ) (degree_bound : ∀ v, H.degree v ≤ d) (edge_positive : 0 < H.edgeSet.ncard)
     (x : Fin n → ℝ) (k ℓ p : ℝ) (k_positive : 0 < k) (ℓ_positive : 0 < ℓ) (p_positive : 0 < p)
     (cost_bounds : ∀ v, 0 ≤ x v ∧ x v ≤ 1) (mass : (∑ v, x v) ≤ k)
-    (load_bound : ∀ v, Lax263307.PathSampling.load D.toSampling v ≤ ℓ * x v / k)
-    (edge_bound : Lax263307.Entropy.edgeCost G x ≤ k ^ 2 / p)
+    (load_bound : ∀ v, load D.toSampling v ≤ ℓ * x v / k)
+    (edge_bound : edgeCost G x ≤ k ^ 2 / p)
     (target_large : 8 * (H.edgeSet.ncard : ℝ) ^ 2 * ℓ ^ 2 ≤ k)
     (sparsity_large : 16 * (H.edgeSet.ncard : ℝ) ^ 2 * ℓ ^ 2 ≤ p) :
     ∃ removed : ℕ, (L : ℝ) * removed ≤ 4 * (H.edgeSet.ncard : ℝ) * ℓ ∧

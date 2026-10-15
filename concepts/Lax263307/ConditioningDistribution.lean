@@ -3,7 +3,7 @@ import Lax263307.ConditionedCosts
 /-!
 ---
 title: Joint distributions for the entropy-decrease argument
-type: theorem
+type: lemma
 ---
 For $y\in R_r(G,k)$, $k>0$, $|A|<r$, and $y_A>0$, set
 $$\pi_v=\frac{y_{A\cup\{v\}}}{k y_A},\qquad

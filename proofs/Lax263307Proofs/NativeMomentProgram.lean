@@ -98,35 +98,6 @@ open Lax109476Proofs
 def layout := RamAutomaticLayout.layout fullCommand
 def program : Lax808846.Ram.Program := Lax808846Proofs.Compile.compileProgram layout fullCommand
 
-theorem compiled_runs_to {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r v width : ℕ)
-    (hv : 0 < v) (hwidth : v+RamTransfer.layoutAllowance layout ≤ width)
-    (hB : NativeMomentSetup.guardBound n k r < 2^v) (hm : 2^n < 2^v) :
-    ∃ t ≤ 10*totalCost n r+1,Lax808846.Ram.RunsTo width program (encodeInput G k r)
-      (encodeProgram (MomentLP.program G k r)) t := by
-  let room := NativeMomentSetup.guardBound n k r
-  obtain ⟨τ,rr,ho⟩ := full_command_spec (2^v) G k r hB hm (initEnv (fun _ => room) (encodeInput G k r))
-    ⟨rfl,by
-      intro a z hz
-      have hz0 : z=0 := (List.mem_replicate.mp hz).2
-      have hvB : 0 < 2^v := by positivity
-      omega,
-      by intro a; simp [initEnv,room]⟩
-  have hinput : ∀ z ∈ encodeInput G k r,z < 2^v := by
-    intro z hz
-    change z ∈ n::k::r::(n*n)::NativeWeightReduction.adjacency G at hz
-    simp only [List.mem_cons] at hz
-    have hb : n*n+(n+1)*(r+3)+L n r+n+k+r+N n r+20 < 2^v := hB
-    rcases hz with rfl|rfl|rfl|rfl|hz
-    · omega
-    · omega
-    · omega
-    · omega
-    · exact (NativeExhaustive.adjacency_words G z hz).trans_lt (by omega)
-  obtain ⟨K,hK,hbs⟩ := rr
-  obtain ⟨t,ht,hrun⟩ := Lax808846Proofs.Simulation.compileProgram_runsTo
-    (RamTransfer.layout_fits hv hwidth) (RamAutomaticLayout.layout_ok fullCommand) hinput hbs
-  refine ⟨t,ht.trans (Nat.add_le_add_right (Nat.mul_le_mul_left 10 hK) 1),?_⟩
-  simpa only [program,layout,ho,initEnv,List.nil_append] using hrun
 
 def size (n k r : ℕ) : ℕ := n+k+r+N n r+2
 
@@ -183,48 +154,5 @@ theorem polynomial_bounds (n k r : ℕ) :
   change 24*n*n+16+NativeMomentSetup.cost n r+NativeMomentInput.cost n r+13*L n r+8 ≤ _
   nlinarith only [hn2,hsetup,hinput,hL,h23,h34,h04]
 
-/--
----
-conclusion: Lax263307.NativeMomentLP.exists_program
----
-Compile the actual catalog, metadata, matrix and vector loops. Every written
-word is bounded by the guarded RAM semantics, and output is exactly the
-registered LP encoding. The same program works for all graphs and parameters,
-with one quartic time/word-width bound, including empty graphs.
--/
-theorem exists_program : ∃ p : Lax808846.Ram.Program, ∃ c : ℕ,0 < c ∧
-    ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r width : ℕ),
-      c*(n+k+r+dimension n r+2)^4 ≤ width →
-      ∃ t ≤ c*(n+k+r+dimension n r+2)^4,Lax808846.Ram.RunsTo width p (encodeInput G k r)
-        (encodeProgram (MomentLP.program G k r)) t := by
-  let C := 100000+RamTransfer.layoutAllowance layout
-  refine ⟨program,C,by dsimp [C]; omega,?_⟩
-  intro n G inst k r width hw
-  let X := size n k r
-  let v := 100*X^3+10
-  have hX : 1 ≤ X := by dsimp [X,size]; omega
-  have h14 : 1 ≤ X^4 := Nat.one_le_pow _ _ (by omega)
-  have h34 : X^3 ≤ X^4 := Nat.pow_le_pow_right hX (by omega)
-  have h13 : X ≤ X^3 := le_self_pow hX (by omega)
-  have hn : n ≤ X := by dsimp [X,size]; omega
-  have hb := polynomial_bounds n k r
-  have hguard : NativeMomentSetup.guardBound n k r < v := by
-    have hh : NativeMomentSetup.guardBound n k r ≤ 73*X^3 := hb.1
-    dsimp only [v]
-    omega
-  have hv : 0 < v := by dsimp [v]; omega
-  have hw' : C*X^4 ≤ width := hw
-  have hwidth : v+RamTransfer.layoutAllowance layout ≤ width := by
-    have ha := Nat.mul_le_mul_left (RamTransfer.layoutAllowance layout) h14
-    dsimp only [C] at hw'
-    dsimp only [v]
-    nlinarith only [ha,hw',h14,h34]
-  have hm : 2^n < 2^v := Nat.pow_lt_pow_right (by omega) (by dsimp [v]; omega)
-  obtain ⟨t,ht,hrun⟩ := compiled_runs_to G k r v width hv hwidth (hguard.trans Nat.lt_two_pow_self) hm
-  refine ⟨t,ht.trans ?_,hrun⟩
-  change 10*totalCost n r+1 ≤ C*X^4
-  have hc : totalCost n r ≤ 2646*X^4 := hb.2
-  dsimp only [C]
-  nlinarith only [hc,h14,Nat.zero_le (RamTransfer.layoutAllowance layout*X^4)]
 
 end Lax263307Proofs.NativeMomentProgram

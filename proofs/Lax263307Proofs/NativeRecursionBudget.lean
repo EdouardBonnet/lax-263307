@@ -50,30 +50,5 @@ theorem amplify (C d n D localCost branches : ℕ) (hD : 0<D)
     _≤2^(((C+1)*X^d)*(3*X)) := Nat.pow_le_pow_right (by decide) (Nat.mul_le_mul he hd)
     _=2^(3*(C+1)*(D*logarithm n)^(d+1)) := by rw [pow_succ]; dsimp only [X]; congr 1; ring
 
-/-- Any fixed polynomial degree of the checked parameter resource has
-the required global growth rate after recursive amplification. -/
-theorem resource_amplification (a K B e : ℕ) (hK : 0<K) :
-    ∃ C d : ℕ,0<C ∧ 0<d ∧ ∀ n D : ℕ,0<n → 0<D →
-      let R := (Lax263307.ParameterResources.resource a K B n D+1)^e
-      work R R (RecursionDepth.depth n)≤2^(C*(D*logarithm n)^d) := by
-  obtain ⟨C,d,hC,hd,hresource⟩ := ParameterResources.resource_bound a K B hK
-  refine ⟨3*(e*(C+1)+1),d+1,by positivity,by omega,?_⟩
-  intro n D hn hD
-  dsimp only
-  let X := D*logarithm n
-  have hX : 1≤X := by
-    have hx : 0<X := by dsimp [X,logarithm]; positivity
-    omega
-  have hxpow : 1≤X^d := Nat.one_le_pow _ _ hX
-  have hp : 2^(C*X^d)+1≤2^(C*X^d+1) := by
-    have hpos : 1≤2^(C*X^d) := Nat.one_le_pow _ _ (by decide)
-    rw [pow_succ]; omega
-  have hlocal : (Lax263307.ParameterResources.resource a K B n D+1)^e≤2^((e*(C+1))*X^d) := by
-    calc
-      _≤(2^(C*X^d)+1)^e := Nat.pow_le_pow_left (Nat.add_le_add_right (hresource n D hn hD) 1) _
-      _≤(2^(C*X^d+1))^e := Nat.pow_le_pow_left hp _
-      _=2^((C*X^d+1)*e) := (pow_mul _ _ _).symm
-      _≤2^((e*(C+1))*X^d) := Nat.pow_le_pow_right (by decide) (by nlinarith only [hxpow])
-  exact amplify (e*(C+1)) d n D _ _ hD hlocal hlocal
 
 end Lax263307Proofs.NativeRecursionBudget

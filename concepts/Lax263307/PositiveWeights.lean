@@ -3,7 +3,7 @@ import Lax263307.WeightedIndependentSet
 /-!
 ---
 title: Removing nonpositive weights
-type: theorem
+type: lemma
 ---
 Replace each rational weight $w_v$ by $\max(w_v,0)$. An approximation for
 these nonnegative weights yields the same approximation for the original

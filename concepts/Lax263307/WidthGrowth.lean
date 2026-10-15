@@ -3,7 +3,7 @@ import Mathlib.Data.Nat.Basic
 /-!
 ---
 title: Polynomial order bound from the sampled width inequality
-type: theorem
+type: lemma
 ---
 Suppose $W(m)^a\le A(m+1)^{a-1}$ and $W(m)\ge1$. For a source graph of
 order $t$ and at most $2t$ edges, take route cutoff $24c\ell$. If its linear

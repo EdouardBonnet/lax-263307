@@ -82,11 +82,5 @@ theorem command_spec {n : ℕ} (B : ℕ) (cs : List (Finset (Fin n) × Finset (F
     (show ν.vars "fill.length"=cs.length+1 by simp [ν]),by simpa only [hlen,ν,arrs_setVar] using hroom⟩
   exact ⟨τ,(r1.seq r2).mono (by rw [hlen]; omega),p2⟩
 
-theorem none_word {n : ℕ} (cs : List (Finset (Fin n) × Finset (Fin n))) :
-    (words cs).getD 0 0=mask (pieces cs none) := rfl
-
-theorem some_word {n : ℕ} (cs : List (Finset (Fin n) × Finset (Fin n))) (i : Fin cs.length) :
-    (words cs).getD (i.val+1) 0=mask (pieces cs (some i)) := by
-  simp [words,pieces,List.getD,List.getElem?_eq_getElem i.isLt]
 
 end Lax263307Proofs.NativeCutPieces

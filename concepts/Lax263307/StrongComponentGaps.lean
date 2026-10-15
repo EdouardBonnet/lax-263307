@@ -3,7 +3,7 @@ import Lax263307.ComponentCutEncoding
 /-!
 ---
 title: Quantitative gaps for recursive component cuts
-type: theorem
+type: lemma
 ---
 The collected component normal has sum of absolute coefficients at most
 |C|+u, hence at most 2n for u≤n. A heavy part of conditioned cost at least
@@ -52,13 +52,5 @@ axiom query_gap {n r : ℕ} (G : SimpleGraph (Fin n)) (k : ℕ)
     (near : ∀ B, |x B - y B| ≤ η * δ ^ 2 / (8 * (n : ℝ) ^ 2)) :
     (∀ z ∈ independentSetHull G k r, evaluate (coefficient A C u) z ≤ 0) ∧
       η * δ ^ 2 / (4 * n) ≤ evaluate (coefficient A C u) x
-
-axiom central_cut_buffer {n r : ℕ} (A C : Finset (Fin n)) (u : ℕ) (upper : u ≤ n)
-    (x z : MomentVector n r) (Δ : ℝ) (positive : 0 < Δ) (hn : 0 < n)
-    (valid : evaluate (coefficient A C u) z ≤ 0)
-    (gap : Δ ≤ evaluate (coefficient A C u) x)
-    (perturbed : MomentVector n r)
-    (near : ∀ B, |perturbed B - z B| ≤ Δ / (4 * n)) :
-    evaluate (coefficient A C u) perturbed ≤ evaluate (coefficient A C u) x - Δ / 2
 
 end Lax263307.StrongComponentGaps

@@ -3,7 +3,7 @@ import Lax263307.LinearRelaxation
 /-!
 ---
 title: Independent-set encodings satisfy the relaxation
-type: theorem
+type: lemma
 ---
 Every independent set $I$ of size $k$ gives a feasible point of $R_r(G,k)$
 by setting $y_A=\mathbf1[A\subseteq I]$. Consequently

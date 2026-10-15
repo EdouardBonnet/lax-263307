@@ -17,13 +17,6 @@ def words (ks : List Kind) {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.A
 
 def command (ks : List Kind) : Com := ks.foldr (fun kind c => .seq (NativeMomentFamily.command kind) c) .skip
 
-theorem words_length (ks : List Kind) {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) :
-    (words ks G k r).length=3*entryCount ks n r := by
-  induction ks with
-  | nil => simp [words,entryCount]
-  | cons kind ks ih =>
-    simpa only [words,List.flatMap_cons,List.length_append,NativeMomentAssembly.matrix_length,
-      entryCount,List.map_cons,List.sum_cons,Nat.mul_add,Nat.mul_assoc] using congrArg (fun t => 3*NativeMomentFamily.rowCount kind n r*dimension n r+t) ih
 
 theorem command_spec (ks : List Kind) {n : ℕ} (B : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ)
     (front : List ℕ)

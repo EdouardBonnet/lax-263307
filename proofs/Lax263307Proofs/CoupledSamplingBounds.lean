@@ -227,10 +227,10 @@ theorem good_route_sample {n q t m : ℕ} (G : SimpleGraph (Fin n)) [DecidableRe
   have hnormalized : (∑ ω : Ω, w ω) = 1 := by
     simpa only [Ω, w, Fintype.sum_prod_type] using hnneg.2
   have hbad : (∑ ω : Ω, if bad ω then w ω else 0) ≤ 1 / 4 := by
-    have h := (bad_probability_bound G D hn a b).trans bad_budget
+    have h := (Lax263307.CoupledSamplingBounds.bad_probability_bound G D hn a b).trans bad_budget
     simpa only [badProbability, Ω, bad, w, Fintype.sum_prod_type] using h
   have hexpected : (∑ ω : Ω, w ω * cost ω) ≤ M := by
-    simpa only [Ω, w, cost, Fintype.sum_prod_type, total_length_expectation D hn a b nonloop] using length_budget
+    simpa only [Ω, w, cost, Fintype.sum_prod_type, Lax263307.CoupledSamplingBounds.total_length_expectation D hn a b nonloop] using length_budget
   obtain ⟨ω, hp, hg, hc⟩ := finite_good_outcome w (fun ω => hnneg.1 _ _) hnormalized bad cost
     (fun ω => Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _) M positive
     (by

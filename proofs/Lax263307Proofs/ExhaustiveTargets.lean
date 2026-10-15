@@ -28,18 +28,6 @@ theorem candidate_complete (n k : ℕ) (I : Finset (Fin n)) :
     have hlen : l.length = k := by rw [← List.toFinset_card_of_nodup hnodup, heq, hI]
     exact List.mem_map.mpr ⟨l, List.mem_sublistsLen.mpr ⟨hsub, hlen⟩, heq⟩
 
-/--
----
-conclusion: Lax263307.ExhaustiveTargets.candidate_count
----
-The length of prescribed-size sublists is the binomial coefficient, which
-is at most the corresponding power of the list length.
--/
-theorem candidate_count (n k : ℕ) :
-    (candidates n k).length = n.choose k ∧ (candidates n k).length ≤ n ^ k := by
-  have heq : (candidates n k).length = n.choose k := by
-    simp [candidates, List.length_sublistsLen]
-  exact ⟨heq, heq ▸ Nat.choose_le_pow n k⟩
 
 /--
 ---

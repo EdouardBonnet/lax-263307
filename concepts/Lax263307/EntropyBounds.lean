@@ -3,7 +3,7 @@ import Lax263307.Entropy
 /-!
 ---
 title: Entropy lies between zero and the logarithm of the order
-type: theorem
+type: lemma
 ---
 For every probability vector on $n$ vertices,
 $$0\le H(\pi)\le\log_2 n.$$

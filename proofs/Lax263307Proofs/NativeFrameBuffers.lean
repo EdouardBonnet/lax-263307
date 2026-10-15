@@ -39,10 +39,6 @@ theorem array_frame (names : List String) (a : String) (ha : a≠"recursion.fram
   | nil => simp [save,Com.warrs]
   | cons b bs ih => simp [save,NativeBlockAppend.command,NativeBlockAppend.step,RamWordBuffer.append,Com.warrs,ha,ih]
 
-theorem stride_frame (names : List String) : "recursion.stride"∉(save names).wvars := by
-  induction names with
-  | nil => simp [save,Com.wvars]
-  | cons b bs ih => simp [save,NativeBlockAppend.command,NativeBlockAppend.step,RamWordBuffer.append,Com.wvars,ih]
 
 /-- Save all working buffers in one recursion frame. The buffer list is
 fixed in the source code, and the common stride is computed at the root. -/

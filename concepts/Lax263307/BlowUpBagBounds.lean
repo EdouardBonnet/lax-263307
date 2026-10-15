@@ -5,7 +5,7 @@ import Lax263307.BlowUpDeletion
 /-!
 ---
 title: Sublinear bag bounds survive independent blow-ups
-type: theorem
+type: lemma
 ---
 The independent blow-up closure of a hereditary class with strongly
 edge-sublinear separators also has edge-sublinear decomposition bags.
@@ -30,6 +30,7 @@ Bonnet–Chang, Lemma 16.
 
 namespace Lax263307.BlowUpBagBounds
 
+open PowerBagBounds (HasPowerBagBound)
 open GraphClasses EdgeSublinearSeparators BlowUpClasses Lax228581.Treewidth
 
 axiom blowup_sublinear_bag_bound (C : GraphClass) (hereditary : IsHereditary C)
@@ -40,6 +41,6 @@ axiom blowup_sublinear_bag_bound (C : GraphClass) (hereditary : IsHereditary C)
 
 axiom blowup_power_bag_bound (C : GraphClass) (hereditary : IsHereditary C)
     (separators : HasStronglyEdgeSublinearSeparators C) :
-    ∃ a A : ℕ, 0 < a ∧ 0 < A ∧ Lax263307.PowerBagBounds.HasPowerBagBound (blowUpClass C) a A
+    ∃ a A : ℕ, 0 < a ∧ 0 < A ∧ HasPowerBagBound (blowUpClass C) a A
 
 end Lax263307.BlowUpBagBounds

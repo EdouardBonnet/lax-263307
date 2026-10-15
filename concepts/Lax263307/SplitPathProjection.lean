@@ -4,7 +4,7 @@ import Mathlib.Data.List.Chain
 /-!
 ---
 title: Projecting split paths and preserving endpoint loads
-type: theorem
+type: lemma
 ---
 A simple path of positive-capacity arcs in the split network, starting at
 $u^-$ and ending at $v^+$, is the expansion of a simple original path from

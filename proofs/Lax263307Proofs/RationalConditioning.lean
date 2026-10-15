@@ -133,50 +133,5 @@ theorem candidate_bound (n r : ℕ) : (candidates n r).length ≤ (r + 1) * (n +
         _ ≤ (n + 1) ^ r := by gcongr <;> omega
     _ = _ := by simp
 
-/--
----
-conclusion: Lax263307.RationalConditioning.search_correct
----
-The exact rational search terminates with a set satisfying the costs
-and mass conditions of Lemma 12.
-
-# Proof strategy
-
-The entropy argument guarantees a suitable set, and completeness places
-it in the candidate list. Clearing positive denominators proves the
-equivalence of the rational test and the edge-cost bound. The first
-successful candidate inherits the conditioning invariants.
-
-# Attribution
-
-Bonnet–Chang, the deterministic enumeration in the proof of Lemma 12.
--/
-theorem search_correct {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-    (k r p : ℕ) (y : RationalVector n r) (feasible : IsFeasible G k r (realVector y))
-    (target_positive : 0 < k) (level_positive : 0 < r) (threshold_positive : 0 < p)
-    (budget : 2 * (p : ℝ) * Real.logb 2 n ≤ r) :
-    ∃ A : Finset (Fin n), findConditioning G k p y = some A ∧ A.card ≤ r ∧
-      0 < value (realVector y) A ∧
-      (∀ v, 0 ≤ conditioned (realVector y) A v ∧ conditioned (realVector y) A v ≤ 1) ∧
-      (∑ v, conditioned (realVector y) A v) = k ∧
-      edgeCost G (conditioned (realVector y) A) ≤ (k : ℝ) ^ 2 / p := by
-  obtain ⟨B, hB, hposB, _, _, heB⟩ := Lax263307.ConditioningExistence.exists_low_edge_cost
-    G k r p (realVector y) feasible target_positive level_positive threshold_positive budget
-  have hpassB := (passes_iff G k p y B threshold_positive).2 ⟨hposB, heB⟩
-  have hmemB := (Lax263307.RationalConditioning.candidate_complete n r B).2 hB
-  cases hsearch : findConditioning G k p y with
-  | none =>
-    have hnone := List.find?_eq_none.mp hsearch B hmemB
-    simp [hpassB] at hnone
-  | some A =>
-    have hpass : Passes G k p y A := by
-      have h := List.find?_some hsearch
-      simpa using h
-    have hA := (Lax263307.RationalConditioning.candidate_complete n r A).1
-      (List.mem_of_find?_eq_some hsearch)
-    have htest := (passes_iff G k p y A threshold_positive).1 hpass
-    have h := Lax263307.ConditionedCosts.conditioning_invariants
-      G k r (realVector y) feasible A hA htest.1
-    exact ⟨A, rfl, hA, htest.1, h.1, h.2.1, htest.2⟩
 
 end Lax263307Proofs.RationalConditioning

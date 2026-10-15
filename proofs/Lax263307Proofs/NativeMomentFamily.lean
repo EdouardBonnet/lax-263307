@@ -57,6 +57,7 @@ def appendMatrix (kind : Kind) : Com := NativeRationalTabulate.command (read kin
 theorem entries_words (kind : Kind) {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) :
     NativeRationalTabulate.words (entries kind G k r)=NativeMomentAssembly.matrixWords (matrix kind G k r) := rfl
 
+
 theorem entries_length (kind : Kind) {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) :
     (entries kind G k r).length=rowCount kind n r*dimension n r := by
   simp [entries,List.length_flatten,List.map_ofFn,List.sum_ofFn]

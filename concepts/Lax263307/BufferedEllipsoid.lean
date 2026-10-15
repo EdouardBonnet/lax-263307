@@ -3,7 +3,7 @@ import Mathlib.LinearAlgebra.Matrix.PosDef
 /-!
 ---
 title: Protected balls for the rounded ellipsoid method
-type: theorem
+type: lemma
 ---
 Scaling a moment vector in the unit cube by 4N puts it well inside the
 initial unit ball. A perturbation of Euclidean radius at most one quarter

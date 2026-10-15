@@ -3,7 +3,7 @@ import Lax263307.WeightRounding
 /-!
 ---
 title: Rounding loses at most one weight unit per vertex
-type: theorem
+type: lemma
 ---
 For nonnegative weights and $\tau>0$, the multiplicities
 $t_v=\lfloor w_v/\tau\rfloor$ satisfy

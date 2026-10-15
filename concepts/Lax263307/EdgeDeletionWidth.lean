@@ -5,7 +5,7 @@ import Mathlib.Data.Fintype.Fin
 /-!
 ---
 title: Treewidth loss under edge deletion
-type: theorem
+type: lemma
 ---
 Deleting $q$ edges reduces treewidth by at most $q$. Choose one endpoint of
 each deleted edge and add all chosen vertices to every bag of a decomposition

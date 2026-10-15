@@ -30,8 +30,6 @@ theorem minus_row {m n : ℕ} (P : Program ℝ m n) (center : Fin n → ℝ)
   simp [point, distance, sub_eq_add_neg]
 
 
-
-
 /--
 ---
 conclusion: Lax263307.DistanceProjection.primal_characterization
@@ -97,8 +95,6 @@ theorem objective_bounded {m n : ℕ} (P : Program ℝ m n) (center : Fin n → 
   exact neg_nonpos.mpr ((primal_characterization P center z).mp hz).2.1
 
 
-
-
 /--
 ---
 conclusion: Lax263307.DistanceProjection.projection_feasible_iff
@@ -154,8 +150,6 @@ theorem dual_objective {m n : ℕ} (P : Program ℝ m n) (center : Fin n → ℝ
       ∑ j, dual (Fin.natAdd m (Fin.natAdd n j)) * center j := by apply Finset.sum_congr rfl; intro j _; ring
   rw [hcomm, hcomm']
   ring
-
-
 
 
 /--
@@ -222,33 +216,10 @@ theorem optimal_gap {m n : ℕ} (P : Program ℝ m n) (center : Fin n → ℝ)
       (∀ y, PrimalFeasible P y → (∑ j, normal dual j * y j) ≤ dualValue P (oldMultipliers dual)) ∧
       (∑ j, normal dual j * center j) - dualValue P (oldMultipliers dual) = distance z := by
   obtain ⟨hpoint, hdist, hnear⟩ := (primal_characterization P center z).mp primal
-  obtain ⟨hl1, hvalid⟩ := dual_normal P center dual dual_feasible
+  obtain ⟨hl1, hvalid⟩ := Lax263307.DistanceProjection.dual_normal P center dual dual_feasible
   refine ⟨hpoint, hdist, hnear, hl1, hvalid, ?_⟩
   rw [objective_value, dual_objective] at matching
   linarith
 
-
-
-
-/--
----
-conclusion: Lax263307.DistanceProjection.strong_gap_dichotomy
----
-Compare the returned distance with the chosen radius. The primal point is either within that radius, or the dual normal separates by strictly more than it.
--/
-theorem strong_gap_dichotomy {m n : ℕ} (P : Program ℝ m n) (center : Fin n → ℝ)
-    (z : Fin (n + 1) → ℝ) (dual : Fin (m + (n + n)) → ℝ)
-    (primal : PrimalFeasible (distanceProgram P center) z)
-    (dual_feasible : DualFeasible (distanceProgram P center) dual)
-    (matching : primalValue (distanceProgram P center) z = dualValue (distanceProgram P center) dual)
-    (ρ : ℝ) :
-    (PrimalFeasible P (point z) ∧ ∀ j, |point z j - center j| ≤ ρ) ∨
-      ((∑ j, |normal dual j|) ≤ 1 ∧
-        (∀ y, PrimalFeasible P y → (∑ j, normal dual j * y j) ≤ dualValue P (oldMultipliers dual)) ∧
-        ρ < (∑ j, normal dual j * center j) - dualValue P (oldMultipliers dual)) := by
-  obtain ⟨hpoint, _ht, hnear, hl1, hvalid, hgap⟩ := optimal_gap P center z dual primal dual_feasible matching
-  by_cases h : distance z ≤ ρ
-  · exact Or.inl ⟨hpoint, fun j => (hnear j).trans h⟩
-  · exact Or.inr ⟨hl1, hvalid, hgap.symm ▸ (not_le.mp h)⟩
 
 end Lax263307Proofs.DistanceProjection

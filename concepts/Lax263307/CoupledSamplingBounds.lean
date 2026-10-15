@@ -4,7 +4,7 @@ import Lax263307.SamplingOutcomes
 /-!
 ---
 title: A good coupled sample with bounded total route size
-type: theorem
+type: lemma
 ---
 For a source graph with $m$ edges, the expected total sampled route size is
 $m$ times the single-route expectation. The probability that some pair of
@@ -21,7 +21,8 @@ Bonnet–Chang, the union bound and Markov step in Lemma 11.
 
 namespace Lax263307.CoupledSamplingBounds
 
-open Lax263307.RouteDistributions Lax263307.CoupledRouteSampling
+open PathSampling (adjacencyProbability collisionProbability expectedSize)
+open RouteDistributions CoupledRouteSampling
 
 noncomputable def Interaction {n q : ℕ} (G : SimpleGraph (Fin n))
     (D : Distribution G q) (i j : Fin q) : Prop :=
@@ -41,20 +42,20 @@ axiom total_length_expectation {n q t m : ℕ} {G : SimpleGraph (Fin n)}
     (D : Distribution G q) (hn : 0 < n) (a b : Fin m → Fin t)
     (nonloop : ∀ e, a e ≠ b e) :
     (∑ φ, ∑ ψ, jointWeight D a b φ ψ * (∑ e, ((D.route (ψ e)).toFinset.card : ℝ))) =
-      (m : ℝ) * Lax263307.PathSampling.expectedSize D.toSampling
+      (m : ℝ) * expectedSize D.toSampling
 
 axiom bad_probability_bound {n q t m : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (D : Distribution G q) (hn : 0 < n) (a b : Fin m → Fin t) :
     badProbability G D a b ≤ (m : ℝ) ^ 2 *
-      (Lax263307.PathSampling.collisionProbability D.toSampling +
-        Lax263307.PathSampling.adjacencyProbability G D.toSampling)
+      (collisionProbability D.toSampling +
+        adjacencyProbability G D.toSampling)
 
 axiom good_route_sample {n q t m : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (D : Distribution G q) (hn : 0 < n) (a b : Fin m → Fin t) (nonloop : ∀ e, a e ≠ b e)
     (M : ℝ) (positive : 0 < M)
-    (bad_budget : (m : ℝ) ^ 2 * (Lax263307.PathSampling.collisionProbability D.toSampling +
-      Lax263307.PathSampling.adjacencyProbability G D.toSampling) ≤ 1 / 4)
-    (length_budget : (m : ℝ) * Lax263307.PathSampling.expectedSize D.toSampling ≤ M) :
+    (bad_budget : (m : ℝ) ^ 2 * (collisionProbability D.toSampling +
+      adjacencyProbability G D.toSampling) ≤ 1 / 4)
+    (length_budget : (m : ℝ) * expectedSize D.toSampling ≤ M) :
     ∃ φ : Fin t → Fin n, ∃ ψ : Fin m → Fin q,
       0 < jointWeight D a b φ ψ ∧
       (∀ e f, Function.Injective ![a e, b e, a f, b f] → ¬Interaction G D (ψ e) (ψ f)) ∧

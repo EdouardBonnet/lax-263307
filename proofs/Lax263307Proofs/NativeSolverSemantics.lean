@@ -47,16 +47,5 @@ theorem exists_solvers_with_parts (C : GraphClass) (hereditary : IsHereditary C)
       (fun v => le_max_right _ _) hn hε hεsmall hmax
     exact Lax263307Proofs.WeightedAlgorithm.relabel_approximation G cp (ε/2) _ happrox
 
-theorem exists_solvers (C : GraphClass) (hereditary : IsHereditary C)
-    (separators : HasStronglyEdgeSublinearSeparators C) :
-    ∃ (lp flow : List ℕ → List ℕ) (a A K b : ℕ),
-      Lax759944.RamPolytime.RamPolytime lp ∧ NativeEncodedLP.Encoded lp ∧
-      Lax759944.RamPolytime.RamPolytime flow ∧ 0<a ∧ 0<A ∧ 0<K ∧ 0<b ∧
-      HasPowerBagBound (blowUpClass C) a A ∧ NativeRecursiveOracle.OracleCorrect (blowUpClass C) lp flow a K b ∧
-      ∀ n (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],G ∈ C n →
-        ∀ weights ε,0<ε → ε<1 → IsApproximation G weights ε (solve lp flow a K b G weights ε) := by
-  obtain ⟨lp,flow,a,A,K,b,hpolyLP,hlp,hpolyFlow,ha,hA,hK,hb,hbound,hsep,ho,hcorrect⟩ :=
-    exists_solvers_with_parts C hereditary separators
-  exact ⟨lp,flow,a,A,K,b,hpolyLP,hlp,hpolyFlow,ha,hA,hK,hb,hbound,ho,hcorrect⟩
 
 end Lax263307Proofs.NativeSolverSemantics

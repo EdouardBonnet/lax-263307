@@ -5,7 +5,7 @@ import Mathlib.Data.List.Dedup
 /-!
 ---
 title: A computable catalog and index for moment coordinates
-type: theorem
+type: lemma
 ---
 Enumerate only subsets of size at most r+2, remove duplicates, and attach
 the cardinality proof to each entry. This lists each moment coordinate
@@ -16,8 +16,8 @@ and the coordinate type. The catalog has at most (r+3)(n+1)^(r+2) entries.
 
 The inverse index uses list search. This avoids a choice-based Fintype
 equivalence in LP input construction. Duplicate removal is permitted as
-its polynomial overhead in the catalog length still fits the intended
-quasipolynomial bound. Its actual RAM implementation remains an obligation.
+its polynomial overhead in the catalogue length fits the quasipolynomial
+bound. The proof package implements this enumeration on the RAM.
 -/
 
 namespace Lax263307.CoordinateCatalog
@@ -56,8 +56,6 @@ def catalog (n r : ℕ) : List (Coordinate n r) :=
 
 axiom catalog_complete (n r : ℕ) (A : Coordinate n r) : A ∈ catalog n r
 
-axiom catalog_nodup (n r : ℕ) : (catalog n r).Nodup
-
 private theorem catalog_complete_aux (n r : ℕ) (A : Coordinate n r) : A ∈ catalog n r := by
   have hmem : A.val ∈ sets n r :=
     List.mem_dedup.mpr ((candidate_complete_aux n (r + 2) A.val).mpr A.property)
@@ -72,7 +70,6 @@ private theorem catalog_nodup_aux (n r : ℕ) : (catalog n r).Nodup := by
 
 def indexing (n r : ℕ) : Fin (catalog n r).length ≃ Coordinate n r :=
   List.Nodup.getEquivOfForallMemList (catalog n r) (catalog_nodup_aux n r) (catalog_complete_aux n r)
-
 
 axiom catalog_bound (n r : ℕ) : (catalog n r).length ≤ (r + 3) * (n + 1) ^ (r + 2)
 

@@ -3,7 +3,7 @@ import Lax263307Proofs.NativeQptasComplexity
 
 namespace Lax263307Proofs.MainTheorem
 
-open Lax263307 GraphClasses EdgeSublinearSeparators QPTAS WeightedIndependentSet
+open Lax263307 GraphClasses EdgeSublinearSeparators QPTAS QPTASRuntime WeightedIndependentSet
 
 /--
 ---

@@ -4,7 +4,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.NthRootLemmas
 /-!
 ---
 title: Integer power bounds on class decomposition bags
-type: theorem
+type: lemma
 ---
 A uniform bound $|B|^a\le A(m+1)^{a-1}$ gives the monotone bag-size function
 $W(m)=\lfloor\sqrt[a]{A(m+1)^{a-1}}\rfloor$. For $a,A>0$, this function
@@ -18,7 +18,7 @@ An integer form of the sublinear width bound used in Bonnet–Chang's Lemma 11.
 
 namespace Lax263307.PowerBagBounds
 
-open Lax263307.GraphClasses Lax263307.InducedEmbeddingWidth Lax228581.Treewidth
+open GraphClasses InducedEmbeddingWidth Lax228581.Treewidth
 
 def HasPowerBagBound (C : GraphClass) (a A : ℕ) : Prop :=
   ∀ n (G : SimpleGraph (Fin n)), G ∈ C n → ∃ D : TreeDecomposition G,

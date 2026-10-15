@@ -7,7 +7,7 @@ import Mathlib.Data.Nat.Size
 /-!
 ---
 title: A bounded rounded ellipsoid search with answer-or-cut replies
-type: theorem
+type: lemma
 ---
 An oracle returns an answer, a certified rejection, or a nonzero integer
 central-cut normal. The search stores a rational matrix and center, advances
@@ -21,12 +21,15 @@ The computable rational update is the registered LP ellipsoid update,
 written explicitly so that definitions and statement types do not import
 a proof package. The proof identifies its trajectory with the registered
 sequence and applies that sequence's determinant and containment theorems.
-This is a functional search; its oracle and RAM refinements are separate
-implementation obligations.
+The main theorem supplies the oracle and verifies the corresponding
+RAM implementation.
 -/
 
 namespace Lax263307.RoundedOracleSearch
 
+open BufferedEllipsoid (scale)
+open Lax109476.RationalEncoding (encodeRational)
+open Lax759944.BinaryWordEncoding (bitSize)
 open Matrix
 
 abbrev State (n : ℕ) := Matrix (Fin n) (Fin n) ℚ × (Fin n → ℚ)
@@ -111,20 +114,20 @@ axiom search_complete {n : ℕ} {Result : Type} (dimension : 2 ≤ n)
     (retains : ∀ k center a, oracle k center = .cut a →
       ∀ e : Fin n → ℝ, (∀ i, |e i| ≤ ((2 : ℝ) ^ B)⁻¹) →
         (fun i => (a i : ℝ)) ⬝ᵥ
-          (Lax263307.BufferedEllipsoid.scale z + e - (fun i => (center i : ℝ))) ≤ 0) :
+          (scale z + e - (fun i => (center i : ℝ))) ≤ 0) :
     ∃ answer, search oracle B = some answer
 
 axiom center_encoding_bound {n : ℕ} {Result : Type} (dimension : 2 ≤ n)
     (oracle : ℕ → (Fin n → ℚ) → Reply n Result)
     (nonzero : ∀ k center a, oracle k center = .cut a → ∃ i, a i ≠ 0) (k : ℕ) (i : Fin n) :
-    Lax759944.BinaryWordEncoding.bitSize
-      (Lax109476.RationalEncoding.encodeRational ((trajectory oracle k).2 i)) ≤ 60 + 6 * k + 14 * n
+    bitSize
+      (encodeRational ((trajectory oracle k).2 i)) ≤ 60 + 6 * k + 14 * n
 
 axiom shape_encoding_bound {n : ℕ} {Result : Type} (dimension : 2 ≤ n)
     (oracle : ℕ → (Fin n → ℚ) → Reply n Result)
     (nonzero : ∀ k center a, oracle k center = .cut a → ∃ i, a i ≠ 0)
     (k : ℕ) (i j : Fin n) :
-    Lax759944.BinaryWordEncoding.bitSize
-      (Lax109476.RationalEncoding.encodeRational ((trajectory oracle k).1 i j)) ≤ 60 + 6 * k + 14 * n
+    bitSize
+      (encodeRational ((trajectory oracle k).1 i j)) ≤ 60 + 6 * k + 14 * n
 
 end Lax263307.RoundedOracleSearch

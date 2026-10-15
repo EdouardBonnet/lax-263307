@@ -4,11 +4,11 @@ import Mathlib.Data.Nat.Size
 /-!
 ---
 title: Rational cut normals preserve protected cubes after scaling
-type: theorem
+type: lemma
 ---
 Clear all rational normal coefficients by one positive product of denominators.
-The resulting integer normal defines the same central half-space. Its bit size
-is bounded by the numerator bit size plus the sum of denominator bit sizes.
+The resulting integer normal defines the same central half-space and is
+nonzero whenever the original normal is nonzero.
 A positive query gap, together with a bound on the sum of absolute coefficients,
 protects a whole coordinate cube about every valid point. Scaling coordinates
 by 4N and clearing denominators preserve that protected central cut.
@@ -25,6 +25,7 @@ product.
 
 namespace Lax263307.RationalCutBuffer
 
+open BufferedEllipsoid (scale)
 open Matrix
 
 def denominator {n : ℕ} (a : Fin n → ℚ) : ℕ := ∏ i, (a i).den
@@ -40,13 +41,6 @@ axiom integer_normal_cast {n : ℕ} (a : Fin n → ℚ) (i : Fin n) :
 axiom normal_nonzero {n : ℕ} (a : Fin n → ℚ) (x z : Fin n → ℝ)
     (gap : (fun i => (a i : ℝ)) ⬝ᵥ z < (fun i => (a i : ℝ)) ⬝ᵥ x) :
     ∃ i, integerNormal a i ≠ 0
-
-axiom denominator_bound {n : ℕ} (a : Fin n → ℚ) :
-    denominator a ≤ 2 ^ (∑ i, Nat.size (a i).den)
-
-axiom normal_size {n : ℕ} (a : Fin n → ℚ) (i : Fin n) :
-    Nat.size (integerNormal a i).natAbs ≤
-      Nat.size (a i).num.natAbs + ∑ j, Nat.size (a j).den
 
 axiom dot_stable {n : ℕ} (a x y : Fin n → ℝ) (ρ L : ℝ)
     (nonnegative : 0 ≤ ρ) (norm : (∑ i, |a i|) ≤ L)
@@ -66,6 +60,6 @@ axiom scaled_cleared_cut {n : ℕ} (positive : 0 < n) (a : Fin n → ℚ)
     (small : L * ρ ≤ Δ / 2) (e : Fin n → ℝ)
     (near : ∀ i, |e i| ≤ ρ / (4 * n)) :
     (fun i => (integerNormal a i : ℝ)) ⬝ᵥ
-      (Lax263307.BufferedEllipsoid.scale z + e - query) ≤ 0
+      (scale z + e - query) ≤ 0
 
 end Lax263307.RationalCutBuffer

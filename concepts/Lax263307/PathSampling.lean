@@ -4,7 +4,7 @@ import Mathlib.Data.Finset.Card
 /-!
 ---
 title: Collision and length bounds for independently sampled paths
-type: theorem
+type: lemma
 ---
 Let $Q$ be a random vertex set and let $q_v=\Pr[v\in Q]$. Two independent
 samples intersect with probability at most $\sum_v q_v^2$. The probability
@@ -29,6 +29,7 @@ Bonnet–Chang, equations (8), (9), and the expected-path-size bound in Lemma 11
 
 namespace Lax263307.PathSampling
 
+open Entropy (adjacencyMass edgeCost)
 /-- Finite outcome probabilities and their associated vertex sets. -/
 structure Distribution (n q : ℕ) where
   /-- Probability of each outcome. -/
@@ -70,7 +71,7 @@ axiom collision_union_bound {n q : ℕ} (P : Distribution n q) :
 /-- The union bound for edges joining two independent samples. -/
 axiom adjacency_union_bound {n q : ℕ} (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] (P : Distribution n q) :
-  adjacencyProbability G P ≤ Entropy.adjacencyMass G (load P)
+  adjacencyProbability G P ≤ adjacencyMass G (load P)
 
 /-- The load hypotheses imply the three estimates used in sampling. -/
 axiom sampling_bounds {n q : ℕ} (G : SimpleGraph (Fin n))
@@ -78,7 +79,7 @@ axiom sampling_bounds {n q : ℕ} (G : SimpleGraph (Fin n))
     (k_positive : 0 < k) (ℓ_nonnegative : 0 ≤ ℓ) (p_positive : 0 < p)
     (cost_bounds : ∀ v, 0 ≤ x v ∧ x v ≤ 1) (mass : (∑ v, x v) ≤ k)
     (load_bound : ∀ v, load P v ≤ ℓ * x v / k)
-    (edge_bound : Entropy.edgeCost G x ≤ k ^ 2 / p) :
+    (edge_bound : edgeCost G x ≤ k ^ 2 / p) :
     collisionProbability P ≤ ℓ ^ 2 / k ∧
       adjacencyProbability G P ≤ 2 * ℓ ^ 2 / p ∧ expectedSize P ≤ ℓ
 

@@ -18,27 +18,6 @@ theorem component_cost_le {n : ℕ} (x : Fin n → ℚ≥0) (C : Finset (Fin n))
     _ ≤ ∑ _v∈C,(1 : ℚ) := Finset.sum_le_sum (fun v _ => by exact_mod_cast hx v)
     _ = _ := by simp
 
-/-- The actual successful heavy search establishes the unit cost bound. -/
-theorem selected_costs {n : ℕ} (a K b D k : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-    (y : RationalConditioning.RationalVector n (AlgorithmParameters.level a K b n D))
-    (hK : 0<K) (hb : 0<b) (hD : 4≤D) (hn : 0<n)
-    (hlarge : AlgorithmParameters.cutoff a K b n D<k)
-    (hy : LinearRelaxation.IsFeasible G k (AlgorithmParameters.level a K b n D)
-      (RationalConditioning.realVector y)) (A : Finset (Fin n))
-    (hfind : HeavyRationalConditioning.findHeavyConditioning G k
-      (AlgorithmParameters.sparsity a K b n D) y=some A) :
-    ∀ v, NearOracle.costs y A v≤1 := by
-  have hbud := AlgorithmParameters.budgets hK hb hD hlarge
-  obtain ⟨A',hfind',_,_,_,hcosts,_,_⟩ := HeavyRationalConditioning.search_correct G k
-    (AlgorithmParameters.level a K b n D) (AlgorithmParameters.sparsity a K b n D) y hy hn
-    (by omega) hbud.2.2.1 hbud.2.1 hbud.2.2.2.2.2.2.1
-  have heq : A'=A := Option.some.inj (hfind'.symm.trans hfind)
-  subst A'
-  intro v
-  have hreal : (NearOracle.costs y A v : ℝ)≤1 := by
-    rw [Lax263307Proofs.NearOracle.costs_cast y A (fun v => (hcosts v).1) v]
-    exact (hcosts v).2
-  exact_mod_cast hreal
 
 /-- Every actual heavy-child query has positive order and a target at most
 that order. Thus exhaustive tables and masks use the same root workspace

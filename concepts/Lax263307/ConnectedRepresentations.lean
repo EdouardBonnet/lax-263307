@@ -3,7 +3,7 @@ import Lax263307.ConnectedBags
 /-!
 ---
 title: Tree-decomposition transfer through connected vertex representations
-type: theorem
+type: lemma
 ---
 Represent each vertex of $H$ by a nonempty connected vertex set of $G$, with
 intersecting sets for every edge of $H$. Suppose at most $B$ represented

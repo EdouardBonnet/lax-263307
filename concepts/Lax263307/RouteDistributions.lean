@@ -4,7 +4,7 @@ import Lax263307.SplitPathProjection
 /-!
 ---
 title: Graph-route distributions from high-value split flows
-type: theorem
+type: lemma
 ---
 A feasible directed split flow of value at least $1/\gamma$ yields a finite
 distribution of simple original graph routes with uniform ordered endpoints.
@@ -26,8 +26,9 @@ Bonnet–Chang, flow normalization and endpoint-inclusive loads in Lemma 7.
 
 namespace Lax263307.RouteDistributions
 
+open PathSampling (load)
 open scoped NNReal NNRat
-open Lax263307.RoutingNormalization Lax263307.VertexSplitting
+open RoutingNormalization VertexSplitting
 open Lax455465.ConcurrentFlow
 
 structure Distribution {n : ℕ} (G : SimpleGraph (Fin n)) (q : ℕ) where
@@ -40,7 +41,7 @@ structure Distribution {n : ℕ} (G : SimpleGraph (Fin n)) (q : ℕ) where
     probability i else 0) = 1 / (n : ℝ) ^ 2
 
 noncomputable def Distribution.toSampling {n q : ℕ} {G : SimpleGraph (Fin n)}
-    (D : Distribution G q) : Lax263307.PathSampling.Distribution n q where
+    (D : Distribution G q) : PathSampling.Distribution n q where
   probability := D.probability
   nonnegative := D.nonnegative
   normalized := D.normalized
@@ -55,7 +56,7 @@ axiom finite_routes {n q : ℕ} (G : SimpleGraph (Fin n)) (hn : 0 < n)
     (routes : ∀ u v i, E u v i → (Q i).Nodup ∧ (Q i).IsChain G.Adj ∧
       (Q i).head? = some u ∧ (Q i).getLast? = some v) :
     ∃ D : Distribution G (n * (n * q)), ∀ z,
-      Lax263307.PathSampling.load D.toSampling z ≤ γ / (n : ℝ) ^ 2 *
+      load D.toSampling z ≤ γ / (n : ℝ) ^ 2 *
         (∑ i, w i * (if z ∈ Q i then (1 : ℝ) else 0))
 
 /-- A high-value split arc-flow certificate yields a bounded-load route distribution. -/
@@ -65,6 +66,6 @@ axiom split_arc_distribution {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G
     (feasible : IsArcConcurrentFlow .directed (splitInstance G x large).network
       (splitInstance G x large).weights f F) :
     ∃ q, ∃ D : Distribution G q, ∀ z,
-      Lax263307.PathSampling.load D.toSampling z ≤ γ * (x z : ℝ) / (n : ℝ) ^ 2
+      load D.toSampling z ≤ γ * (x z : ℝ) / (n : ℝ) ^ 2
 
 end Lax263307.RouteDistributions

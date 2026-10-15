@@ -4,7 +4,7 @@ import Mathlib.Data.Rat.Defs
 /-!
 ---
 title: Descending target search in Solve
-type: theorem
+type: lemma
 ---
 `Solve` tries targets in descending order. A failed target $k$ is accompanied
 by a proof that every independent set has size less than $k$. A successful

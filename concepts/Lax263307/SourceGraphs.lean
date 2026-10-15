@@ -5,7 +5,7 @@ import Lax920634.ExplicitTreewidth
 /-!
 ---
 title: Controlled-size subcubic source graphs of linear treewidth
-type: theorem
+type: lemma
 ---
 The registered deterministic subcubic family supplies fixed positive
 constants for width and size overshoot. For every requested order, choose a

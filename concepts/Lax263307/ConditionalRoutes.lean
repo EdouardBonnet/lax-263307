@@ -3,7 +3,7 @@ import Lax263307.RouteDistributions
 /-!
 ---
 title: Conditioning graph routes on uniform endpoints
-type: theorem
+type: lemma
 ---
 Multiply the probability of a route with endpoints $(u,v)$ by $n^2$ to
 obtain the conditional route law for this ordered endpoint pair. Every
@@ -20,7 +20,7 @@ Bonnet–Chang, the coupled route sampling construction in Lemma 11.
 
 namespace Lax263307.ConditionalRoutes
 
-open Lax263307.RouteDistributions
+open RouteDistributions
 
 noncomputable def conditional {n q : ℕ} {G : SimpleGraph (Fin n)}
     (D : Distribution G q) (u v : Fin n) (i : Fin q) : ℝ :=

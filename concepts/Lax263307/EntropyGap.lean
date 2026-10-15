@@ -3,7 +3,7 @@ import Lax263307.Entropy
 /-!
 ---
 title: Edge mass bounds the average entropy decrease
-type: theorem
+type: lemma
 ---
 Let $\pi$ be a probability vector and let $q$ be a symmetric nonnegative
 joint distribution with marginals $\pi$. Suppose $q_{uv}=0$ on edges of $G$.

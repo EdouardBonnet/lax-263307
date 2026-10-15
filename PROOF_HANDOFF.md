@@ -5,6 +5,59 @@ chronological history, including earlier incomplete checkpoints.
 
 ## Current status
 
+### Draft cleanup completed locally (2026-10-15)
+
+The user requested submitter credit for Édouard Bonnet, Codex 6, and Codex
+6.1; lemma labels for supporting results; removal of unused proof-network
+components; cleaner concept namespaces; and a clean `HasQPTAS` conclusion.
+
+- Manifest credit updated. The headline is the only theorem concept;
+  supporting claims are lemmas, and definition-only concepts are labeled
+  definitions.
+- Audited actual Lean declaration dependencies. Of 50 claims outside the
+  original headline ancestry, 31 were unused and were removed. The other 19
+  were used through direct proof calls; 29 call sites now use their concept
+  claims so the archive displays those dependencies faithfully.
+- Removed 13 obsolete modules (7 concepts and 6 proof modules) and 101
+  unused source theorem declarations. Two simplification bridges,
+  `NativeMomentFamily.entries_words` and `NativeFlowCut.step_eq`, remain:
+  elaboration uses them even though their proof references are erased.
+- Shortened 93 qualified references using explicit `open` declarations.
+  Updated descriptions to match the retained claims and removed stale
+  accounts of unfinished obligations.
+- `HasQPTAS` was already formalized. Its exact runtime formula now lives in
+  `QPTASRuntime`; `QPTAS` focuses on the scheme predicate. The main statement
+  still concludes `HasQPTAS C`.
+- The proof package explicitly declares the same pinned RAM concept package
+  used by its direct imports. No new external mathematical dependency.
+
+Validation:
+- `lax build --no-color --profile`: exit 0, 2m12s after the full rebuild.
+  All 85 concepts and 337 proof modules compile; statement inspection passes.
+- Inventory: 67 lemma concepts, 17 definitions, 1 theorem; 135 claims and
+  135 proofs.
+- Closure audit: zero open claims, zero claims outside headline ancestry,
+  zero unmatched proofs, no admissions. Every retained claim contributes
+  to the main theorem. The concept import graph has one component of size 85.
+- All 663 retained concept declaration fingerprints are unchanged after
+  normalizing the move of `QPTAS.timeBound` to `QPTASRuntime.timeBound`.
+- `git diff --check` passes.
+- 42 nonblocking Lax warnings remain: 3 proof-package dependencies and 39
+  helper declarations, mostly generated structure/inductive lemmas.
+
+Logs and audits:
+- `/tmp/qptas-cleanup-lax-checked.log`
+- `/tmp/qptas-cleanup-audit.json`
+- `/tmp/qptas-cleanup-concept-comparison.json`
+- `python3 /tmp/qptas_audit_clean.py` reproduces the graph/closure audit.
+- `/tmp/QptasConceptFingerprints.lean` produces normalized fingerprints;
+  the reference is `/tmp/qptas-concept-fingerprints-before.json`.
+
+Next: commit, push, and update the existing Lax draft; archive validation
+and publication are pending. Registration is not requested.
+
+### Completed original proof and first submission
+
 **Finished.** The headline theorem `Lax263307Proofs.MainTheorem.exists_qptas`
 is proved. The public mathematical statement is unchanged.
 

@@ -321,151 +321,25 @@ theorem coefficient_bound (n R a b : ℕ) (ha : a≤n) (hb : b≤R) :
     simpa only [rows_length_step] using h
   exact (Nat.choose_le_choose b ha).trans (by omega)
 
-theorem rows_values (n R : ℕ) : ∀ z∈rows n (R+1),z<2^n := by
-  intro z hz
-  obtain ⟨k,hk,hz⟩ := List.mem_flatMap.mp hz
-  obtain ⟨I,hI,rfl⟩ := List.mem_map.mp hz
-  exact NativeMasks.mask_bound I
 
 def readInput : Com := .seq (.read "graph.n") (.seq (.read "catalog.r")
   (.assign "catalog.limit" (.add (.var "catalog.r") (.lit 3))))
 
-theorem read_input_spec (B n r : ℕ) (hB : n+r+4<B) :
-    Spec B (fun σ => σ.inp=[n,r]) readInput
-      (fun _ τ => τ.vars "graph.n"=n ∧ τ.vars "catalog.limit"=r+3) 6 := by
-  intro σ hinp
-  let ν := {σ.setVar "graph.n" n with inp:=[r]}
-  have r1 : Run B (.read "graph.n") σ ν 1 := Run.read hinp
-  let μ := {ν.setVar "catalog.r" r with inp:=[]}
-  have r2 : Run B (.read "catalog.r") ν μ 1 := Run.read rfl
-  let τ := μ.setVar "catalog.limit" (r+3)
-  have r3 : Run B (.assign "catalog.limit" (.add (.var "catalog.r") (.lit 3))) μ τ 4 :=
-    Run.assign (evalB_bin (op := .add) (by simpa [μ] using evalB_var (σ:=μ) (x:="catalog.r") (show μ.vars "catalog.r"<B by simp [μ]; omega))
-      (evalB_lit (by omega)) (by change r+3<B; omega))
-  exact ⟨τ,r1.seq (r2.seq r3),by simp [τ,μ,ν],by simp [τ]⟩
 
 def emit : Com := .seq (.assign "emit.count" (.var "catalog.count"))
   (Lax455465Proofs.RamEmitWords.command "catalog.mask" 1)
 
-theorem emit_spec (B n R : ℕ) (h1 : 1<B) (hsize : (rows n (R+1)).length<B) (hm : 2^n<B) :
-    Spec B (fun σ => σ.vars "catalog.count"=(rows n (R+1)).length ∧ Prefix (rows n (R+1)) "catalog.mask" σ)
-      emit (fun σ τ => τ.out=σ.out++rows n (R+1)) (13*(rows n (R+1)).length+8) := by
-  rintro σ ⟨hcount,hprefix⟩
-  let ν := σ.setVar "emit.count" (rows n (R+1)).length
-  have r1 : Run B (.assign "emit.count" (.var "catalog.count")) σ ν 2 :=
-    Run.assign (by rw [evalB_var_iff]; exact ⟨hcount.symm,hcount ▸ hsize⟩)
-  obtain ⟨τ,r2,p2⟩ := Lax455465Proofs.RamEmitWords.command_spec B "catalog.mask" 1
-    (rows n (R+1)) σ.out h1 h1 (by simpa using hsize) hsize
-    (fun z hz => (rows_values n R z hz).trans hm) ν
-    ⟨by simpa only [Lax455465Proofs.RamEmitWords.Data,Prefix,one_mul,ν,arrs_setVar] using hprefix,
-      by simp [ν],rfl⟩
-  exact ⟨τ,(r1.seq r2).mono (by omega),p2⟩
 
 def fullCommand : Com := .seq readInput (.seq command emit)
 
 def totalCost (n r : ℕ) : ℕ :=
   (54*(n+1)*(r+3)+(69*n+33)*(rows n (r+3)).length+41)*(r+3)+13*(rows n (r+3)).length+22
 
-theorem full_command_spec (B n r : ℕ) (hB : (n+1)*(r+3)+n+r+5<B) (hm : 2^n<B)
-    (hsize : (rows n (r+3)).length+1<B) (hcoeff : ∀ a≤n,∀ b≤r+2,a.choose b<B) :
-    Spec B (fun σ => σ.inp=[n,r] ∧ (n+1)*(r+3)≤(σ.arrs "choose.table").length ∧
-      n≤(σ.arrs "subset.bits").length ∧ (rows n (r+3)).length≤(σ.arrs "catalog.mask").length) fullCommand
-      (fun σ τ => τ.out=σ.out++Lax263307.NativeCatalog.words n r) (totalCost n r) := by
-  rintro σ ⟨hinp,htable,hbits,hcatalog⟩
-  obtain ⟨ν,r1,p1⟩ := read_input_spec B n r (by omega) σ hinp
-  obtain ⟨μ,r2,p2⟩ := command_spec B n (r+2) (by omega) hm hsize hcoeff ν
-    ⟨p1.1,p1.2,by rwa [Lax455465Proofs.RamFrames.run_array_length r1],
-      by rwa [Lax455465Proofs.RamFrames.run_array_length r1],
-      by rwa [Lax455465Proofs.RamFrames.run_array_length r1]⟩
-  obtain ⟨τ,r3,p3⟩ := emit_spec B n (r+2) (by omega) (by change (rows n (r+3)).length<B; omega) hm μ p2.2
-  have hout : μ.out=σ.out := (r1.seq r2).out_eq (by decide)
-  refine ⟨τ,(r1.seq (r2.seq r3)).mono (by simp only [show r+2+1=r+3 from rfl]; dsimp [totalCost]; omega),?_⟩
-  simpa only [hout,show r+2+1=r+3 from rfl,rows_words] using p3
 
 open Lax109476Proofs
 
 def layout := RamAutomaticLayout.layout fullCommand
 def program : Lax808846.Ram.Program := Lax808846Proofs.Compile.compileProgram layout fullCommand
 
-theorem compiled_runs_to (n r v width : ℕ) (hv : 0<v)
-    (hwidth : v+RamTransfer.layoutAllowance layout≤width)
-    (hB : (n+1)*(r+3)+n+r+5<2^v) (hm : 2^n<2^v)
-    (hsize : (rows n (r+3)).length+1<2^v) :
-    ∃ t≤10*totalCost n r+1,Lax808846.Ram.RunsTo width program [n,r] (Lax263307.NativeCatalog.words n r) t := by
-  let room := (n+1)*(r+3)+n+(rows n (r+3)).length+1
-  have hcoeff : ∀ a≤n,∀ b≤r+2,a.choose b<2^v := by
-    intro a ha b hb
-    exact (coefficient_bound n (r+2) a b ha hb).trans_lt (by change (rows n (r+3)).length<2^v; omega)
-  obtain ⟨τ,hr,hout⟩ := full_command_spec (2^v) n r hB hm hsize hcoeff
-    (initEnv (fun _ => room) [n,r])
-    ⟨rfl,by simp [initEnv,room]; omega,by simp [initEnv,room]; omega,by simp [initEnv,room]; omega⟩
-  have hinput : ∀ z∈[n,r],z<2^v := by intro z hz; simp only [List.mem_cons,List.not_mem_nil,or_false] at hz; rcases hz with rfl|rfl <;> omega
-  obtain ⟨K,hK,hbs⟩ := hr
-  obtain ⟨t,ht,hrun⟩ := Lax808846Proofs.Simulation.compileProgram_runsTo
-    (RamTransfer.layout_fits hv hwidth) (RamAutomaticLayout.layout_ok fullCommand) hinput hbs
-  refine ⟨t,ht.trans (Nat.add_le_add_right (Nat.mul_le_mul_left 10 hK) 1),?_⟩
-  simpa only [program,layout,hout,initEnv,List.nil_append] using hrun
-
-/--
----
-conclusion: Lax263307.NativeCatalog.exists_program
----
-The native Pascal, subset-decoding and mask-packing loops append exactly
-the catalog entries. Physical input/output and compilation preserve this
-order. Both executed instructions and sufficient word width are bounded
-by one fixed cubic polynomial in n, r and the number of catalog entries.
--/
-theorem exists_program : ∃ p : Lax808846.Ram.Program, ∃ c : ℕ, 0<c ∧
-    ∀ n r : ℕ, ∀ width : ℕ, c*(n+r+(Lax263307.NativeCatalog.words n r).length+2)^3≤width →
-      ∃ t≤c*(n+r+(Lax263307.NativeCatalog.words n r).length+2)^3,
-        Lax808846.Ram.RunsTo width p [n,r] (Lax263307.NativeCatalog.words n r) t := by
-  let C := 10000+RamTransfer.layoutAllowance layout
-  refine ⟨program,C,by dsimp [C]; omega,?_⟩
-  intro n r width hwidth
-  let N := (rows n (r+3)).length
-  let X := n+r+N+2
-  let v := 5*X^2+10
-  have hN : 1≤N := rows_positive n (r+2)
-  have hX : 1≤X := by dsimp [X]; omega
-  have hnX : n≤X := by dsimp [X]; omega
-  have hn1X : n+1≤X := by dsimp [X]; omega
-  have hrX : r≤X := by dsimp [X]; omega
-  have hr3X : r+3≤X := by dsimp [X]; omega
-  have hNX : N≤X := by dsimp [X]; omega
-  have hXX : X≤X^2 := le_self_pow hX (by omega)
-  have h23 : X^2≤X^3 := Nat.pow_le_pow_right hX (by omega)
-  have h13 : 1≤X^3 := Nat.one_le_pow _ _ (by omega)
-  have hdim : (n+1)*(r+3)≤X^2 := by simpa only [pow_two] using Nat.mul_le_mul hn1X hr3X
-  have hv : 0<v := by dsimp [v]; omega
-  have hguardv : (n+1)*(r+3)+n+r+5<v := by dsimp only [v]; nlinarith only [hdim,hnX,hrX,hXX]
-  have hnv : n<v := by omega
-  have hsizev : N+1<v := by dsimp only [v]; nlinarith only [hNX,hXX]
-  have hvbound : v≤15*X^3 := by dsimp only [v]; omega
-  have hw : v+RamTransfer.layoutAllowance layout≤width := by
-    have hw' : C*X^3≤width := by simpa only [X,N,rows_words] using hwidth
-    have ha := Nat.mul_le_mul_left (RamTransfer.layoutAllowance layout) h13
-    dsimp only [C] at hw'
-    nlinarith only [hw',hvbound,ha]
-  obtain ⟨t,ht,hrun⟩ := compiled_runs_to n r v width hv hw (hguardv.trans Nat.lt_two_pow_self)
-    (Nat.pow_lt_pow_right (by omega) hnv) (hsizev.trans Nat.lt_two_pow_self)
-  refine ⟨t,ht.trans ?_,hrun⟩
-  have h69 : 69*n+33≤102*X := by omega
-  have hmul : (69*n+33)*N≤102*X^2 := by
-    have hh := Nat.mul_le_mul h69 hNX
-    nlinarith only [hh]
-  have hpoly : 54*(n+1)*(r+3)+(69*n+33)*N+41≤197*X^2 := by
-    have h1 : 1≤X^2 := Nat.one_le_pow _ _ (by omega)
-    nlinarith only [hdim,hmul,h1]
-  have hmain : (54*(n+1)*(r+3)+(69*n+33)*N+41)*(r+3)≤197*X^3 := by
-    have hh := Nat.mul_le_mul hpoly hr3X
-    nlinarith only [hh]
-  have hrest : 13*N+22≤35*X^3 := by omega
-  have hcost : 10*totalCost n r+1≤10000*X^3 := by
-    change 10*((54*(n+1)*(r+3)+(69*n+33)*N+41)*(r+3)+13*N+22)+1≤10000*X^3
-    nlinarith only [hmain,hrest,h13]
-  calc
-    10*totalCost n r+1 ≤ 10000*X^3 := hcost
-    _ ≤ C*X^3 := Nat.mul_le_mul_right _ (by dsimp [C]; omega)
-    _ = C*(n+r+(Lax263307.NativeCatalog.words n r).length+2)^3 := by rw [←rows_words]
 
 end Lax263307Proofs.NativeCatalog

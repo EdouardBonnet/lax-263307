@@ -158,28 +158,5 @@ theorem exists_oracle_with_parts (C : GraphClass) (hereditary : IsHereditary C)
     change A.card ≤ r ∧ _
     exact ⟨hsize, by simpa only [hδcast] using hcol⟩
 
-/--
----
-conclusion: Lax263307.NearOracle.exists_oracle
----
-Conditioning, separator construction, and child-answer selection are connected
-at their computed outputs. The parameter budgets give the common moment floor,
-part balance, separator cost, and cut gap required by rounding.
--/
-theorem exists_oracle (C : GraphClass) (hereditary : IsHereditary C)
-    (a A : ℕ) (ha : 0 < a) (hA : 0 < A) (class_bound : HasPowerBagBound C a A) :
-    ∃ (flow : List ℕ → List ℕ) (K B : ℕ), Lax759944.RamPolytime.RamPolytime flow ∧
-      0 < K ∧ 0 < B ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
-      G ∈ C n → 0 < n → ∀ (D k h : ℕ), 4 ≤ D → cutoff a K B n D < k →
-      ∀ (y : RationalVector n (level a K B n D)),
-      IsFeasible G k (level a K B n D) (realVector y) →
-      ∀ (x : MomentVector n (level a K B n D)),
-      (∀ T, |x T - realVector y T| ≤ (momentFloor a K B n D : ℝ) *
-        (1 / (D : ℝ)) ^ 2 / (32 * (n : ℝ) ^ 2)) →
-      ∀ (child : Finset (Fin n) → ℕ → Option (Finset (Fin n))), ChildCorrect G D h child →
-      Correct G k h D (momentFloor a K B n D) x (run flow a K B D G k y child) := by
-  obtain ⟨flow,K,B,hpoly,hK,hB,hsep,hcorrect⟩ :=
-    exists_oracle_with_parts C hereditary a A ha hA class_bound
-  exact ⟨flow,K,B,hpoly,hK,hB,hcorrect⟩
 
 end Lax263307Proofs.NearOracle

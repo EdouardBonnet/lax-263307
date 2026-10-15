@@ -58,25 +58,5 @@ theorem valid_cut {n : ℕ} (G : SimpleGraph (Fin n)) (k r : ℕ)
   rintro y ⟨I, hI, _, rfl⟩
   exact indicator_cut G r C u bound A size I hI
 
-/--
----
-conclusion: Lax263307.ComponentCuts.violation_iff
----
-The conditioned-cost test is exactly the strict violation of the returned cut.
-
-# Proof strategy
-
-Factor the common positive denominator out of the finite sum and clear it.
-
-# Attribution
-
-Bonnet–Chang, Lemma 13.
--/
-theorem violation_iff {n r : ℕ} (y : MomentVector n r)
-    (A C : Finset (Fin n)) (u : ℕ) (positive : 0 < value y A) :
-    (u : ℝ) < ∑ v ∈ C, conditioned y A v ↔
-      (u : ℝ) * value y A < ∑ v ∈ C, value y (insert v A) := by
-  simp_rw [conditioned, ← Finset.sum_div]
-  exact lt_div_iff₀ positive
 
 end Lax263307Proofs.ComponentCuts

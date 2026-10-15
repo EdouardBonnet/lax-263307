@@ -4,13 +4,12 @@ import Mathlib.Data.Fintype.Powerset
 /-!
 ---
 title: Integer coefficients of recursive separating cuts
-type: theorem
+type: lemma
 ---
 The cut for a part $C$ and bound $u$ is
 $$\sum_{v\in C}z_{A\cup\{v\}}-u z_A\le0.$$
-After repeated coordinates are collected, every coefficient is an integer
-with absolute value at most $n$, provided $u\le n$. This is the coefficient
-bound required for the oracle's rational arithmetic.
+Collect repeated coordinates into an integer coefficient vector. Evaluating
+that vector gives exactly the left-hand side of the component inequality.
 
 # Attribution
 
@@ -36,10 +35,5 @@ axiom evaluation_identity {n r : ℕ} (A C : Finset (Fin n)) (u : ℕ)
     (size : A.card ≤ r) (z : MomentVector n r) :
     evaluate (coefficient A C u) z =
       (∑ v ∈ C, value z (insert v A)) - (u : ℝ) * value z A
-
-/-- Each coefficient has magnitude at most the graph order. -/
-axiom coefficient_bound {n r : ℕ} (A C : Finset (Fin n)) (u : ℕ)
-    (bound : u ≤ n) (B : Coordinate n r) :
-    |coefficient A C u B| ≤ (n : ℤ)
 
 end Lax263307.ComponentCutEncoding

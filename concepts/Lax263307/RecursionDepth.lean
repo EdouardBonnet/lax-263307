@@ -4,7 +4,7 @@ import Mathlib.Data.Nat.Log
 /-!
 ---
 title: Depth and approximation loss of balanced recursion
-type: theorem
+type: lemma
 ---
 A recursive call on a balanced component has at most $\lfloor2n/3\rfloor$
 vertices. The number of nontrivial calls on a branch is therefore logarithmic
@@ -26,6 +26,7 @@ inequality in Theorem 15.
 
 namespace Lax263307.RecursionDepth
 
+open WeightedIndependentSet (IsApproximation)
 /-- Number of balanced reductions needed to reach order at most one. -/
 def depth (n : ℕ) : ℕ :=
   if n ≤ 1 then 0 else 1 + depth (2 * n / 3)
@@ -47,6 +48,6 @@ axiom approximation_transfer {n : ℕ} (G : SimpleGraph (Fin n))
     (δ_nonnegative : 0 ≤ δ) (δ_small : δ ≤ 1)
     (ε_small : ε ≤ 1) (loss : (levels : ℚ) * δ ≤ ε)
     (size : (1 - δ) ^ levels * (u : ℚ) ≤ I.card) :
-    WeightedIndependentSet.IsApproximation G (fun _ => 1) ε I
+    IsApproximation G (fun _ => 1) ε I
 
 end Lax263307.RecursionDepth

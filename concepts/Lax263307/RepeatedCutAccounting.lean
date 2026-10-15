@@ -3,7 +3,7 @@ import Lax263307.PathSampling
 /-!
 ---
 title: Cumulative separator cost over disjoint discarded shores
-type: theorem
+type: lemma
 ---
 Suppose repeated cuts of an $n$-vertex graph discard pairwise disjoint
 shores $B_i$, and each separator $A_i\cap B_i$ has cost at most

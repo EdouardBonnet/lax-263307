@@ -21,7 +21,7 @@ the constants are fixed before either root or child is supplied. -/
 theorem uniform (a K b : ℕ) (hK : 0<K) :
     ∃ C d : ℕ,0<C ∧ 0<d ∧ ∀ n D m : ℕ,0<D → 0<m → m≤n →
       Lax263307.ParameterResources.resource a K b m D≤envelope C d n D := by
-  obtain ⟨C,d,hC,hd,hbound⟩ := ParameterResources.resource_bound a K b hK
+  obtain ⟨C,d,hC,hd,hbound⟩ := Lax263307.ParameterResources.resource_bound a K b hK
   exact ⟨C,d,hC,hd,fun n D m hD hm hmn => (hbound m D hm hD).trans (envelope_mono C d D hmn)⟩
 
 /-- Any fixed polynomial workspace/local-time budget in the root envelope

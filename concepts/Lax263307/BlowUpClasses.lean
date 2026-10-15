@@ -4,7 +4,7 @@ import Lax263307.IndependentBlowUp
 /-!
 ---
 title: Independent blow-up classes are hereditary
-type: theorem
+type: lemma
 ---
 The independent blow-up closure of a graph class consists of finite graphs
 whose vertices project to a member of that class, with adjacency exactly

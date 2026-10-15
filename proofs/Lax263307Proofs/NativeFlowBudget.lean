@@ -122,24 +122,5 @@ theorem time_bound (b n H R : ℕ) (hp tp : Polynomial ℕ)
   dsimp only [NativeSeparatorOutput.timeBound,NativeSeparatorProgram.timeBound]
   gcongr
 
-/-- Guard, workspace and complete separator time have one fixed monomial
-majorant in the root resource. All constants precede every input and word width. -/
-theorem exists_budget (b : ℕ) (hp wp tp op : Polynomial ℕ)
-    (p : Lax808846.Ram.Program) (coeff : List ℕ) :
-    ∃ Q e : ℕ,0<Q ∧ 0<e ∧ ∀ n load k h R,n≤R → load≤R → k≤R → h≤hp.eval R →
-      let H := heightExponent b n load k h
-      wordHeight n H p wp tp op+spaceBound n H tp+NativeSeparatorOutput.timeBound n H p coeff tp≤Q*(R+1)^e := by
-  let P := widthPolynomial b hp wp tp op p+spacePolynomial b hp tp+timePolynomial b hp tp p coeff
-  obtain ⟨Q,e,hQ,he,hm⟩ := NativePolynomialBudget.exists_majorant P
-  refine ⟨Q,e,hQ,he,?_⟩
-  intro n load k h R hn hl hk hh
-  have hH := height_bound b n load k h R hp hn hl hk hh
-  have hw := width_bound b n _ R hp wp tp op p hn hH
-  have hs := space_bound b n _ R hp tp hn hH
-  have ht := time_bound b n _ R hp tp p coeff hn hH
-  have hb := hm R
-  simp only [P,Polynomial.eval_add] at hb
-  dsimp only
-  omega
 
 end Lax263307Proofs.NativeFlowBudget

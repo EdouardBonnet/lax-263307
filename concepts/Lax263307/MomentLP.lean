@@ -5,7 +5,7 @@ import Lax109476.RationalCertificates
 /-!
 ---
 title: The moment relaxation as an explicit rational linear program
-type: theorem
+type: lemma
 ---
 Use the computable moment catalog as the LP variable order. Paired
 normalization rows, upper-bound rows, nonindependence rows, insertion
@@ -25,6 +25,7 @@ Dense input construction and solver execution on RAM remain separate bounds.
 
 namespace Lax263307.MomentLP
 
+open ComponentCutEncoding (evaluate)
 open LinearRelaxation CoordinateCatalog
 open Lax109476.LinearProgram Lax109476.RationalCertificates
 
@@ -70,21 +71,15 @@ def program {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ)
 
 axiom decode_encode {K : Type} {n r : ℕ} (y : Coordinate n r → K) : decode (encode y) = y
 
-axiom encode_decode {K : Type} {n r : ℕ} (x : Index n r → K) : encode (decode x) = x
-
 axiom single_row_value {n r : ℕ} (x : Index n r → ℝ) (A : Finset (Fin n)) :
     (∑ j, (singleRow A j : ℝ) * x j) = value (decode x) A
 
 axiom primal_characterization {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ)
     (x : Index n r → ℝ) :
-    PrimalFeasible (toReal (program G k r)) x ↔ Lax263307.LinearRelaxation.IsFeasible G k r (decode x)
-
-axiom feasible_iff {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) :
-    Lax109476.LinearProgram.IsFeasible (toReal (program G k r)) ↔
-      ∃ y : MomentVector n r, Lax263307.LinearRelaxation.IsFeasible G k r y
+    PrimalFeasible (toReal (program G k r)) x ↔ IsFeasible G k r (decode x)
 
 axiom evaluate_encoding {n r : ℕ} (a : Coordinate n r → ℤ) (x : Index n r → ℝ) :
-    Lax263307.ComponentCutEncoding.evaluate a (decode x) =
+    evaluate a (decode x) =
       (fun j => ((encode a j : ℤ) : ℝ)) ⬝ᵥ x
 
 end Lax263307.MomentLP

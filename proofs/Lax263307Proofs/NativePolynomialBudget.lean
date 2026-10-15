@@ -46,21 +46,5 @@ theorem height_bound (wp : Polynomial ℕ) (R : ℕ) :
   exact Nat.add_le_add_right (Nat.add_le_add_right
     (Nat.add_le_add_left (Nat.mul_le_mul_left _ (Nat.add_le_add_right (Nat.mul_le_mul_left 2 hp) 1)) _) _) _
 
-/-- One computable root monomial covers dimension, serialized update
-workspace, certificate-derived normal height, and rounded VM precision. -/
-theorem exists_rounded_budget (wp : Polynomial ℕ) (c : ℕ) :
-    ∃ Q e : ℕ,0<Q ∧ 0<e ∧ ∀ R,
-      1000000*(R+1)^6+NativeOraclePrecision.roundedHeight wp R+
-        c*(2*R+NativeOraclePrecision.roundedHeight wp R+1)^12+1≤Q*(R+1)^e := by
-  let P : Polynomial ℕ := 1000000*(Polynomial.X+1)^6+heightPolynomial wp+
-    Polynomial.C c*(2*Polynomial.X+heightPolynomial wp+1)^12+1
-  obtain ⟨Q,e,hQ,he,hbound⟩ := exists_majorant P
-  refine ⟨Q,e,hQ,he,?_⟩
-  intro R
-  apply le_trans _ (hbound R)
-  simp only [P,Polynomial.eval_add,Polynomial.eval_mul,Polynomial.eval_pow,Polynomial.eval_X,
-    Polynomial.eval_C,Polynomial.eval_one,Polynomial.eval_ofNat]
-  gcongr
-  all_goals exact height_bound wp R
 
 end Lax263307Proofs.NativePolynomialBudget

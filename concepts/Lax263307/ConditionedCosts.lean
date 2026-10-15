@@ -3,7 +3,7 @@ import Lax263307.LinearRelaxation
 /-!
 ---
 title: Conditioning preserves bounded costs and total mass
-type: theorem
+type: lemma
 ---
 Let $y\in R_r(G,k)$ and let $|A|\le r$ with $y_A>0$.
 The conditioned costs $x_v=y_{A\cup\{v\}}/y_A$ lie in $[0,1]$,

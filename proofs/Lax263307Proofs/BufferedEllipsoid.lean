@@ -51,7 +51,7 @@ theorem initial_ball {n : ℕ} (positive : 0 < n) (z : Fin n → ℝ)
     (cube : ∀ i, 0 ≤ z i ∧ z i ≤ 1) (ρ : ℝ) (nonnegative : 0 ≤ ρ) (small : ρ ≤ 1 / 4)
     (e : Fin n → ℝ) (ball : e ⬝ᵥ e ≤ ρ ^ 2) :
     (scale z + e) ⬝ᵥ (scale z + e) ≤ 1 := by
-  have hscale := scaled_cube_norm positive z cube
+  have hscale := Lax263307.BufferedEllipsoid.scaled_cube_norm positive z cube
   have hr : ρ ^ 2 ≤ (1 / 16 : ℝ) := by nlinarith
   have hs := Finset.sum_le_sum (fun i (_ : i ∈ (Finset.univ : Finset (Fin n))) =>
     show (scale z i + e i) ^ 2 ≤ 2 * (scale z i) ^ 2 + 2 * (e i) ^ 2 from by
@@ -76,8 +76,6 @@ theorem integer_normal_norm {n : ℕ} (a : Fin n → ℤ) (nonzero : ∃ i, a i 
   have hsum := Finset.single_le_sum (fun j (_ : j ∈ (Finset.univ : Finset (Fin n))) =>
     sq_nonneg (a j : ℝ)) (Finset.mem_univ i)
   exact hsr.trans (by simpa only [dotProduct, pow_two] using hsum)
-
-
 
 
 end Lax263307Proofs.BufferedEllipsoid

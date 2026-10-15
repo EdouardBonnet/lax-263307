@@ -117,8 +117,6 @@ theorem component_gap {n r : ℕ} (G : SimpleGraph (Fin n)) (k : ℕ)
       _ ≤ _ := h
 
 
-
-
 /--
 ---
 conclusion: Lax263307.StrongComponentGaps.query_gap
@@ -135,12 +133,12 @@ theorem query_gap {n r : ℕ} (G : SimpleGraph (Fin n)) (k : ℕ)
     (near : ∀ B, |x B - y B| ≤ η * δ ^ 2 / (8 * (n : ℝ) ^ 2)) :
     (∀ z ∈ independentSetHull G k r, evaluate (coefficient A C u) z ≤ 0) ∧
       η * δ ^ 2 / (4 * n) ≤ evaluate (coefficient A C u) x := by
-  obtain ⟨hvalid, hgap⟩ := component_gap G k y A C u size bound η δ hη hδ hn hk moment heavy rounded
+  obtain ⟨hvalid, hgap⟩ := Lax263307.StrongComponentGaps.component_gap G k y A C u size bound η δ hη hδ hn hk moment heavy rounded
   have hn' : (0 : ℝ) < n := by exact_mod_cast hn
   have hk1 : (1 : ℝ) ≤ k := by exact_mod_cast hk
   let ρ := η * δ ^ 2 / (8 * (n : ℝ) ^ 2)
   have hρ : 0 ≤ ρ := by dsimp [ρ]; positivity
-  have hstab := evaluation_stable A C u x y ρ hρ near
+  have hstab := Lax263307.StrongComponentGaps.evaluation_stable A C u x y ρ hρ near
   have hC : (C.card : ℝ) ≤ n := by exact_mod_cast C.card_le_univ.trans_eq (Fintype.card_fin n)
   have hu : (u : ℝ) ≤ n := by exact_mod_cast upper
   have hstab' : |evaluate (coefficient A C u) x - evaluate (coefficient A C u) y| ≤ 2 * n * ρ :=
@@ -154,32 +152,5 @@ theorem query_gap {n r : ℕ} (G : SimpleGraph (Fin n)) (k : ℕ)
   rw [heq] at hbase
   exact ⟨hvalid, by linarith⟩
 
-
-
-
-/--
----
-conclusion: Lax263307.StrongComponentGaps.central_cut_buffer
----
-The coefficient sum bounds evaluation change in a coordinate cube around a valid point. A query gap Delta retains that cube strictly behind its central cut.
--/
-theorem central_cut_buffer {n r : ℕ} (A C : Finset (Fin n)) (u : ℕ) (upper : u ≤ n)
-    (x z : MomentVector n r) (Δ : ℝ) (positive : 0 < Δ) (hn : 0 < n)
-    (valid : evaluate (coefficient A C u) z ≤ 0)
-    (gap : Δ ≤ evaluate (coefficient A C u) x)
-    (perturbed : MomentVector n r)
-    (near : ∀ B, |perturbed B - z B| ≤ Δ / (4 * n)) :
-    evaluate (coefficient A C u) perturbed ≤ evaluate (coefficient A C u) x - Δ / 2 := by
-  have hn' : (0 : ℝ) < n := by exact_mod_cast hn
-  have hρ : 0 ≤ Δ / (4 * n) := by positivity
-  have hstab := evaluation_stable A C u perturbed z (Δ / (4 * n)) hρ near
-  have hC : (C.card : ℝ) ≤ n := by exact_mod_cast C.card_le_univ.trans_eq (Fintype.card_fin n)
-  have hu : (u : ℝ) ≤ n := by exact_mod_cast upper
-  have hmul : (C.card + u : ℝ) * (Δ / (4 * n)) ≤ Δ / 2 := by
-    have h := mul_le_mul_of_nonneg_right (by linarith : (C.card + u : ℝ) ≤ 2 * n) hρ
-    have heq : 2 * (n : ℝ) * (Δ / (4 * n)) = Δ / 2 := by field_simp; norm_num
-    exact h.trans_eq heq
-  have hdiff := (abs_le.mp (hstab.trans hmul)).2
-  linarith
 
 end Lax263307Proofs.StrongComponentGaps

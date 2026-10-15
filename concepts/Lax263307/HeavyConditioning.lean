@@ -1,10 +1,12 @@
-import Lax263307.ConditioningExistence
+import Lax263307.ConditioningDistribution
+import Lax263307.EntropyGap
+import Lax263307.EntropyBounds
 import Mathlib.Data.Nat.Log
 
 /-!
 ---
 title: Conditioning with a quantitative moment lower bound
-type: theorem
+type: lemma
 ---
 A high edge cost forces entropy decrease even after conditioning choices
 with extremely small marginal probability are excluded. Some choice of
@@ -17,7 +19,7 @@ reached with raw moment at least tau^r.
 This strengthens the positive-moment existence guarantee. The quantitative
 lower bound prevents a violated component inequality from having an
 arbitrarily small raw gap at a feasible query. It is used by the strong-gap
-ellipsoid argument; exact rational enumeration remains a separate step.
+ellipsoid argument; the rational search is formalized in `HeavyRationalConditioning`.
 -/
 
 namespace Lax263307.HeavyConditioning

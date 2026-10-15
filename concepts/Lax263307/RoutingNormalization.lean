@@ -3,7 +3,7 @@ import Lax263307.PathSampling
 /-!
 ---
 title: Uniform endpoint normalization of finite path flows
-type: theorem
+type: lemma
 ---
 Normalize each of the $n^2$ ordered endpoint commodities to mass $1/n^2$.
 If every commodity has routed mass at least $1/\gamma$, normalization

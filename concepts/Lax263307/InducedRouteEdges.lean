@@ -4,7 +4,7 @@ import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 /-!
 ---
 title: Few edges in the graph induced by short routes
-type: theorem
+type: lemma
 ---
 Suppose an induced almost-embedding of a graph $H$ of maximum degree at most
 $d$ uses at most $L$ host vertices per route. The union of its routes has

@@ -4,7 +4,7 @@ import Lax263307.RepeatedCutAccounting
 /-!
 ---
 title: Repeated cuts yield a balanced light separator
-type: theorem
+type: lemma
 ---
 Record a cut sequence that removes its right shore at each step. Its
 separator is the union of shore intersections; its retained parts are the
@@ -32,7 +32,8 @@ Bonnet–Chang, the repeated-cut construction of Lemma 8.
 
 namespace Lax263307.CutTraces
 
-open Lax263307.SeparatorComponents Lax263307.EdgeSublinearSeparators
+open RepeatedCutAccounting (cost)
+open SeparatorComponents EdgeSublinearSeparators
 
 structure Trace {n : ℕ} (G : SimpleGraph (Fin n)) (start : Finset (Fin n)) (steps : ℕ) where
   remaining : ℕ → Finset (Fin n)
@@ -56,18 +57,9 @@ def parts {n q : ℕ} {G : SimpleGraph (Fin n)} {start : Finset (Fin n)}
 axiom trace_correct {n q : ℕ} (G : SimpleGraph (Fin n)) (T : Trace G Finset.univ q)
     (finished : 3 * (T.remaining q).card ≤ 2 * n)
     (x : Fin n → ℝ) (nonnegative : ∀ v, 0 ≤ x v) (ρ γ : ℝ) (hρ : 0 ≤ ρ) (hγ : 0 < γ)
-    (each_cut : ∀ i < q, Lax263307.RepeatedCutAccounting.cost x (T.left i ∩ T.right i) ≤
+    (each_cut : ∀ i < q, cost x (T.left i ∩ T.right i) ≤
       4 * ρ * (T.left i).card * (T.right i).card / γ) :
     q ≤ n ∧ IsBalancedSeparator G (separator T) ∧
-      Lax263307.RepeatedCutAccounting.cost x (separator T) ≤ 4 * ρ * (n : ℝ) ^ 2 / γ
-
-axiom light_separator_from_oracle {n : ℕ} (G : SimpleGraph (Fin n))
-    (x : Fin n → ℝ) (nonnegative : ∀ v, 0 ≤ x v) (ρ γ : ℝ) (hρ : 0 ≤ ρ) (hγ : 0 < γ)
-    (oracle : ∀ R : Finset (Fin n), 2 * n < 3 * R.card →
-      ∃ A B : Finset (Fin n), A ∪ B = R ∧ B.Nonempty ∧ 2 * (B \ A).card ≤ R.card ∧
-        (∀ u ∈ A \ B, ∀ v ∈ B \ A, ¬G.Adj u v) ∧
-        Lax263307.RepeatedCutAccounting.cost x (A ∩ B) ≤ 4 * ρ * A.card * B.card / γ) :
-    ∃ q, ∃ T : Trace G Finset.univ q, q ≤ n ∧ IsBalancedSeparator G (separator T) ∧
-      Lax263307.RepeatedCutAccounting.cost x (separator T) ≤ 4 * ρ * (n : ℝ) ^ 2 / γ
+      cost x (separator T) ≤ 4 * ρ * (n : ℝ) ^ 2 / γ
 
 end Lax263307.CutTraces

@@ -4,7 +4,7 @@ import Lax263307.FiniteProductSampling
 /-!
 ---
 title: Coupled route sampling with shared vertex images
-type: theorem
+type: lemma
 ---
 Choose independently a uniform image for every source vertex, then sample
 one graph route per source edge from its conditional endpoint law. Positive
@@ -28,8 +28,8 @@ Bonnet–Chang, the coupled sampling construction in Lemma 11.
 
 namespace Lax263307.CoupledRouteSampling
 
-open Lax263307.RouteDistributions Lax263307.ConditionalRoutes
-open Lax263307.FiniteProductSampling
+open RouteDistributions ConditionalRoutes
+open FiniteProductSampling
 
 noncomputable def uniformWeight (n : ℕ) : Fin n → ℝ := fun _ => 1 / (n : ℝ)
 

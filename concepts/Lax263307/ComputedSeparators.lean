@@ -1,11 +1,13 @@
-import Lax263307.LightSeparators
+import Lax263307.EdgeBagBounds
+import Lax263307.ForcedSeparation
+import Lax263307.CutTraces
 import Mathlib.Data.Finset.Sort
 import Mathlib.Data.List.GetD
 
 /-!
 ---
 title: Computing balanced light separators from registered flow-cut outputs
-type: theorem
+type: lemma
 ---
 Label each remaining vertex set in increasing order, construct its rational
 split network, and read the cut membership prefix of the registered
@@ -18,15 +20,17 @@ and its computed pieces form a balanced partition with no cross edges.
 
 All labels, rational capacities, output decoding, shore choices, and the
 bounded cut-list loop are computable. The solver retains its actual registered
-RAM polynomial-time guarantee. This statement proves the wrapper's functional
-correctness; the RAM implementation and time bound for its surrounding loops
-remain separate obligations.
+RAM polynomial-time guarantee. This statement gives the wrapper's functional correctness.
+The main theorem also verifies its RAM implementation and running time.
 -/
 
 namespace Lax263307.ComputedSeparators
 
+open EdgeSublinearSeparators (IsBalancedSeparator)
+open Lax759944.RamPolytime (RamPolytime)
+open SeparatorComponents (Partition)
 open scoped NNRat
-open Lax263307.VertexSplitting Lax455465.RationalEncoding
+open VertexSplitting Lax455465.RationalEncoding
 
 def decodeCut (n : ℕ) (words : List ℕ) : Finset (Fin n) :=
   Finset.univ.filter fun v => words.getD v.val 0 = 1
@@ -80,12 +84,12 @@ def pieces {n : ℕ} (cs : List (Finset (Fin n) × Finset (Fin n))) :
   | none => remaining Finset.univ cs
   | some i => (cs.get i).2 \ (cs.get i).1
 
-open Lax263307.GraphClasses Lax263307.PowerBagBounds
-open Lax263307.Entropy Lax263307.RepeatedCutAccounting
+open GraphClasses PowerBagBounds
+open Entropy RepeatedCutAccounting
 
 axiom light_separator (C : GraphClass) (hereditary : IsHereditary C)
     (a A : ℕ) (ha : 0 < a) (hA : 0 < A) (class_bound : HasPowerBagBound C a A) :
-    ∃ (solve : List ℕ → List ℕ) (K B : ℕ), Lax759944.RamPolytime.RamPolytime solve ∧
+    ∃ (solve : List ℕ → List ℕ) (K B : ℕ), RamPolytime solve ∧
       0 < K ∧ 0 < B ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
       G ∈ C n → 0 < n → ∀ (x : Fin n → ℚ≥0) (k p ℓ : ℕ),
       0 < k → 0 < p → 0 < ℓ →
@@ -95,12 +99,12 @@ axiom light_separator (C : GraphClass) (hereditary : IsHereditary C)
       (2 * K : ℝ) * ((ℓ : ℝ) + 1) ^ (4 * a + 2) ≤ p →
       let cs := cuts (step solve G x B ℓ k) n Finset.univ
       cs.length ≤ n ∧
-        Lax263307.EdgeSublinearSeparators.IsBalancedSeparator G
-          (Lax263307.ComputedSeparators.separator cs) ∧
-        cost (fun v => (x v : ℝ)) (Lax263307.ComputedSeparators.separator cs) ≤
+        IsBalancedSeparator G
+          (ComputedSeparators.separator cs) ∧
+        cost (fun v => (x v : ℝ)) (ComputedSeparators.separator cs) ≤
           12 * (ratio B n : ℝ) * k / ℓ ∧
-        ∃ P : Lax263307.SeparatorComponents.Partition G
-            (Lax263307.ComputedSeparators.separator cs) (Option (Fin cs.length)),
+        ∃ P : Partition G
+            (ComputedSeparators.separator cs) (Option (Fin cs.length)),
           (∀ i, P.vertices i = pieces cs i) ∧ ∀ i, 3 * (P.vertices i).card ≤ 2 * n
 
 end Lax263307.ComputedSeparators

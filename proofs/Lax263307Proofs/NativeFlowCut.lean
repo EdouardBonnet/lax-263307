@@ -19,6 +19,7 @@ theorem step_eq {n : ℕ} (f : List ℕ → List ℕ) (G : SimpleGraph (Fin n)) 
     ComputedSeparators.step f G x b load k R=
       decoded R (f (NativeSplitOracle.query G x R (largeCapacity b n R.card load k))) := rfl
 
+
 def decodeCommand : Com := .seq NativeFlowShores.command NativeShoreOrientation.command
 
 theorem decode_spec (B n : ℕ) (R : Finset (Fin n)) (xs : List ℕ)

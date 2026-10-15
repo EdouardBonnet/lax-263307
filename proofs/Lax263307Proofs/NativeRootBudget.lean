@@ -108,50 +108,5 @@ theorem command_spec (B C d Q e n D : ℕ) (hn : 0<n) (hD : 0<D)
   · exact ((r6.seq r7).frame_var "algorithm.resource" (by
       simp [NativeNaturalPower.command,NativeNaturalPower.step,finish,Com.wvars])).trans p5.2
 
-theorem guard_bound (C d Q e n D : ℕ) (hC : 0<C) (hd : 1≤d) (hQ : 0<Q) (he : 1≤e)
-    (hD : 0<D) (hn : n≤envelope C d n D) :
-    guard C d Q e n D≤(C+d+Q+e+120)*(budget Q e C d n D+1) := by
-  let X := D*logarithm n
-  let H := C*X^d
-  let R := envelope C d n D
-  let W := budget Q e C d n D
-  have hL : 0<logarithm n := by dsimp [logarithm]; omega
-  have hX : 1≤X := by
-    have hp : 0<X := by dsimp [X]; positivity
-    omega
-  have hXP : X≤X^d := le_self_pow hX (by omega)
-  have hPH : X^d≤H := Nat.le_mul_of_pos_left _ hC
-  have hHR : H≤R := Nat.lt_two_pow_self.le
-  have hPW : (R+1)^e≤W := Nat.le_mul_of_pos_left _ hQ
-  have hRW : R+1≤W := (le_self_pow (by omega : 1≤R+1) (by omega)).trans hPW
-  have hXW : X≤W := ((hXP.trans hPH).trans hHR).trans (by omega)
-  have hDW : D≤W := (Nat.le_mul_of_pos_right D hL).trans hXW
-  have hLW : logarithm n≤W := (Nat.le_mul_of_pos_left _ hD).trans hXW
-  have hnW : n≤W := hn.trans (by change R≤W; omega)
-  have hPHW : X^d≤W := (hPH.trans hHR).trans (by omega)
-  have hHW : H≤W := hHR.trans (by omega)
-  change C+d+Q+e+2*n+D+logarithm n+X+X^d+H+R+(R+1)^e+W+2*(W+1)+100≤(C+d+Q+e+120)*(W+1)
-  calc
-    _≤C+d+Q+e+12*W+102 := by omega
-    _≤_ := by nlinarith only [Nat.zero_le ((C+d+Q+e)*W)]
-
-theorem time_bound (C d Q e n D : ℕ) (hQ : 0<Q) (he : 1≤e)
-    (hn : n≤envelope C d n D) :
-    12*n.size+12*(2*n).size+12*d+12*(C*(D*logarithm n)^d)+12*e+78≤
-      (12*d+12*e+130)*(budget Q e C d n D+1) := by
-  let H := C*(D*logarithm n)^d
-  let R := envelope C d n D
-  let W := budget Q e C d n D
-  have hHR : H≤R := Nat.lt_two_pow_self.le
-  have hPW : (R+1)^e≤W := Nat.le_mul_of_pos_left _ hQ
-  have hRW : R+1≤W := (le_self_pow (by omega : 1≤R+1) (by omega)).trans hPW
-  have hnW : n≤W := hn.trans (by change R≤W; omega)
-  have hHW : H≤W := hHR.trans (by omega)
-  have hs : n.size≤n := Nat.size_le.mpr Nat.lt_two_pow_self
-  have hs' : (2*n).size≤2*n := Nat.size_le.mpr Nat.lt_two_pow_self
-  change 12*n.size+12*(2*n).size+12*d+12*H+12*e+78≤(12*d+12*e+130)*(W+1)
-  calc
-    _≤48*W+12*d+12*e+78 := by omega
-    _≤_ := by nlinarith only [Nat.zero_le ((12*d+12*e)*W)]
 
 end Lax263307Proofs.NativeRootBudget

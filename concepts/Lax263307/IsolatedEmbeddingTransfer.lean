@@ -3,7 +3,7 @@ import Lax263307.AlmostEmbeddings
 /-!
 ---
 title: Almost-embedding transfer with isolated source vertices
-type: theorem
+type: lemma
 ---
 An almost-embedding of a graph of maximum degree at most $d$ transfers a
 host decomposition with bag size at most $w$ to source bags of size at most
@@ -19,7 +19,7 @@ Lemma 11, extending the no-isolates formulation of Lemma 9.
 
 namespace Lax263307.IsolatedEmbeddingTransfer
 
-open Lax263307.AlmostEmbeddings Lax228581.Treewidth
+open AlmostEmbeddings Lax228581.Treewidth
 
 axiom transfer_decomposition {t n : ℕ} (H : SimpleGraph (Fin t)) [DecidableRel H.Adj]
     (G : SimpleGraph (Fin n)) (E : AlmostEmbedding H G) (d w : ℕ)

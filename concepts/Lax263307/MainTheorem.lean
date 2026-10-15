@@ -25,10 +25,10 @@ in Graphs with Strongly Edge-Sublinear Separators*, Theorem 2.
 
 # Formalization notes
 
-This is the submission's headline theorem. The separator hypothesis
-uses the harmless $m+1$ normalization explained
-in `EdgeSublinearSeparators`. The approximation scheme refers directly
-to the registered RAM semantics through `QPTAS.HasQPTAS`.
+The conclusion `HasQPTAS C` is the single predicate defined in `QPTAS`.
+It includes one fixed RAM program, its approximation guarantee, and the
+uniform bound defined in `QPTASRuntime`. The separator hypothesis uses
+the $m+1$ normalization explained in `EdgeSublinearSeparators`.
 -/
 
 namespace Lax263307.MainTheorem

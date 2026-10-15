@@ -6,7 +6,7 @@ namespace Lax263307Proofs.NativeQptasTransfer
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning Lax808846Proofs.Compile
 open Lax455465Proofs
-open Lax263307 QPTAS WeightedIndependentSet GraphClasses
+open Lax263307 QPTAS QPTASRuntime WeightedIndependentSet GraphClasses
 
 /-- The registered refinement framework supplies the final descent to
 one fixed RAM program. The algorithm supplies only its structured-command

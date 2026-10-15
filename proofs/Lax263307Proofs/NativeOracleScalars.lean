@@ -34,8 +34,5 @@ theorem command_variable (p : Lax808846.Ram.Program) (coeff : List ℕ) (x : Str
     RamLpInputFrame.command,RamLpInputFrame.step,RamWordBuffer.append,
     RamVirtualProgram.execute,RamWordOps.modulus,RamVirtualProgram.initCommand,Com.wvars]
 
-theorem frame_variable {B K : ℕ} {σ τ : Env} {p : Lax808846.Ram.Program} {coeff : List ℕ}
-    (rr : Run B (NativeOracleCalls.command p coeff) σ τ K) (x : String) (hx : x∉reserved) :
-    τ.vars x=σ.vars x := rr.frame_var x (command_variable p coeff x hx)
 
 end Lax263307Proofs.NativeOracleScalars

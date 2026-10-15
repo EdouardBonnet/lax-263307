@@ -15,11 +15,5 @@ theorem state {B steps total : ℕ} {phases : List Com} {σ τ : Env}
   | nil => exact hσ
   | step hr j hj rr rest ih => exact ih (NativeStateBounds.run rr hσ)
 
-theorem arrays {B steps total : ℕ} {phases : List Com} {σ τ : Env}
-    (trace : Segment B phases steps total σ τ) (hσ : NativeArrayBounds.Bounded B σ) :
-    NativeArrayBounds.Bounded B τ := by
-  induction trace with
-  | nil => exact hσ
-  | step hr j hj rr rest ih => exact ih (NativeArrayBounds.run rr hσ)
 
 end Lax263307Proofs.NativeMachineBounds

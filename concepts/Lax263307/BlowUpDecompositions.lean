@@ -4,7 +4,7 @@ import Lax228581.Treewidth
 /-!
 ---
 title: Lifting a tree decomposition through a bounded blow-up
-type: theorem
+type: lemma
 ---
 Suppose $G$ has treewidth at most $w$, and every vertex is replaced by at
 most $s$ independent copies. The blow-up has a tree decomposition whose

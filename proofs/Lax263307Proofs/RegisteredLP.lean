@@ -31,22 +31,5 @@ theorem parse_encode {m n : ℕ} (c : Certificate m n) (tail : List ℕ) :
   rw [parse_eq]
   exact Lax455465Proofs.LpCertificateParser.certificate_encode c tail
 
-/--
----
-conclusion: Lax263307.RegisteredLP.exists_solver
----
-The registered solver returns exactly the encoding of a valid certificate.
-Parsing that encoding reconstructs the same certificate, so the total
-fallback branch is unreachable on these outputs.
--/
-theorem exists_solver : ∃ solve : List ℕ → List ℕ, Lax759944.RamPolytime.RamPolytime solve ∧
-    ∀ (m n : ℕ) (P : Program ℚ m n), IsValidCertificate P (certificate solve P) := by
-  obtain ⟨solve, hpoly, hsolve⟩ := Lax109476.PolynomialTimeSolver.exists_exact_polynomial_time_solver
-  refine ⟨solve, hpoly, ?_⟩
-  intro m n P
-  obtain ⟨c, hencoded, hvalid⟩ := hsolve m n P
-  have hparse : parse m n (encodeCertificate c) = some (c, []) := by
-    simpa only [List.append_nil] using parse_encode c []
-  simpa only [certificate, hencoded, hparse, Option.map_some, Option.getD_some] using hvalid
 
 end Lax263307Proofs.RegisteredLP

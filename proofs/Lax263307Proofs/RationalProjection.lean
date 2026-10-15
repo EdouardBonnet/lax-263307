@@ -135,50 +135,5 @@ theorem classify_correct {m n : ℕ} (P : Program ℚ m n) (center : Fin n → �
     exact False.elim (hbad.2 (Lax263307.DistanceProjection.objective_bounded
       (toReal P) (realVector center)))
 
-/--
----
-conclusion: Lax263307.RationalProjection.certificate_outcome
----
--/
-theorem certificate_outcome {m n : ℕ} (P : Program ℚ m n) (center : Fin n → ℚ)
-    (certificate : Certificate (m + (n + n)) (n + 1))
-    (valid : IsValidCertificate (distanceProgram P center) certificate) (ρ : ℝ) :
-    (¬ IsFeasible (toReal P)) ∨
-      (∃ y : Fin n → ℚ, PrimalFeasible (toReal P) (realVector y) ∧
-        ∀ j, |(y j : ℝ) - (center j : ℝ)| ≤ ρ) ∨
-      (∃ a : Fin n → ℚ, ∃ α : ℚ,
-        (∑ j, |(a j : ℝ)|) ≤ 1 ∧
-        (∀ y, PrimalFeasible (toReal P) y → (∑ j, (a j : ℝ) * y j) ≤ (α : ℝ)) ∧
-        ρ < (∑ j, (a j : ℝ) * (center j : ℝ)) - (α : ℝ)) := by
-  cases certificate with
-  | optimal z dual =>
-    obtain ⟨primal, dual_feasible, matching⟩ := valid
-    have hp := primal_transfer (distanceProgram P center) z primal
-    have hd := dual_transfer (distanceProgram P center) dual dual_feasible
-    rw [distance_cast] at hp hd
-    have hm : primalValue (distanceProgram (toReal P) (realVector center)) (realVector z) =
-        dualValue (distanceProgram (toReal P) (realVector center)) (realVector dual) := by
-      rw [← distance_cast, cast_primal_value, cast_dual_value, matching]
-    obtain hnear | hfar := Lax263307.DistanceProjection.strong_gap_dichotomy
-      (toReal P) (realVector center) (realVector z) (realVector dual) hp hd hm ρ
-    · exact Or.inr (Or.inl ⟨point z, hnear⟩)
-    · right; right
-      refine ⟨normal dual, dualValue P (oldMultipliers dual), ?_⟩
-      have hold : oldMultipliers (realVector dual) = realVector (oldMultipliers dual) := rfl
-      simpa only [normal_cast, hold, cast_dual_value, realVector] using hfar
-  | infeasible dual =>
-    have hbad := Lax109476.CertificateSoundness.valid_certificate_correct _ _
-      (distanceProgram P center) (.infeasible dual) valid
-    change ¬ IsFeasible (toReal (distanceProgram P center)) at hbad
-    rw [distance_cast, Lax263307.DistanceProjection.projection_feasible_iff] at hbad
-    exact Or.inl hbad
-  | unbounded z direction =>
-    have hbad := Lax109476.CertificateSoundness.valid_certificate_correct _ _
-      (distanceProgram P center) (.unbounded z direction) valid
-    change IsFeasible (toReal (distanceProgram P center)) ∧
-      ¬ IsBoundedAbove (toReal (distanceProgram P center)) at hbad
-    rw [distance_cast] at hbad
-    exact False.elim (hbad.2 (Lax263307.DistanceProjection.objective_bounded
-      (toReal P) (realVector center)))
 
 end Lax263307Proofs.RationalProjection

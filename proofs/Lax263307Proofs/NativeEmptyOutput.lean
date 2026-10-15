@@ -46,12 +46,5 @@ theorem command_spec (B n : ℕ) (hB : n+3<B) :
     ⟨hp,by simp [μ,encodeOutput],by simpa [μ] using r1.out_eq (by simp [Fill.put,Com.NoWrite])⟩
   exact ⟨τ,(r1.seq (r2.seq r3)).mono (by simp [Expr.size,encodeOutput]; omega),po⟩
 
-theorem nonpositive_correct {n : ℕ} (G : SimpleGraph (Fin n)) (weights : Fin n → ℚ) (ε : ℚ)
-    (hε : ε≤1) (hw : ∀ v,weights v≤0) : IsApproximation G weights ε ∅ := by
-  refine ⟨by simp,?_⟩
-  intro J _
-  have hj : weight weights J≤0 := Finset.sum_nonpos (fun v _ => hw v)
-  have hm := mul_nonpos_of_nonneg_of_nonpos (sub_nonneg.mpr hε) hj
-  simpa only [weight,Finset.sum_empty] using hm
 
 end Lax263307Proofs.NativeEmptyOutput

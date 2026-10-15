@@ -19,17 +19,6 @@ theorem catalog_complete (n r : ℕ) (A : Coordinate n r) : A ∈ catalog n r :=
   apply List.mem_map.mpr
   exact ⟨⟨A.val, hmem⟩, List.mem_attach _ _, Subtype.ext rfl⟩
 
-/--
----
-conclusion: Lax263307.CoordinateCatalog.catalog_nodup
----
-Removing duplicates and injectively attaching each cardinality proof preserves distinctness.
--/
-theorem catalog_nodup (n r : ℕ) : (catalog n r).Nodup := by
-  have hnd : (sets n r).Nodup := List.nodup_dedup _
-  apply hnd.attach.map
-  intro A B h
-  exact Subtype.ext (congrArg (fun C : Coordinate n r => C.val) h)
 
 /--
 ---
@@ -49,10 +38,8 @@ conclusion: Lax263307.CoordinateCatalog.catalog_positive
 The empty coordinate is always listed, so the catalog is nonempty.
 -/
 theorem catalog_positive (n r : ℕ) : 0 < (catalog n r).length := by
-  have hmem := catalog_complete n r (⟨∅, by simp⟩ : Coordinate n r)
+  have hmem := Lax263307.CoordinateCatalog.catalog_complete n r (⟨∅, by simp⟩ : Coordinate n r)
   exact List.length_pos_of_mem hmem
-
-
 
 
 /--
@@ -74,8 +61,8 @@ theorem catalog_two (n r : ℕ) (positive : 0 < n) : 2 ≤ (catalog n r).length 
     intro C hC
     simp only [Finset.mem_insert, Finset.mem_singleton] at hC
     rcases hC with rfl | rfl
-    · exact List.mem_toFinset.mpr (catalog_complete n r A)
-    · exact List.mem_toFinset.mpr (catalog_complete n r B)
+    · exact List.mem_toFinset.mpr (Lax263307.CoordinateCatalog.catalog_complete n r A)
+    · exact List.mem_toFinset.mpr (Lax263307.CoordinateCatalog.catalog_complete n r B)
   have hcard := Finset.card_le_card hsub
   have hpair : ({A, B} : Finset (Coordinate n r)).card = 2 := by simp [hne]
   rw [hpair] at hcard

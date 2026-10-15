@@ -5,7 +5,7 @@ import Mathlib.Logic.Equiv.Prod
 /-!
 ---
 title: Finite product sampling and coordinate marginals
-type: theorem
+type: lemma
 ---
 Independent finite coordinates have total product mass one. Restricting to
 any injectively selected coordinates recovers the product law on precisely

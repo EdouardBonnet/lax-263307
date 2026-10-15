@@ -4,7 +4,7 @@ import Mathlib.Data.Rat.Floor
 /-!
 ---
 title: Computing the recursive answer-or-cut decision
-type: theorem
+type: lemma
 ---
 Round each part's rational cost to a target. Skip queries on light parts.
 Scan child answers in a fixed order: the first failed query determines the
@@ -22,6 +22,8 @@ assert correctness or a RAM bound for the complete recursive program.
 
 namespace Lax263307.ComputedRounding
 
+open SeparatorComponents (combine)
+
 def target (δ cost : ℚ) : ℕ := ⌊(1 - δ) * cost⌋₊ + 1
 
 def answer {n : ℕ} {ι : Type} (δ : ℚ) (k : ℕ) (cost : ι → ℚ)
@@ -36,10 +38,10 @@ def collect {n : ℕ} {ι : Type} [Fintype ι] (order : List ι) (parts : ι →
     (δ : ℚ) (k : ℕ) (cost : ι → ℚ) (query : ι → ℕ → Option (Finset (Fin n))) : Result n :=
   match order.find? (fun i => (answer δ k cost query i).isNone) with
   | some i => .cut (parts i) (target δ (cost i) - 1)
-  | none => .found (Lax263307.SeparatorComponents.combine (fun i => (answer δ k cost query i).getD ∅))
+  | none => .found (combine (fun i => (answer δ k cost query i).getD ∅))
 
-open Lax263307.LinearRelaxation Lax263307.SeparatorComponents
-open Lax263307.ComponentCutEncoding
+open LinearRelaxation SeparatorComponents
+open ComponentCutEncoding
 
 axiom collect_correct {n r : ℕ} {ι : Type} [Fintype ι]
     (G : SimpleGraph (Fin n)) (k h : ℕ) (δ : ℚ) (η : ℝ)

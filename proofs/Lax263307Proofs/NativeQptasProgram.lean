@@ -34,8 +34,6 @@ def layout (cfg : NativeCoreMachine.Config) (C d Q e : ℕ) : Layout :=
 def program (cfg : NativeCoreMachine.Config) (C d Q e : ℕ) : Lax808846.Ram.Program :=
   compileProgram (layout cfg C d Q e) (command cfg C d Q e)
 
-theorem layout_ok (cfg : NativeCoreMachine.Config) (C d Q e : ℕ) :
-    Com.Ok (layout cfg C d Q e) (command cfg C d Q e) := RamAutomaticLayout.layout_ok _
 
 /-- Activate the actual prepared blow-up graph as the unweighted controller's
 working graph. No graph is supplied as runtime advice. -/

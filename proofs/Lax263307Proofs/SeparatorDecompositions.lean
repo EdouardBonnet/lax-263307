@@ -195,7 +195,6 @@ theorem glue_card (P : Partition G S ι)
       (Finset.card_image_le.trans (bound i j)) S.card)
 
 
-
 /--
 ---
 conclusion: Lax263307.SeparatorDecompositions.glue_bound
@@ -298,7 +297,7 @@ theorem recursive_bag_bound (C : GraphClass) (hereditary : IsHereditary C)
         exact (Lax263307Proofs.TreeExtensions.pullback_card g D j).trans
           ((hD j).trans (Nat.mul_le_mul hm hd))
       choose D hD using child
-      obtain ⟨E, hE⟩ := glue_bound G S P D
+      obtain ⟨E, hE⟩ := Lax263307.SeparatorDecompositions.glue_bound G S P D
         (B G.edgeSet.ncard * Lax263307.RecursionDepth.depth n) hD
       refine ⟨E, fun j => (hE j).trans ?_⟩
       nlinarith

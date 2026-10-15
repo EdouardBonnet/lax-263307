@@ -4,7 +4,7 @@ import Mathlib.Data.Fintype.Fin
 /-!
 ---
 title: Bags meeting a connected vertex set
-type: theorem
+type: lemma
 ---
 In a tree decomposition, the nodes whose bags meet a nonempty connected
 vertex set induce a connected subtree. The bag subtrees of adjacent vertices

@@ -6,7 +6,7 @@ import Mathlib.Data.Nat.Log
 /-!
 ---
 title: Explicit integer budgets for the round-or-cut algorithm
-type: theorem
+type: lemma
 ---
 Fixed class constants and an integer accuracy denominator determine the
 load, edge sparsity, conditioning level, and small-target cutoff.
@@ -19,11 +19,15 @@ using only natural arithmetic and powers of two.
 The precision budget is the protected-radius denominator plus two.
 That denominator is quasipolynomial in the input order and accuracy, so
 this conservative choice also gives a quasipolynomial iteration budget.
-The resource estimate and concrete RAM execution are separate obligations.
+The proof of the main theorem combines these budgets with the resource
+estimates and concrete RAM execution.
 -/
 
 namespace Lax263307.AlgorithmParameters
 
+open HeavyConditioning (probabilityFloor)
+open MomentLP (dimension)
+open RoundedOracleSearch (steps)
 def logarithm (n : ℕ) : ℕ := Nat.log2 (2 * n) + 1
 def load (B n D : ℕ) : ℕ := 12 * B * D * logarithm n
 def targetThreshold (a K B n D : ℕ) : ℕ := K * (load B n D + 1) ^ (4 * a + 2)
@@ -35,11 +39,11 @@ def floorDenominator (a K B n D : ℕ) : ℕ :=
 def momentFloor (a K B n D : ℕ) : ℚ :=
   1 / (floorDenominator a K B n D : ℚ) ^ level a K B n D
 def radiusDenominator (a K B n D : ℕ) : ℕ :=
-  256 * MomentLP.dimension n (level a K B n D) * n ^ 2 * D ^ 2 *
+  256 * dimension n (level a K B n D) * n ^ 2 * D ^ 2 *
     floorDenominator a K B n D ^ level a K B n D
 def precision (a K B n D : ℕ) : ℕ := radiusDenominator a K B n D + 2
 def iterations (a K B n D : ℕ) : ℕ :=
-  RoundedOracleSearch.steps (MomentLP.dimension n (level a K B n D)) (precision a K B n D)
+  steps (dimension n (level a K B n D)) (precision a K B n D)
 
 axiom budgets {a K B n D k : ℕ} (hK : 0 < K) (hB : 0 < B)
     (hD : 4 ≤ D) (large : cutoff a K B n D < k) :
@@ -53,12 +57,12 @@ axiom budgets {a K B n D k : ℕ} (hK : 0 < K) (hB : 0 < B)
 
 axiom conditioning_floor (a K B n D : ℕ) :
     (momentFloor a K B n D : ℝ) =
-      HeavyConditioning.probabilityFloor n (sparsity a K B n D) ^ level a K B n D
+      probabilityFloor n (sparsity a K B n D) ^ level a K B n D
 
 axiom protected_radius {a K B n D : ℕ} (hK : 0 < K) (hn : 0 < n) (hD : 0 < D) :
     2 ≤ precision a K B n D ∧
       ((2 : ℝ) ^ precision a K B n D)⁻¹ ≤
         (momentFloor a K B n D : ℝ) /
-          (256 * (MomentLP.dimension n (level a K B n D) : ℝ) * (n : ℝ) ^ 2 * (D : ℝ) ^ 2)
+          (256 * (dimension n (level a K B n D) : ℝ) * (n : ℝ) ^ 2 * (D : ℝ) ^ 2)
 
 end Lax263307.AlgorithmParameters

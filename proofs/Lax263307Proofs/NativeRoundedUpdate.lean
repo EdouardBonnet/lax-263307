@@ -45,7 +45,7 @@ theorem exists_program : ∃ (p : Lax808846.Ram.Program) (c : ℕ),0<c ∧
       (command p) (fun _ τ => Prefix (NativeRoundedQuery.shape (update k state a)) "round.shape" τ ∧
         Prefix (NativeRoundedQuery.center (update k state a)) "round.center" τ ∧
         τ.vars "vec.n"=n ∧ τ.vars "round.i"=k) (timeBound p c n h k) := by
-  obtain ⟨p,c,hc,hstep⟩ := NativeRoundedStep.exists_program
+  obtain ⟨p,c,hc,hstep⟩ := Lax263307.NativeRoundedStep.exists_program
   refine ⟨p,c,hc,?_⟩
   intro n k h hn hh state a hA ha hcenter hpos B v hv
   dsimp only

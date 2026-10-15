@@ -17,15 +17,6 @@ theorem decode_encode {K : Type} {n r : ℕ} (y : Coordinate n r → K) : decode
   funext A
   simp [decode, encode]
 
-/--
----
-conclusion: Lax263307.MomentLP.encode_decode
----
-The computable catalog equivalence and its inverse cancel on each native index.
--/
-theorem encode_decode {K : Type} {n r : ℕ} (x : Index n r → K) : encode (decode x) = x := by
-  funext j
-  simp [decode, encode]
 
 /--
 ---
@@ -60,7 +51,7 @@ theorem single_row_value {n r : ℕ} (x : Index n r → ℝ) (A : Finset (Fin n)
 theorem monotone_row_value {n r : ℕ} (x : Index n r → ℝ) (A : Finset (Fin n)) (v : Fin n) :
     (∑ j, (monotoneRow A v j : ℝ) * x j) = value (decode x) (insert v A) - value (decode x) A := by
   simp only [monotoneRow, Rat.cast_sub, sub_mul, Finset.sum_sub_distrib]
-  rw [single_row_value, single_row_value]
+  rw [Lax263307.MomentLP.single_row_value, Lax263307.MomentLP.single_row_value]
 
 theorem mass_row_value {n r : ℕ} (x : Index n r → ℝ) (A : Finset (Fin n)) (k : ℕ) :
     (∑ j, (massRow A k j : ℝ) * x j) =
@@ -69,11 +60,9 @@ theorem mass_row_value {n r : ℕ} (x : Index n r → ℝ) (A : Finset (Fin n)) 
     sub_mul, Finset.sum_sub_distrib]
   simp_rw [Finset.sum_mul]
   rw [Finset.sum_comm]
-  simp_rw [single_row_value]
+  simp_rw [Lax263307.MomentLP.single_row_value]
   simp_rw [mul_assoc]
-  rw [← Finset.mul_sum, single_row_value]
-
-
+  rw [← Finset.mul_sum, Lax263307.MomentLP.single_row_value]
 
 
 abbrev Rows (n r : ℕ) := Fin (2 + (dimension n r + (dimension n r + (dimension n r * n + (dimension n r + dimension n r)))))
@@ -113,16 +102,16 @@ theorem normal_row {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r
   simp only [Fin.addCases_left]
   by_cases hi : i = 0
   · simp only [if_pos hi]
-    exact single_row_value x ∅
+    exact Lax263307.MomentLP.single_row_value x ∅
   · simp only [if_neg hi, Rat.cast_neg, neg_mul, Finset.sum_neg_distrib]
-    rw [single_row_value]
+    rw [Lax263307.MomentLP.single_row_value]
 
 theorem upper_row {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ)
     (x : Index n r → ℝ) (i : Index n r) :
     rowValue (toReal (program G k r)) x (upperPort i) = x i := by
   unfold rowValue toReal program upperPort
   simp only [Fin.addCases_left, Fin.addCases_right]
-  rw [single_row_value, indexed_value]
+  rw [Lax263307.MomentLP.single_row_value, indexed_value]
 
 theorem vanish_row {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ)
     (x : Index n r → ℝ) (i : Index n r) :
@@ -132,7 +121,7 @@ theorem vanish_row {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r
   simp only [Fin.addCases_left, Fin.addCases_right]
   split_ifs
   · simp
-  · rw [single_row_value, indexed_value]
+  · rw [Lax263307.MomentLP.single_row_value, indexed_value]
 
 theorem monotone_row {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ)
     (x : Index n r → ℝ) (i : Index n r) (v : Fin n) :
@@ -167,8 +156,6 @@ theorem mass_minus_row {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] 
   · simp only [Rat.cast_neg, neg_mul, Finset.sum_neg_distrib]
     rw [mass_row_value]
   · simp
-
-
 
 
 theorem normal_rhs {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) (i : Fin 2) :
@@ -282,24 +269,6 @@ theorem primal_characterization {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRe
                 · rw [if_pos hi, feasible.mass _ hi]
                   simp
                 · simp [hi]
-
-/--
----
-conclusion: Lax263307.MomentLP.feasible_iff
----
-Decode a feasible LP vector to feasible moments; conversely encode any feasible moment vector and apply the exact row characterization.
--/
-theorem feasible_iff {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) :
-    Lax109476.LinearProgram.IsFeasible (toReal (program G k r)) ↔
-      ∃ y : MomentVector n r, Lax263307.LinearRelaxation.IsFeasible G k r y := by
-  constructor
-  · rintro ⟨x, hx⟩
-    exact ⟨decode x, (primal_characterization G k r x).mp hx⟩
-  · rintro ⟨y, hy⟩
-    refine ⟨encode y, (primal_characterization G k r (encode y)).mpr ?_⟩
-    simpa only [decode_encode] using hy
-
-
 
 
 /--

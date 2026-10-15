@@ -4,7 +4,7 @@ import Lax263307.EdgeSublinearSeparators
 /-!
 ---
 title: Balanced closed parts certify a balanced separator
-type: theorem
+type: lemma
 ---
 A partition of undeleted vertices into parts closed under undeleted graph
 edges places each connected component wholly inside one part. If every
@@ -18,7 +18,7 @@ The balanced-component conclusion of Bonnet–Chang's repeated-cut Lemma 8.
 
 namespace Lax263307.BalancedPartitions
 
-open Lax263307.SeparatorComponents Lax263307.EdgeSublinearSeparators
+open SeparatorComponents EdgeSublinearSeparators
 
 axiom balanced_separator {n : ℕ} (G : SimpleGraph (Fin n)) (S : Finset (Fin n))
     {ι : Type} (P : Partition G S ι) (balanced : ∀ i, 3 * (P.vertices i).card ≤ 2 * n) :

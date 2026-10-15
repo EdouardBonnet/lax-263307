@@ -51,31 +51,5 @@ theorem evaluation_identity {n r : ℕ} (A C : Finset (Fin n)) (u : ℕ)
     rw [coordinate_sum A (by omega)]
   rw [hfirst, hsecond]
 
-/--
----
-conclusion: Lax263307.ComponentCutEncoding.coefficient_bound
----
-The positive contribution counts at most `|C| ≤ n` terms, each equal to one.
-The negative contribution is either zero or `u ≤ n`. Their difference lies
-between `-n` and `n`, even when inserted coordinates repeat.
--/
-theorem coefficient_bound {n r : ℕ} (A C : Finset (Fin n)) (u : ℕ)
-    (bound : u ≤ n) (B : Coordinate n r) :
-    |coefficient A C u B| ≤ (n : ℤ) := by
-  have hsum₀ : (0 : ℤ) ≤ ∑ v ∈ C, if insert v A = B.val then 1 else 0 := by
-    apply Finset.sum_nonneg
-    intro v _
-    split_ifs <;> norm_num
-  have hsum₁ : (∑ v ∈ C, if insert v A = B.val then (1 : ℤ) else 0) ≤ n := by
-    calc
-      (∑ v ∈ C, if insert v A = B.val then (1 : ℤ) else 0) ≤ ∑ _v ∈ C, (1 : ℤ) := by
-        apply Finset.sum_le_sum
-        intro v _
-        split_ifs <;> norm_num
-      _ = (C.card : ℤ) := by simp
-      _ ≤ n := by exact_mod_cast (show C.card ≤ n by simpa using Finset.card_le_univ C)
-  have hu : (u : ℤ) ≤ n := by exact_mod_cast bound
-  rw [coefficient, abs_le]
-  split_ifs <;> constructor <;> omega
 
 end Lax263307Proofs.ComponentCutEncoding

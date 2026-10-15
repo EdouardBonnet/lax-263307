@@ -121,21 +121,5 @@ theorem cost_bound (n r h : ℕ) : NativeHeavySearch.cost (2^h) n r≤
   dsimp [NativeHeavySearch.cost]
   omega
 
-/-- The full search has explicit bounds derived from the instance
-parameters and the bit height of the supplied near point. -/
-theorem bounded_spec (n r k p h w : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-    (y : RationalVector n r) (hn : 0<n) (hp : 0<p) (hy : ∀ T,Bounded (2^h) (y T))
-    (hw : wordExponent n r k p h≤w) :
-    Lax808846Proofs.Reasoning.Spec (2^w)
-      (fun σ => NativeConditioningEntry.Data G y σ ∧ σ.vars "conditioning.k"=k ∧ σ.vars "conditioning.p"=p)
-      NativeHeavySearch.command
-      (fun _ τ => NativeConditioningEntry.Data G y τ ∧
-        NativeHeavySearch.Output (HeavyRationalConditioning.findHeavyConditioning G k p y) τ)
-      (2000*(n+r+N n r+h+20)^6) := by
-  obtain ⟨hN,hs,hm,hB,hH,ht,hf⟩ := guards n r k p h w hw
-  intro σ hc
-  obtain ⟨τ,rr,ht⟩ := NativeHeavySearch.command_spec (2^w) (2^h) n r k p G y hn hp
-    (one_le_pow₀ (by decide)) hN hs hm hB hH hy ht hf σ hc
-  exact ⟨τ,rr.mono (cost_bound n r h),ht⟩
 
 end Lax263307Proofs.NativeHeavyResources

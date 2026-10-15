@@ -51,34 +51,5 @@ theorem lift_spec (B n : ℕ) (R : Finset (Fin n)) (I : Finset (Fin R.card))
 def command : Com := .ite (.eq (.var "recursion.return.tag") (.lit 1)) liftCommand
   (.assign "lift.mask" (.lit 0))
 
-theorem some_spec (B n : ℕ) (R : Finset (Fin n)) (I : Finset (Fin R.card))
-    (hB : n+2<B) (hm : 2^n<B) :
-    Spec B (fun σ => σ.vars "recursion.return.tag"=1 ∧ σ.vars "graph.n"=n ∧
-      σ.vars "restrict.count"=R.card ∧ σ.vars "recursion.return.mask"=mask I ∧
-      Prefix (NativeRestrictionOrder.words R) "restrict.vertices" σ ∧ R.card≤(σ.arrs "subset.bits").length)
-      command (fun _ τ => τ.vars "recursion.return.tag"=1 ∧ τ.vars "graph.n"=n ∧
-        τ.vars "lift.mask"=mask (I.image (label R))) (45*R.card+28) := by
-  rintro σ ⟨htag,hrest⟩
-  obtain ⟨τ,rr,p⟩ := lift_spec B n R I hB hm σ hrest
-  have hc : (Cond.eq (.var "recursion.return.tag") (.lit 1)).evalB B σ=some true := by
-    have hh := evalB_condEq (by rw [evalB_var_iff]; exact ⟨htag.symm,htag ▸ (by omega : 1<B)⟩)
-      (evalB_lit (show 1<B by omega))
-    simpa using hh
-  exact ⟨τ,(Run.ite_true (d:=.assign "lift.mask" (.lit 0)) hc rr).mono (by simp [Cond.size,Expr.size] <;> omega),
-    (rr.frame_var "recursion.return.tag" (by decide)).trans htag,p.1,p.2.1⟩
-
-theorem none_spec (B n : ℕ) (hB : 1<B) :
-    Spec B (fun σ => σ.vars "recursion.return.tag"=0 ∧ σ.vars "graph.n"=n) command
-      (fun _ τ => τ.vars "recursion.return.tag"=0 ∧ τ.vars "graph.n"=n ∧ τ.vars "lift.mask"=0) 6 := by
-  rintro σ ⟨htag,hn⟩
-  have hc : (Cond.eq (.var "recursion.return.tag") (.lit 1)).evalB B σ=some false := by
-    have hh := evalB_condEq (by rw [evalB_var_iff]; exact ⟨htag.symm,htag ▸ (by omega : 0<B)⟩)
-      (evalB_lit hB)
-    simpa using hh
-  let τ := σ.setVar "lift.mask" 0
-  have rr : Run B (.assign "lift.mask" (.lit 0)) σ τ 2 := Run.assign (evalB_lit (show 0<B by omega))
-  exact ⟨τ,(Run.ite_false (c:=liftCommand) hc rr).mono (by simp [Cond.size,Expr.size]),
-    by simpa only [τ,vars_setVar,String.reduceEq,if_false] using htag,
-    by simpa only [τ,vars_setVar,String.reduceEq,if_false] using hn,by simp [τ]⟩
 
 end Lax263307Proofs.NativeChildReturn

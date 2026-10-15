@@ -21,7 +21,7 @@ theorem copy_order {n : ℕ} (weights : Fin n → ℚ) (ε : ℚ)
     (hw : ∀ v,0≤weights v) (hn : 0<n) (hε : 0<ε)
     (hmax : 0<WeightRounding.maximumWeight weights) :
     ∑ v,WeightRounding.copies weights ε v≤2*n^2*⌈ε⁻¹⌉₊ := by
-  have h := RoundingBounds.total_copy_bound weights ε hw hn hε hmax
+  have h := Lax263307.RoundingBounds.total_copy_bound weights ε hw hn hε hmax
   have hc := Nat.le_ceil ε⁻¹
   have he : (2*(n : ℚ)^2)/ε=2*(n : ℚ)^2*ε⁻¹ := by ring
   rw [he] at h
@@ -102,7 +102,7 @@ theorem weighted_envelope (C d n N : ℕ) (ε : ℚ) (hε : 0<ε)
 theorem final_time (C d q e n N ℓ : ℕ) (ε : ℚ) (hε : 0<ε)
     (hN : N≤2*n^2*⌈ε⁻¹⌉₊) :
     NativeRootResource.envelope C d N (accuracyDenominator N (ε/2))+q*(ℓ+1)^e≤
-      QPTAS.timeBound (C*864^d+q+1) (max (3*d) e) n ℓ ε := by
+      QPTASRuntime.timeBound (C*864^d+q+1) (max (3*d) e) n ℓ ε := by
   have h := weighted_envelope C d n N ε hε hN
   have hE : 0<⌈ε⁻¹⌉₊ := Nat.ceil_pos.mpr (inv_pos.mpr hε)
   have hX : 1≤⌈ε⁻¹⌉₊*inputLog n := Nat.mul_pos hE (by dsimp [inputLog]; omega)

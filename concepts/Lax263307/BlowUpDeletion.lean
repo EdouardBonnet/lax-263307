@@ -5,7 +5,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 /-!
 ---
 title: Deleting high-degree vertices in an independent blow-up
-type: theorem
+type: lemma
 ---
 Let $H$ be an independent blow-up of a graph of treewidth at most $w$.
 Delete the vertices $X$ whose degree exceeds an integer threshold $s$.

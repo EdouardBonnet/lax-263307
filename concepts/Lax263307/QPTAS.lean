@@ -1,11 +1,11 @@
 import Lax263307.GraphClasses
 import Lax263307.WeightedIndependentSet
+import Lax263307.QPTASRuntime
 import Lax808846.Ram
-import Mathlib.Data.Nat.Log
 
 /-!
 ---
-title: Deterministic quasipolynomial-time approximation schemes
+title: A QPTAS for maximum-weight independent set
 type: definition
 ---
 A deterministic QPTAS for maximum-weight independent set on a class
@@ -39,11 +39,7 @@ on well-formed inputs whose graphs belong to $\mathcal C$.
 
 namespace Lax263307.QPTAS
 
-open GraphClasses WeightedIndependentSet Lax808846.Ram
-
-/-- An explicit bound representing the paper's two-parameter running time. -/
-def timeBound (c d n ℓ : ℕ) (ε : ℚ) : ℕ :=
-  2 ^ (c * (⌈ε⁻¹⌉₊ * (Nat.log2 (n + 2) + 1)) ^ d) + c * (ℓ + 1) ^ d
+open GraphClasses WeightedIndependentSet QPTASRuntime Lax808846.Ram
 
 /-- One uniform deterministic word-RAM program realizes the approximation scheme. -/
 def HasQPTAS (C : GraphClass) : Prop :=

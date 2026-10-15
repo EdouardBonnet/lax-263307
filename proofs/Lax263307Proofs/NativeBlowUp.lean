@@ -1,6 +1,6 @@
-import Lax263307.NativeBlowUp
-import Lax263307Proofs.NativeWeightReduction
 import Lax263307.WeightedAlgorithm
+import Lax808846.Ram
+import Lax263307Proofs.NativeWeightReduction
 import Mathlib.Data.Fin.Tuple.Take
 
 set_option maxHeartbeats 1000000
@@ -492,176 +492,16 @@ def emit : Com := .seq (.write (.var "blowup.length"))
   (.seq (.assign "emit.count" (.mul (.var "blowup.length") (.var "blowup.length")))
     (Lax455465Proofs.RamEmitWords.command "blowup.matrix" 1))
 
-theorem emit_spec (B N : ℕ) (xs : List ℕ) (hB : N*N+N+3<B)
-    (hlen : xs.length=N*N) (hwords : ∀ z∈xs,z<B) :
-    Spec B (fun σ => σ.vars "blowup.length"=N ∧ Prefix xs "blowup.matrix" σ) emit
-      (fun σ τ => τ.out=σ.out++N::xs) (13*N*N+12) := by
-  rintro σ ⟨hN,hprefix⟩
-  let ν : Env := {σ with out:=σ.out++[N]}
-  have hNB : N<B := by omega
-  have hNNB : N*N<B := by omega
-  have r1 : Run B (.write (.var "blowup.length")) σ ν 2 :=
-    Run.write (by rw [evalB_var_iff]; exact ⟨hN.symm,hN ▸ hNB⟩)
-  let μ := ν.setVar "emit.count" (N*N)
-  have hNν : ν.vars "blowup.length"=N := hN
-  have r2 : Run B (.assign "emit.count" (.mul (.var "blowup.length") (.var "blowup.length")))
-      ν μ 4 := Run.assign (evalB_bin (op := .mul)
-        (by rw [evalB_var_iff]; exact ⟨hNν.symm,hNν ▸ hNB⟩)
-        (by rw [evalB_var_iff]; exact ⟨hNν.symm,hNν ▸ hNB⟩) hNNB)
-  obtain ⟨τ,r3,p3⟩ := Lax455465Proofs.RamEmitWords.command_spec B "blowup.matrix" 1 xs
-    (σ.out++[N]) (by omega) (by omega) (by rw [one_mul,hlen]; omega) (by omega) hwords μ
-    ⟨by simpa only [Lax455465Proofs.RamEmitWords.Data,Prefix,one_mul,μ,ν,arrs_setVar] using hprefix,
-      by simp [μ,hlen],rfl⟩
-  refine ⟨τ,(r1.seq (r2.seq r3)).mono (by rw [hlen]; nlinarith),?_⟩
-  simpa only [List.append_assoc,List.singleton_append] using p3
 
 def command : Com := .seq prepare emit
 
 def totalCost (n N : ℕ) : ℕ := cost n N+13*N*N+12
 
-theorem command_spec {n : ℕ} (B M : ℕ) (hM : 1≤M) (hn : n≤M)
-    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (w : Fin n → ℚ) (ε : ℚ) (hεpos : 0<ε)
-    (hw : ∀ v,(w v).num.natAbs≤M ∧ (w v).den≤M) (hε : ε.num.natAbs≤M ∧ ε.den≤M)
-    (hB : 2*M^4+3<B) (hsize : n*n+3*n+3<B)
-    (hgraph : n*n+(∑ v,copies (fun v => max (w v) 0) ε v)^2+n+
-      (∑ v,copies (fun v => max (w v) 0) ε v)+3<B) :
-    let cs := copies (fun v => max (w v) 0) ε
-    let N := ∑ v,cs v
-    Spec B (fun σ => σ.inp=encodeInput G w ε ∧ n*n+3*n+3≤(σ.arrs "input.data").length ∧
-      n≤(σ.arrs "copy.counts").length ∧ N≤(σ.arrs "blowup.owner").length ∧
-      N*N≤(σ.arrs "blowup.matrix").length) command
-      (fun σ τ => τ.out=σ.out++N::numberedMatrix G cs) (totalCost n N) := by
-  dsimp only
-  let cs := copies (fun v => max (w v) 0) ε
-  let N := ∑ v,cs v
-  intro σ hσ
-  obtain ⟨ν,r1,hmat,_,hN,_,hout,_⟩ := prepare_spec B M hM hn G w ε hεpos hw hε hB hsize hgraph σ hσ
-  have hm : (numberedMatrix G cs).length=N*N := matrix_length _
-  have hwords : ∀ z∈numberedMatrix G cs,z<B := by
-    intro z hz
-    obtain ⟨r,hr,hz⟩ := List.mem_flatten.mp hz
-    obtain ⟨i,rfl⟩ := List.mem_ofFn.mp hr
-    obtain ⟨j,rfl⟩ := List.mem_ofFn.mp hz
-    dsimp only
-    split_ifs <;> omega
-  obtain ⟨τ,r2,p2⟩ := emit_spec B N (numberedMatrix G cs) (by dsimp [N,cs]; nlinarith only [hgraph])
-    hm hwords ν ⟨hN,hmat⟩
-  refine ⟨τ,(r1.seq r2).mono (by dsimp [totalCost,N,cs]; omega),?_⟩
-  rw [hout] at p2
-  exact p2
 
 open Lax109476Proofs
 
 def layout := RamAutomaticLayout.layout command
 def program : Lax808846.Ram.Program := Lax808846Proofs.Compile.compileProgram layout command
 
-theorem compiled_runs_to {n : ℕ} (v width M : ℕ) (hv : 0<v)
-    (hwidth : v+RamTransfer.layoutAllowance layout≤width) (hM : 1≤M) (hn : n≤M)
-    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (w : Fin n → ℚ) (ε : ℚ) (hεpos : 0<ε)
-    (hw : ∀ i,(w i).num.natAbs≤M ∧ (w i).den≤M) (hε : ε.num.natAbs≤M ∧ ε.den≤M)
-    (hB : 2*M^4+3<2^v) (hsize : n*n+3*n+3<2^v)
-    (hgraph : n*n+(∑ v,copies (fun v => max (w v) 0) ε v)^2+n+
-      (∑ v,copies (fun v => max (w v) 0) ε v)+3<2^v)
-    (hinput : ∀ z∈encodeInput G w ε,z<2^v) :
-    let cs := copies (fun v => max (w v) 0) ε
-    let N := ∑ v,cs v
-    ∃ t≤10*totalCost n N+1,Lax808846.Ram.RunsTo width program (encodeInput G w ε)
-      (N::numberedMatrix G cs) t := by
-  dsimp only
-  let cs := copies (fun v => max (w v) 0) ε
-  let N := ∑ v,cs v
-  let room := n*n+3*n+3+N*N+N
-  obtain ⟨τ,hr,hout⟩ := command_spec (2^v) M hM hn G w ε hεpos hw hε hB hsize hgraph
-    (initEnv (fun _ => room) (encodeInput G w ε))
-    ⟨rfl,by simp [initEnv,room]; omega,by simp [initEnv,room]; omega,
-      by simp [initEnv,room,N,cs],by simp [initEnv,room,N,cs]; omega⟩
-  obtain ⟨K,hK,hbs⟩ := hr
-  obtain ⟨t,ht,hrun⟩ := Lax808846Proofs.Simulation.compileProgram_runsTo
-    (RamTransfer.layout_fits hv hwidth) (RamAutomaticLayout.layout_ok command) hinput hbs
-  refine ⟨t,ht.trans (Nat.add_le_add_right (Nat.mul_le_mul_left 10 hK) 1),?_⟩
-  simpa only [program,layout,hout,initEnv,List.nil_append] using hrun
-
-/--
----
-conclusion: Lax263307.NativeBlowUp.exists_program
----
-The native owner loop matches the exact finite-sigma numbering. The matrix
-loop follows those owners into the preserved input matrix. Composing both
-with weight preprocessing and the output pass yields one compiled program;
-an explicit magnitude exponent and layout allowance give uniform quadratic
-bounds at every sufficiently large word width.
--/
-theorem exists_program : ∃ p : Lax808846.Ram.Program, ∃ c : ℕ, 0<c ∧
-    ∀ (n h : ℕ), 1≤h → ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-      (w : Fin n → ℚ) (ε : ℚ), 0<ε →
-      (∀ i,(w i).num.natAbs≤2^h ∧ (w i).den≤2^h) →
-      ε.num.natAbs≤2^h → ε.den≤2^h →
-      let cs := copies (fun v => max (w v) 0) ε
-      let N := ∑ v,cs v
-      ∀ width : ℕ,c*(n+N+h+1)^2≤width →
-      ∃ t≤c*(n+N+h+1)^2,Lax808846.Ram.RunsTo width p (encodeInput G w ε)
-        (N::numberedMatrix G cs) t := by
-  let C := 100000+RamTransfer.layoutAllowance layout
-  refine ⟨program,C,by dsimp [C]; omega,?_⟩
-  intro n h hh G _ w ε hεpos hw hεn hεd
-  dsimp only
-  let cs := copies (fun v => max (w v) 0) ε
-  let N := ∑ v,cs v
-  intro width hwidth
-  let X := n+N+h+1
-  let E := n+h+2
-  let M := 2^E
-  let v := 4*E+(n*n+3*n+3)+N*N+N+10
-  have hX : 1≤X := by dsimp [X]; omega
-  have hnX : n≤X := by dsimp [X]; omega
-  have hNX : N≤X := by dsimp [X]; omega
-  have hhX : h≤X := by dsimp [X]; omega
-  have hXX : X≤X^2 := le_self_pow hX (by omega)
-  have h1X : 1≤X^2 := Nat.one_le_pow 2 X (by omega)
-  have hnnX : n*n≤X^2 := by simpa only [pow_two] using Nat.mul_le_mul hnX hnX
-  have hNNX : N*N≤X^2 := by simpa only [pow_two] using Nat.mul_le_mul hNX hNX
-  have hnNX : n*N≤X^2 := by simpa only [pow_two] using Nat.mul_le_mul hnX hNX
-  have hvbound : v≤50*X^2 := by
-    dsimp only [v,E]
-    nlinarith only [hnnX,hNNX,hnX,hNX,hhX,hXX,h1X]
-  have hwv : v+RamTransfer.layoutAllowance layout≤width := by
-    change C*X^2≤width at hwidth
-    have ha := Nat.mul_le_mul_left (RamTransfer.layoutAllowance layout) h1X
-    dsimp only [C] at hwidth
-    nlinarith only [hwidth,hvbound,ha]
-  have hv : 0<v := by dsimp [v]; omega
-  have hM : 1≤M := Nat.one_le_pow E 2 (by omega)
-  have hnM : n≤M := (show n≤E by dsimp [E]; omega).trans Nat.lt_two_pow_self.le
-  have hhM : 2^h≤M := Nat.pow_le_pow_right (by omega) (by dsimp [E]; omega)
-  have hM4 : M^4=2^(4*E) := by dsimp [M]; rw [←pow_mul,Nat.mul_comm]
-  have hpow : 2^(4*E+3)=8*M^4 := by rw [pow_add,←hM4]; norm_num; omega
-  have hMp : 1≤M^4 := Nat.one_le_pow 4 M (by omega)
-  have hguard : 2*M^4+3<2^v := by
-    apply lt_of_lt_of_le (b:=2^(4*E+3))
-    · rw [hpow]
-      omega
-    · apply Nat.pow_le_pow_right (by omega)
-      dsimp [v]
-      omega
-  have hsize : n*n+3*n+3<2^v :=
-    (show n*n+3*n+3<v by dsimp [v]; omega).trans Nat.lt_two_pow_self
-  have hgraph : n*n+N^2+n+N+3<2^v :=
-    (show n*n+N^2+n+N+3<v by dsimp [v]; rw [pow_two]; omega).trans Nat.lt_two_pow_self
-  have hMB : M<2^v := Nat.pow_lt_pow_right (by omega) (by dsimp [v]; omega)
-  have hinput : ∀ z∈encodeInput G w ε,z<2^v := by
-    change ∀ z∈n::tailInput G w ε,z<2^v
-    intro z hz
-    rcases List.mem_cons.mp hz with rfl | hz
-    · exact hnM.trans_lt hMB
-    · exact (NativeWeightReduction.input_words M hM G w ε (fun i => ⟨(hw i).1.trans hhM,(hw i).2.trans hhM⟩)
-        ⟨hεn.trans hhM,hεd.trans hhM⟩ z hz).trans_lt hMB
-  obtain ⟨t,ht,hrun⟩ := compiled_runs_to v width M hv hwv hM hnM G w ε hεpos
-    (fun i => ⟨(hw i).1.trans hhM,(hw i).2.trans hhM⟩) ⟨hεn.trans hhM,hεd.trans hhM⟩ hguard hsize hgraph hinput
-  refine ⟨t,ht.trans ?_,hrun⟩
-  change 10*totalCost n N+1≤C*X^2
-  have hcost : 10*totalCost n N+1≤100000*X^2 := by
-    dsimp only [totalCost,cost]
-    nlinarith only [hnnX,hNNX,hnNX,hnX,hXX,h1X]
-  exact hcost.trans (Nat.mul_le_mul_right _ (by dsimp [C]; omega))
 
 end Lax263307Proofs.NativeBlowUp

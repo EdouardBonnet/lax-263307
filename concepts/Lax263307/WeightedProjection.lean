@@ -4,7 +4,7 @@ import Lax263307.BlowUpIndependentSets
 /-!
 ---
 title: Projecting an unweighted approximation gives a weighted approximation
-type: theorem
+type: lemma
 ---
 Let an $n$-vertex graph have nonnegative rational weights, with positive
 maximum weight $W$, and let $0<\varepsilon<1$.
@@ -19,9 +19,8 @@ Bonnet–Chang, the approximation guarantee in the proof of Theorem 2.
 
 # Formalization notes
 
-This is the approximation transfer. Preservation of the graph-class
-separator hypothesis under blow-ups and the algorithm's running time
-are separate obligations.
+The main theorem combines this approximation transfer with separator
+preservation under blow-ups and the running-time bound.
 -/
 
 namespace Lax263307.WeightedProjection

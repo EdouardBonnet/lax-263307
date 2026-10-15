@@ -4,7 +4,7 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 /-!
 ---
 title: Treewidth transfer through an almost-embedding
-type: theorem
+type: lemma
 ---
 An almost-embedding maps each vertex of $H$ into $G$ and assigns to each edge
 a connected vertex set joining its mapped endpoints. Sets assigned to

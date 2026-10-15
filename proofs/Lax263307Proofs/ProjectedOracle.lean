@@ -247,32 +247,5 @@ theorem search_correct {n : ℕ} (lp flow : List ℕ → List ℕ) (a K B D : �
 
 open Lax263307.GraphClasses Lax263307.PowerBagBounds
 
-/--
----
-conclusion: Lax263307.ProjectedOracle.exists_search
----
-A fixed pair of registered solvers supplies projection certificates and flow
-cuts. The protected-cube argument proves completeness of the bounded search;
-a size-k subset of any larger independent set excludes false rejection.
--/
-theorem exists_search (C : GraphClass) (hereditary : IsHereditary C)
-    (a A : ℕ) (ha : 0 < a) (hA : 0 < A) (class_bound : HasPowerBagBound C a A) :
-    ∃ (lp flow : List ℕ → List ℕ) (K B : ℕ),
-      Lax759944.RamPolytime.RamPolytime lp ∧ Lax759944.RamPolytime.RamPolytime flow ∧
-      0 < K ∧ 0 < B ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
-      G ∈ C n → 0 < n → ∀ (D k h : ℕ), 4 ≤ D → cutoff a K B n D < k →
-      ∀ (child : Finset (Fin n) → ℕ → Option (Finset (Fin n))),
-      Lax263307.NearOracle.ChildCorrect G D h child →
-      SearchCorrect G k h D (search lp flow a K B D G k child) := by
-  obtain ⟨lp, hpolyLP, hlp⟩ := Lax263307.RegisteredLP.exists_solver
-  obtain ⟨flow, K, B, hpolyFlow, hK, hB, hnear⟩ :=
-    Lax263307.NearOracle.exists_oracle C hereditary a A ha hA class_bound
-  refine ⟨lp, flow, K, B, hpolyLP, hpolyFlow, hK, hB, ?_⟩
-  intro n G _ hG hn D k h hD hlarge child hchild
-  apply search_correct lp flow a K B D G k h hn (by omega) child
-  intro center
-  apply run_correct lp flow a K B D G k h hK hn hD hlp child
-  intro y hy x hx
-  exact hnear n G hG hn D k h hD hlarge y hy x hx child hchild
 
 end Lax263307Proofs.ProjectedOracle

@@ -3,7 +3,7 @@ import Lax263307.PathSampling
 /-!
 ---
 title: Choosing a collision-free outcome with bounded total path length
-type: theorem
+type: lemma
 ---
 For a finite probability distribution, suppose the probability of a bad
 outcome is at most $1/4$ and a nonnegative total cost has expectation at most

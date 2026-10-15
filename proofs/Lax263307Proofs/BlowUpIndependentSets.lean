@@ -95,22 +95,5 @@ theorem projection_capacity {n : ℕ} (copies : Fin n → ℕ) (K : Finset (Vert
   exact (Finset.card_le_card hsub).trans_eq
     (Lax263307.BlowUpIndependentSets.lift_cardinality copies (project K))
 
-/--
----
-conclusion: Lax263307.BlowUpIndependentSets.order_eq
----
-The blow-up graph has exactly the sum of its fibre sizes as its order.
-
-# Proof strategy
-
-Apply the finite-type cardinality formula for a dependent sum.
-
-# Attribution
-
-Bonnet–Chang, Section 6.
--/
-theorem order_eq {n : ℕ} (copies : Fin n → ℕ) :
-    Fintype.card (Vertex copies) = ∑ v, copies v := by
-  simp [Vertex, Fintype.card_sigma]
 
 end Lax263307Proofs.BlowUpIndependentSets

@@ -107,7 +107,6 @@ theorem blowup_sublinear_bag_bound (C : GraphClass) (hereditary : IsHereditary C
   exact hcard.trans (by simpa only [hcount] using hD j)
 
 
-
 /--
 ---
 conclusion: Lax263307.BlowUpBagBounds.blowup_power_bag_bound
@@ -119,7 +118,7 @@ exponent by a-1 using a(1-beta)>1.
 theorem blowup_power_bag_bound (C : GraphClass) (hereditary : IsHereditary C)
     (separators : HasStronglyEdgeSublinearSeparators C) :
     ∃ a A : ℕ, 0 < a ∧ 0 < A ∧ Lax263307.PowerBagBounds.HasPowerBagBound (blowUpClass C) a A := by
-  obtain ⟨β, c, _hβ, hβ1, hc, hbags⟩ := blowup_sublinear_bag_bound C hereditary separators
+  obtain ⟨β, c, _hβ, hβ1, hc, hbags⟩ := Lax263307.BlowUpBagBounds.blowup_sublinear_bag_bound C hereditary separators
   have hgap : 0 < 1 - β := by linarith
   obtain ⟨a, ha⟩ := exists_nat_gt (1 / (1 - β))
   have hap : 0 < a := by

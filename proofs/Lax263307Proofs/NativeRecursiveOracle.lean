@@ -35,13 +35,6 @@ theorem exists_solvers_with_parts (C : GraphClass) (hereditary : IsHereditary C)
   intro y hy x hx
   exact hnear n G hG hn D k h hD hlarge y hy x hx child hc
 
-theorem exists_solvers (C : GraphClass) (hereditary : IsHereditary C)
-    (a A : ℕ) (ha : 0<a) (hA : 0<A) (hclass : PowerBagBounds.HasPowerBagBound C a A) :
-    ∃ lp flow K b, Lax759944.RamPolytime.RamPolytime lp ∧ NativeEncodedLP.Encoded lp ∧
-      Lax759944.RamPolytime.RamPolytime flow ∧ 0<K ∧ 0<b ∧ OracleCorrect C lp flow a K b := by
-  obtain ⟨lp,flow,K,b,hpoly,hlp,hflow,hK,hb,hsep,ho⟩ :=
-    exists_solvers_with_parts C hereditary a A ha hA hclass
-  exact ⟨lp,flow,K,b,hpoly,hlp,hflow,hK,hb,ho⟩
 
 theorem search_correct {C : GraphClass} {lp flow : List ℕ → List ℕ} {a K b : ℕ}
     (ho : OracleCorrect C lp flow a K b) {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]

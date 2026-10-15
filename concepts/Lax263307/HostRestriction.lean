@@ -3,7 +3,7 @@ import Lax263307.InducedRouteEdges
 /-!
 ---
 title: Restricting an induced almost-embedding to its route union
-type: theorem
+type: lemma
 ---
 Relabel the host graph induced by the nonempty union of edge routes onto
 Fin. The resulting graph embeds inducedly in the original host, has the
@@ -19,7 +19,7 @@ proof of Lemma 11.
 
 namespace Lax263307.HostRestriction
 
-open Lax263307.AlmostEmbeddings Lax263307.InducedRouteEdges
+open AlmostEmbeddings InducedRouteEdges
 
 axiom restrict_to_route_union {t n : ℕ} (H : SimpleGraph (Fin t)) [DecidableRel H.Adj]
     (G : SimpleGraph (Fin n)) (E : AlmostEmbedding H G) (induced : IsInduced E)

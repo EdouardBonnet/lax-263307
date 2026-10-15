@@ -1,7 +1,7 @@
 import Lax263307Proofs.NativeSelectedRounds
 import Lax263307Proofs.NativeEntryResources
 import Lax263307Proofs.NativePolynomialEnvelope
-import Lax263307Proofs.NativeOracleBudget
+import Lax263307Proofs.NativeFlowBudget
 
 set_option maxHeartbeats 350000
 set_option maxRecDepth 20000

@@ -76,12 +76,5 @@ theorem command_spec (B m n : ℕ) (P : Program ℚ m n) (x : Fin n → ℚ)
     ⟨p1,by rwa [RamFrames.run_array_length r1]⟩
   exact ⟨τ,(r1.seq r2).mono (by dsimp [cost,constructCost]; omega),p2⟩
 
-theorem cost_bound (m n : ℕ) : cost m n ≤ 1000*(m+n+2)^2 := by
-  dsimp [cost,rows,columns]
-  nlinarith [Nat.zero_le (m*n),Nat.zero_le (m*m),Nat.zero_le (n*n)]
-
-theorem shape_bound (m n : ℕ) : shapeSize m n ≤ 100*(m+n+2)^2 := by
-  dsimp [shapeSize,wordLength,rows,columns]
-  nlinarith [Nat.zero_le (m*n),Nat.zero_le (m*m),Nat.zero_le (n*n)]
 
 end Lax263307Proofs.NativeDistanceInput

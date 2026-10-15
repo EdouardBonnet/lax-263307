@@ -6,7 +6,7 @@ import Lax228581.Treewidth
 /-!
 ---
 title: Tree decompositions from recursive balanced separators
-type: theorem
+type: lemma
 ---
 Attach the decompositions of the parts below a new root bag containing the
 separator, and add the separator to every child bag. The resulting bags have
@@ -23,6 +23,7 @@ edge-only sublinear bound is a separate step.
 
 namespace Lax263307.SeparatorDecompositions
 
+open RecursionDepth (depth)
 open GraphClasses EdgeSublinearSeparators SeparatorComponents Lax228581.Treewidth
 
 /-- Join the component decompositions below a separator root. -/
@@ -39,6 +40,6 @@ axiom recursive_bag_bound (C : GraphClass) (hereditary : IsHereditary C)
       ∃ S : Finset (Fin n), IsBalancedSeparator G S ∧ S.card ≤ B G.edgeSet.ncard)
     {n : ℕ} (G : SimpleGraph (Fin n)) (member : G ∈ C n) :
     ∃ D : TreeDecomposition G, ∀ j,
-      (D.bag j).card ≤ B G.edgeSet.ncard * (RecursionDepth.depth n + 1)
+      (D.bag j).card ≤ B G.edgeSet.ncard * (depth n + 1)
 
 end Lax263307.SeparatorDecompositions

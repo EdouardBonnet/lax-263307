@@ -56,22 +56,6 @@ theorem catalog_index (n r : ℕ) (j : Fin (CoordinateCatalog.catalog n r).lengt
   rw [←catalog_values,List.getElem?_map,List.getElem?_eq_getElem j.isLt]
   rfl
 
-theorem candidate_block {α : Type*} (n k : ℕ) (f : Finset (Fin n) → α) :
-    List.ofFn (fun j : Fin (n.choose k) => f (NativeExhaustive.candidate n k j.val))=
-      (ExhaustiveTargets.candidates n k).map f := by
-  apply List.ext_getElem?
-  intro i
-  by_cases hi : i<n.choose k
-  · have hic : i<(ExhaustiveTargets.candidates n k).length := by
-      simpa only [ExhaustiveTargets.candidates,List.length_map,List.length_sublistsLen,List.length_finRange] using hi
-    rw [List.getElem?_ofFn,dif_pos hi,List.getElem?_map,NativeExhaustive.candidate_get n k i hi]
-    rfl
-  · rw [List.getElem?_ofFn,dif_neg hi,List.getElem?_eq_none]
-    simpa only [ExhaustiveTargets.candidates,List.length_map,List.length_sublistsLen,List.length_finRange] using Nat.le_of_not_gt hi
-
-theorem all_candidates_length (n R : ℕ) :
-    (RationalConditioning.candidates n R).length=((List.range (R+1)).map fun k => n.choose k).sum := by
-  simp [RationalConditioning.candidates,List.length_flatMap,List.length_sublistsLen]
 
 theorem all_candidates_succ (n R : ℕ) :
     RationalConditioning.candidates n (R+1)=
@@ -80,8 +64,5 @@ theorem all_candidates_succ (n R : ℕ) :
   rw [List.range_succ,List.flatMap_append]
   simp
 
-theorem dimension_sum (n r : ℕ) :
-    (CoordinateCatalog.catalog n r).length=((List.range (r+3)).map fun k => n.choose k).sum := by
-  rw [catalog_length,all_candidates_length]
 
 end Lax263307Proofs.NativeCatalogOrder

@@ -66,24 +66,5 @@ def boundWords (n r : ℕ) : List ℕ :=
 
 def objectiveWords (n r : ℕ) : List ℕ := (List.replicate (dimension n r) [0,0,1]).flatten
 
-theorem bound_words_exact {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) :
-    encodeVector (MomentLP.program G k r).b=boundWords n r := by
-  simp only [encodeVector,MomentLP.program,ofFn_addCases,List.flatMap_append]
-  simp [boundWords,encodeRational,List.ofFn_succ,List.flatMap_replicate,List.ofFn_const]
-
-theorem objective_words_exact {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) :
-    encodeVector (MomentLP.program G k r).c=objectiveWords n r := by
-  simp [encodeVector,MomentLP.program,objectiveWords,encodeRational,List.flatMap_replicate,List.ofFn_const]
-
-theorem input_words_exact {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) :
-    encodeProgram (MomentLP.program G k r)=
-      [rowCount n r,dimension n r]++
-        (matrixWords (normalization n r)++(matrixWords (upper n r)++
-          (matrixWords (nonindependent G r)++(matrixWords (monotone n r)++
-            (matrixWords (massPositive n k r)++matrixWords (massNegative n k r))))))++
-        boundWords n r++objectiveWords n r := by
-  change [rowCount n r,dimension n r]++matrixWords (MomentLP.program G k r).A++
-    encodeVector (MomentLP.program G k r).b++encodeVector (MomentLP.program G k r).c=_
-  rw [matrix_words_exact,bound_words_exact,objective_words_exact]
 
 end Lax263307Proofs.NativeMomentAssembly

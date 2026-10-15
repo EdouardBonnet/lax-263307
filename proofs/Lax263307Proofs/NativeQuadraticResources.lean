@@ -21,10 +21,5 @@ theorem cost_bound (n h : ℕ) : cost (2^h) n≤1000*(h+1)*(n+1)^4 := by
 
 def wordExponent (n h : ℕ) : ℕ := 2*((2*h+1)*(n*n+1))+10
 
-theorem guard_bound (n h : ℕ) : 2*(height (2^h) n)^2+3<2^(wordExponent n h) := by
-  rw [height_bits,square_power,wordExponent,pow_add]
-  norm_num
-  have hh := Nat.two_pow_pos (2*((2*h+1)*(n*n+1)))
-  omega
 
 end Lax263307Proofs.NativeQuadraticResources

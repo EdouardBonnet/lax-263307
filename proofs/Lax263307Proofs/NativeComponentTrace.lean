@@ -48,19 +48,6 @@ theorem load_segment (n D k h : ℕ) (cfg : Config) (G : SimpleGraph (Fin n)) [D
   · simpa [τ] using p1.2.2.2.1
   · simpa [τ] using p1.2.2.2.2
 
-theorem finish_segment {n : ℕ} (B i q : ℕ) (cfg : Config) (S : Finset (Fin n))
-    (hB : i+q+16<B) (hm : 2^n<B) (hi : q≤ i) (σ : Env)
-    (hidx : σ.vars "component.i"=i) (hcount : σ.vars "component.count"=q)
-    (hu : σ.vars "component.union"=mask S) (hr : σ.vars "machine.running"=1) (hp : σ.vars "machine.phase"=9) :
-    ∃ τ,Segment B (phases cfg) 1 10 σ τ ∧ NativeRoundTrace.Stopped (some S) τ := by
-  obtain ⟨τ,rr,po⟩ := NativeComponentControl.finish_spec B 14 S (by omega) hm σ hu
-  have ht : (Cond.lt (.var "component.i") (.var "component.count")).evalB B σ=some false := by
-    have hh := evalB_condLt (value hidx (show i<B by omega)) (value hcount (show q<B by omega))
-    simpa only [Nat.not_lt.mpr hi,decide_false] using hh
-  have run : Run B component σ τ 10 :=
-    (Run.ite_false (c:=.seq NativeComponentLoad.command (go 10)) ht rr).mono (by simp [Cond.size,Expr.size])
-  exact ⟨τ,NativeMachineSegment.phase hr ⟨9,by change 9<16; decide⟩ hp run,
-    (rr.frame_var _ (by decide)).trans hr,po.2,po.1⟩
 
 theorem active_segment (B : ℕ) (cfg : Config) (hB : 12<B) (σ : Env)
     (ha : σ.vars "component.active"=1) (hr : σ.vars "machine.running"=1) (hp : σ.vars "machine.phase"=10) :

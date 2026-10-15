@@ -17,8 +17,6 @@ theorem vertices_labels {n : ℕ} (R : Finset (Fin n)) :
   simpa only [List.finRange,List.map_ofFn,Function.comp_def,ComputedSeparators.label] using
     (Finset.listMap_orderEmbOfFin_finRange R rfl).symm
 
-theorem length {n : ℕ} (R : Finset (Fin n)) : (vertices R).length=R.card := by
-  rw [vertices_sort,Finset.length_sort]
 
 def words {n : ℕ} (R : Finset (Fin n)) : List ℕ :=
   List.ofFn fun i : Fin R.card => (ComputedSeparators.label R i).val

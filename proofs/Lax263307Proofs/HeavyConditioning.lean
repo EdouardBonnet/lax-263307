@@ -48,7 +48,6 @@ theorem heavy_weight_decrease {n : ℕ} (π f : Fin n → ℝ) (probability : Is
   linarith
 
 
-
 open Lax263307.LinearRelaxation Lax263307.ConditioningDistribution
 open Lax263307Proofs.EntropyDecrease Lax263307Proofs.ConditioningExistence
 
@@ -115,8 +114,6 @@ theorem heavy_entropy_decrease {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel
   rwa [heq]
 
 
-
-
 /--
 ---
 conclusion: Lax263307.HeavyConditioning.heavy_low_edge_cost
@@ -174,7 +171,7 @@ theorem heavy_low_edge_cost {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.
       obtain ⟨A, hA, hval, hpos, hH, _⟩ := ih (by omega)
       have hvalr : τ ^ r ≤ value y A :=
         (pow_le_pow_of_le_one hτ.le hτ1 (by omega : t ≤ r)).trans hval
-      obtain ⟨v, hv, hdrop⟩ := heavy_entropy_decrease G k r p y feasible A (by omega) hpos
+      obtain ⟨v, hv, hdrop⟩ := Lax263307.HeavyConditioning.heavy_entropy_decrease G k r p y feasible A (by omega) hpos
         target_positive threshold_positive order_positive (hnone A (by omega) hvalr hpos)
       have hvpos : 0 < marginal y A k v := hτ.trans_le hv
       have hcost : 0 < conditioned y A v := (div_pos_iff_of_pos_right hk).mp hvpos

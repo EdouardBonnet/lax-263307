@@ -46,14 +46,5 @@ theorem single_run {B total : ℕ} {cases : List Com} {σ τ : Env}
       subst i
       simpa only [Nat.add_zero] using rr
 
-theorem single_scalar {B total : ℕ} {cases : List Com} {σ τ : Env}
-    (trace : Segment B cases 1 total σ τ) (j : Fin cases.length)
-    (hp : σ.vars "machine.phase"=j.val) (s : String) (hs : s∉cases[j.val].wvars) :
-    τ.vars s=σ.vars s := (single_run trace j hp).frame_var s hs
-
-theorem single_array {B total : ℕ} {cases : List Com} {σ τ : Env}
-    (trace : Segment B cases 1 total σ τ) (j : Fin cases.length)
-    (hp : σ.vars "machine.phase"=j.val) (a : String) (ha : a∉cases[j.val].warrs) :
-    τ.arrs a=σ.arrs a := (single_run trace j hp).frame_arr a ha
 
 end Lax263307Proofs.NativeMachineFrame

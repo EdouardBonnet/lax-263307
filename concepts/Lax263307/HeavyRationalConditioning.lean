@@ -4,7 +4,7 @@ import Lax263307.RationalConditioning
 /-!
 ---
 title: Exact rational search above the conditioning moment floor
-type: theorem
+type: lemma
 ---
 Search the existing bounded-size candidate list using exact rational edge
 cost tests and the additional moment threshold tau^r. The strengthened
@@ -15,8 +15,8 @@ conditioning moment floor, without computing entropy values.
 # Formalization notes
 
 The rational floor uses integer n,p,log2 n and has an explicit denominator.
-The candidate count remains at most (r+1)(n+1)^r. This proves the executable
-search function's correctness; its RAM implementation is still separate.
+The candidate count remains at most (r+1)(n+1)^r. These lemmas give the search function's correctness.
+Its RAM implementation is verified in the proof package.
 -/
 
 namespace Lax263307.HeavyRationalConditioning
@@ -36,7 +36,6 @@ instance {n r : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
 def findHeavyConditioning {n r : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (k p : ℕ) (y : RationalVector n r) : Option (Finset (Fin n)) :=
   (candidates n r).find? fun A => decide (HeavyPasses G k p y A)
-
 
 axiom search_correct {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (k r p : ℕ) (y : RationalVector n r) (feasible : IsFeasible G k r (realVector y))

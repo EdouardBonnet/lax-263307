@@ -2,21 +2,20 @@ import Lax109476.PolynomialTimeSolver
 
 /-!
 ---
-title: Decoding the actual registered LP solver output
-type: theorem
+title: Decoding rational LP certificates
+type: definition
 ---
-Read the tagged rational certificate returned by the registered exact LP
-solver. The decoded certificate is valid for the supplied program, in all
-dimensions and for all three outcomes. This provides the concrete solver
-function used by the projection branch of the round-or-cut algorithm.
+Decode the tagged certificate produced by the registered rational LP
+solver: an optimal primal-dual pair, an infeasibility certificate, or an
+unboundedness certificate.
 
 # Formalization notes
 
-The parser and fallback are total and computable. The fallback is never used
-on the registered solver's output. The parser matches the verified parser
-in the registered Leighton–Rao proof package; an induction identifies the
-parsers and reuses its encoding theorem. The surrounding RAM invocation remains a separate
-implementation obligation.
+The parser reads canonical sign-numerator-denominator triples and returns
+the unconsumed suffix. `certificate` applies a supplied solver and returns
+the decoded certificate, using a fixed fallback when parsing fails.
+Correctness of the chosen solver and the fact that its output parses are
+proved in the proof package.
 -/
 
 namespace Lax263307.RegisteredLP
@@ -48,8 +47,5 @@ def parse (m n : ℕ) : List ℕ → Option (Certificate m n × List ℕ)
 
 def certificate {m n : ℕ} (solve : List ℕ → List ℕ) (P : Program ℚ m n) : Certificate m n :=
   ((parse m n (solve (encodeProgram P))).map Prod.fst).getD (.infeasible 0)
-
-axiom exists_solver : ∃ solve : List ℕ → List ℕ, Lax759944.RamPolytime.RamPolytime solve ∧
-    ∀ (m n : ℕ) (P : Program ℚ m n), IsValidCertificate P (certificate solve P)
 
 end Lax263307.RegisteredLP

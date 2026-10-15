@@ -30,6 +30,7 @@ $\varepsilon$, and is measured by the registered binary word encoding.
 
 namespace Lax263307.WeightedIndependentSet
 
+open Lax759944.BinaryWordEncoding (bitSize)
 /-- Total weight of a vertex set. -/
 def weight {n : ℕ} (w : Fin n → ℚ) (I : Finset (Fin n)) : ℚ :=
   ∑ v ∈ I, w v
@@ -51,7 +52,7 @@ def encodeParameters {n : ℕ} (w : Fin n → ℚ) (ε : ℚ) : List ℕ :=
 
 /-- Total binary encoding length of the weights and the accuracy. -/
 def rationalBitSize {n : ℕ} (w : Fin n → ℚ) (ε : ℚ) : ℕ :=
-  Lax759944.BinaryWordEncoding.bitSize (encodeParameters w ε)
+  bitSize (encodeParameters w ε)
 
 /-- The full input word, including the row-major adjacency matrix. -/
 def encodeInput {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]

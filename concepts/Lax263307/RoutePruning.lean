@@ -4,7 +4,7 @@ import Lax263307.EdgeDeletionWidth
 /-!
 ---
 title: Discarding long almost-embedding routes
-type: theorem
+type: lemma
 ---
 Discard each source edge whose host route uses more than $L$ vertices. The
 number of discarded edges times $L$ is at most the original total route
@@ -19,7 +19,7 @@ Bonnet–Chang, the long-route deletion step in Lemma 11.
 
 namespace Lax263307.RoutePruning
 
-open Lax263307.AlmostEmbeddings
+open AlmostEmbeddings
 
 noncomputable def longEdges {t n : ℕ} {H : SimpleGraph (Fin t)} [DecidableRel H.Adj]
     {G : SimpleGraph (Fin n)} (E : AlmostEmbedding H G) (L : ℕ) : Finset (Sym2 (Fin t)) := by
