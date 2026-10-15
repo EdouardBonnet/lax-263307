@@ -1484,3 +1484,9 @@ validation in 31m06s; publication completed in 1m32s. lax submit exited 0.
 Workflow 38761988229 succeeded; archive commit
 9f5b88f29f9f7b8d59b46c70cf2ef04e8a3a0783. The updated submission remains a
 draft. PROOF_HANDOFF.md records the full audit and source/publication links.
+
+2026-10-15 — Live website cleanup verified
+Website workflow 38766726169 succeeded. The live QPTAS page shows all three
+submitters and the separated runtime concept. Its rendered proof network
+has 135 claims and 135 proofs, all in the main connected component, including
+the external dependency nodes. No isolated components remain.

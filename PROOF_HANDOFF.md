@@ -65,6 +65,21 @@ Cleanup committed and pushed as
 The cleanup is complete. Registration is not requested or performed.
 Later documentation-only commits do not change the validated source above.
 
+Website deployment and live verification also succeeded:
+https://github.com/lax-archive/lax-website/actions/runs/38766726169
+Website tree: `9e1874fa5b73582843b7f8a128d55c067bd0dc71`.
+The live page was fetched and checked after deployment: all three credits
+are present, QPTASRuntime is present, the removed EntropyDecrease link is
+absent, and the rendered proof network has 135 claims and 135 proofs.
+There are zero local or external nodes outside the main component and
+zero unknown edge endpoints. The previous page had 14 local nodes outside
+that component. GitHub Pages serving propagation caused the final delay;
+the live page now matches the generated revision.
+Audit: `/tmp/qptas-published-audit.json`, reproduced by
+`python3 /tmp/qptas_published_audit.py` after refreshing
+`/tmp/qptas-published.html`. The independently checked generated page is
+also recorded in `/tmp/qptas-prepared-audit.json`.
+
 ### Completed original proof and first submission
 
 **Finished.** The headline theorem `Lax263307Proofs.MainTheorem.exists_qptas`
