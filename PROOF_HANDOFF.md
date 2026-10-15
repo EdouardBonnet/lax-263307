@@ -27,7 +27,21 @@ script remains available. The source and validated proof are the durable result.
 Commit d4d3b4a records the complete unweighted implementation; the final commit
 adds the complete weighted Spec, all word/global-time estimates and headline
 proof. No mathematical proof work remains in this submission's intended scope.
-No push or external publication was performed.
+Submission requested 2026-10-15 for source commit
+`9459f3f41d3ecd3bce2edd668a6a2e67d5805342`:
+- Source: https://github.com/EdouardBonnet/lax-263307
+- Control issue: https://github.com/lax-archive/lax/issues/201
+- Validation: https://github.com/lax-archive/lax/actions/runs/38723618002
+- `lax submit` completed with exit 0. Local checks, archive rebuild, and
+  publication all passed; the workflow concluded successfully.
+- Published draft: https://laxarchive.org/lax-263307/
+- Archive commit: `b8fc370370655afebb833cad8d37d27c457d1d2b`.
+- The archive rebuild took 31m48s; publication took 1m01s.
+- Nonblocking warnings: 3 proof-package dependencies and 87 unused helper
+  lemmas (including generated structure lemmas). No validation errors.
+- Submission is a validated draft; registration was not requested or performed.
+  Later documentation-only commits do not change the validated source above.
+- Submission log: `/tmp/qptas-lax-submit.log`.
 
 ## Proof entry points
 
