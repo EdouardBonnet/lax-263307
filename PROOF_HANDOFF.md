@@ -17,117 +17,89 @@ correctness and many actual machine phases are checked; conditional trace
 lemmas must still be instantiated. Module/statement counts are not an effort
 percentage. Do not claim completion from a successful Lax build.
 
-## Checkpoint and current work
+## Current checkpoint and active work (2026-10-15)
 
-Project /home/ebonnet/Bitbucket/lax/round-or-cut, branch main. Previous checkpoint
-237f1d1 had 304 modules (root build and inspection). The assembled search
-batch is checked by Lean and archive inspection.
-Root now imports 313 own modules. The main theorem is STILL OPEN.
-Last fully successful strict checkpoint remains 135ab62 (292 modules).
+Project /home/ebonnet/Bitbucket/lax/round-or-cut, branch main. HEAD dd01278
+had the checked 313-module assembled oracle/search batch, Lean build and Lax
+inspection passed. Last fully successful strict checkpoint: 135ab62 (292
+modules). Main theorem is STILL OPEN. Root now imports 317 own modules.
 
-Five new modules and three existing-module changes are currently uncommitted:
-- NativeCollectionAnchor: a frame covering all parent data outside actual
-  collection work and metadata exclusions. Child activation is deliberately
-  NOT excluded; its changes are undone by proved stack restoration. Includes
-  exact preservation of NativeRoundedTrace.StoredState.
-- NativeCollectionExecution: actual light/heavy iteration composition,
-  functional list-index alignment (duplicates permitted), and complete
-  collect_segment with explicit transition/time bounds. Its invariant is
-  Context plus Anchor. The ONLY recursive premise is actual smaller-fuel
-  child execution at the entry produced by the actual child call. This
-  instantiates NativeCollectionTrace.Iterations; no abstract Iterations
-  premise remains in the complete collector theorem.
-- NativeFlowBudget: polynomial bounds for actual large-capacity height,
-  flow query size, wordHeight, spaceBound and complete separator time;
-  one fixed root monomial covers all three flow guard/space/time bounds.
-- NativeOracleBudget: one fixed Q,e covers LP query workspace, certificate-
-  derived cut height, rounded VM precision, LP word/time polynomials, fixed
-  allowances, and actual flow guard/workspace/complete separator time.
-  Still requires n/load/k<=R and flow input bit height bounded by the selected
-  LP height polynomial. It is NOT yet the complete global invariant/time proof.
-- NativeOriginalAccuracy: actual 18-cost read of original epsilon numerator
-  and denominator from retained input.data at original n*n+3*n+[1,2].
-  This closes the accuracy-field interface without relying on an unexposed
-  frontend postcondition.
-- NativeCollectionContext light_iteration and heavy_entry now also return
-  Anchor from their initial environment to the final environment.
-- NativeCollectionChild now names Recursive, uses a non-generalizing result
-  match, and returns Anchor initial/final in addition to the reply. The actual
-  child call/pop/reply restores parent trajectory/cache data as a conclusion.
-- NativeQptasProgram positive branch explicitly calls NativeOriginalAccuracy
-  after copyGraph and before NativeRootAccuracy. Zero-copy Spec still checks.
+CURRENT UNCOMMITTED WORK:
+- NativeOracleContext.Protocol holds whole-state bounds, all buffer lengths,
+  stack prefix/cursor, stride, frame length, fixed rounded width and node.D.
+  collection_protocol derives this at actual child calls from parent Context
+  and the collection anchor. Child callback was previously too strong: it
+  quantified over arbitrary states without supplying the fixed width/frame.
+  Fixed by giving Protocol explicitly to NativeNearExecution.Setup.recursive.
+- NativeNodeProtocol proves actual phase-11 child entry inherits Protocol,
+  proves pushed frame length, and turns a smaller-fuel Executes IH into the
+  exact NativeCollectionChild.Recursive contract. Input has Protocol, graph
+  order/prefix, target and recursion fuel. Eligible is a purely mathematical
+  family indexed by fuel, order, graph, target and stack cursor.
+- NativeRecursiveSetup separates numerical/solver requirements (Near, Oracle,
+  Rounds) from recursive execution. Each computed part carries a proof it is
+  Eligible. to_setup constructs the prior full search Setup using Children.
+  No phase-execution or recursive-execution assumption is in these records.
+- NativeNodeExecution.Bounds enumerates actual entry/initialization guards
+  and buffer allocations. Search contains numerical search data and local
+  work/branch bounds. Resources gives these uniformly over Eligible nodes.
+  large_segment composes actual entry + initializer + complete search.
+  executes closes ALL child calls by actual fuel induction, returning exact
+  RecursiveAlgorithm.attempt and Protocol/graph/root-control preservation.
+  Time and transitions satisfy NativeRecursionBudget.work local branches fuel.
+  Executes also retains GraphData and RootData for the outer root driver.
+- NativeOracleContext.RootData is equality of root.target/root.fuel between
+  two environments. Near/oracle/update/round scan now preserve it. The scan
+  carries a proof-only initial environment via WithRoot; no program changed.
+- NativeNodeTrace.exhaustive_segment exports its actual two handler Runs so
+  arbitrary Protocol/RootData framing can be derived from those Runs.
+- NativeCoreExecution.command_spec composes frameSize + initializeRoot +
+  all node executions + actual stack-empty root return + descending target
+  search. Complete native unweighted command Spec is now CHECKED, conditional
+  ONLY on Resources, root eligibility, scalar/mask/frame-size bounds.
 
-Successful checks (actual exit 0):
-- /tmp/qptas-collection-framing-build.log
-- /tmp/qptas-collection-execution-check.log
-- /tmp/qptas-full-collection-root-build.log (306 modules)
-- /tmp/qptas-flow-budget-build.log
-- /tmp/qptas-oracle-budget-check.log
-- /tmp/qptas-original-accuracy-build.log
-- /tmp/qptas-collection-oracle-root-build.log (FULL 309-module root build)
+SUCCESSFUL CHECKS (actual exit 0):
+/tmp/qptas-child-protocol-build.log (from before environment refresh)
+/tmp/qptas-root-data-rounds-build.log
+/tmp/qptas-node-execution-build.log
+/tmp/qptas-core-execution-build.log
+Some earlier /tmp logs were lost when the user refreshed environment/cwd;
+source files persisted. Current logs above except the first are present.
+FULL 317-module root build passed actual exit 0:
+/tmp/qptas-complete-core-root-build.log. No process running.
+No Lax inspection/replay on this 317-module batch yet. Do not claim main closed.
 
-Validation of the 309-module batch completed successfully: lax build --profile
-(actual exit 0), 91 concepts / 165 public proofs; closure audit found only
-MainTheorem.exists_qptas open. Restored lake build Lax263307Proofs successfully
-(actual exit 0), /tmp/qptas-assembled-collection-restore.log. No process running.
-No full strict replay has been done on this 309-module batch.
+## Remaining obligations (actual next work)
 
-Previous checked components remain in source: canonical NativeSolverSemantics,
-NativeQptasZero, NativeWeightedOutput, NativeInputBounds, NativeOraclePrecision,
-NativePolynomialBudget, NativeQptasTransfer and all native phase traces. The
-last closure audit was 91 concepts / 165 public proofs, only the main open.
+1. Construct NativeNodeExecution.Resources from chosen registered solvers and
+   a single fixed root monomial. Existing numeric resource modules cover much
+   of it, but the constructor is NOT done. Choose Eligible for hereditary
+   graphs of order <= root N, targets <= their order, depth(order)<=fuel,
+   and cursor+fuel*frameLength within allocated stack. Selected balanced
+   parts inherit class/depth and selected costs give target bounds.
+   Need all Bounds, NativeRecursiveSetup.Rounds, local step/time/branch caps,
+   and exact frame extents. Keep certificate/trajectory heights separate from
+   host word width to avoid circularity.
+2. Assemble positive-size NativeQptasProgram Spec: frontend, graph activation,
+   original accuracy read, root accuracy/budget, NativeCoreExecution Spec,
+   weighted output. Preserve input.n/input.data/blowup.owner/weighted.positive
+   through core, via actual source footprints (NativeCoreFrame helpers).
+   Zero-copy branch already checked in NativeQptasZero.
+3. Apply NativeFinalBounds and NativeQptasTransfer.qptas_of_spec, prove actual
+   MainTheorem, then strict replay and closure audit with zero open statements.
 
-## Current assembly (2026-10-15, latest user: “so assemble them”)
+## Lean pitfalls from this continuation
 
-Four new modules are being added to the prior batch:
-- NativeOracleContext: common parent catalog/moment/LP cache, fixed scalar
-  data, array extents, stack protocol and rounded VM width. Frame proofs
-  for actual forward phases and restoration from complete collection. of_large
-  derives this context and StoredState 0 (1,0) from NativeLargeNode.Output
-  plus the incoming workspace/stack protocol.
-- NativeNearExecution: actual phases 6/7/8 plus complete collection and
-  recursive children. Computes the exact functional near result; derives
-  preservation of the complete parent context and stored rounded state.
-  Bounds/Setup contain inequalities, solver Specs and the smaller-fuel child
-  premise; no assumed conditioning/separator/collection phase executions.
-- NativeOracleExecution: phase 4 plus all phase-5 branches and complete
-  near execution. Produces stopped result or the exact normal at phase 13.
-  actual_reply identifies this computation with ProjectedOracle.run and
-  RecursiveAlgorithm.attempt on canonically relabeled child graphs.
-- NativeOracleRounds: actual rounded update plus the complete oracle
-  instantiates NativeRoundTrace.Steps. Invariant includes exact functional
-  trajectory, stored state and common parent context. Fixed rounded program
-  contract is supplied by NativeRoundedControl.exists_program. search_segment
-  assembles the complete bounded search without an assumed Steps premise.
-
-CHECKED (actual exit 0): /tmp/qptas-oracle-execution-build.log,
-/tmp/qptas-oracle-rounds-build.log and FULL 313-module root build
-/tmp/qptas-composed-search-root-build.log, including Setup/search_segment/of_large.
-No sorry/axiom in the new modules. Lax build --profile inspection passed
-(actual exit 0), 91 concepts / 165 public proofs; selected status log:
-/tmp/qptas-composed-search-inspection-summary.log. Closure audit: ONLY
-MainTheorem.exists_qptas remains open. No strict replay on this batch.
-Root restore lake build Lax263307Proofs passed actual exit 0:
-/tmp/qptas-composed-search-restore.log. No process running. Checked batch
-checkpoint: Assemble complete oracle execution and bounded native search.
-
-## Next actual obligations
-
-1. Use NativeOracleContext.of_large and NativeOracleRounds.search_segment
-   to assemble the large branch of NativeNodeTrace. Complete node execution by induction on fuel,
-   supplying the smaller-fuel child premises in the setups. Derive balanced
-   child class/depth and target bounds from actual selected costs/cuts.
-2. Instantiate NativeRootTrace.Attempts with complete node executions.
-3. Prove the common resource setups for actual trajectories and certificates:
-   use NativeOracleBudget for the LP/flow/rounded joint monomial, extend it
-   to non-oracle arithmetic guards, conditioning, buffer extents, stack
-   storage and recursive time amplification. No complete global resource
-   invariant/time proof exists yet. Avoid certificate/host-width circularity.
-4. Assemble the positive-size NativeQptasProgram Spec: frontend, graph
-   activation, explicit accuracy read, root accuracy/budget, core and weighted
-   output. Zero-size branch checked in NativeQptasZero.
-5. Apply NativeFinalBounds and NativeQptasTransfer.qptas_of_spec, add actual
-   MainTheorem proof, strict replay and closure audit with zero open statements.
+- Do NOT use all_goals first | exact bound1 | exact bound2 ... for large
+  allocation guards: mismatched unification unfolds catalogs and timed out at
+  2,000,000 heartbeats. Name each bound explicitly (large_input now does so).
+- local is a reserved Lean token; use localCost.
+- frameSize cfg footprints need simp [frameSize,initializeRoot,go,Com.wvars,
+  Com.warrs]; decide cannot handle the free cfg literal, despite static writes.
+- Root driver cost normalization used ring_nf then omega; opaque Nat products
+  with different sum parenthesization were not solved by omega alone.
+- write_stdin chars Ctrl-C successfully stops an obsolete compile session.
+  Do not rely on PID kill across refreshed tool environments.
 
 ## Integration constraints and resources
 

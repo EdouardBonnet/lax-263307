@@ -107,7 +107,7 @@ theorem update_segment {n r : ℕ} (B D k p b load F fuel S v limit c h j : ℕ)
     ∃ τ,Segment B (phases cfg) 1 (NativeRoundedUpdate.timeBound cfg.rounded c (MomentLP.dimension n r) h j+16) σ τ ∧
       Context B D k r p b load F fuel S v limit cfg G extent front τ ∧
       NativeRoundTrace.Outcome NativeRoundedTrace.StoredState limit j state
-        (.cut a : Reply (MomentLP.dimension n r) (Finset (Fin n))) τ := by
+        (.cut a : Reply (MomentLP.dimension n r) (Finset (Fin n))) τ ∧ RootData σ τ := by
   have call := program (MomentLP.dimension n r) n j h limit 4 14 bounds.dimension bounds.height
     state a bounds.shapeHeight bounds.normalHeight bounds.centerHeight bounds.positive B v bounds.width
     bounds.host bounds.time bounds.allowance bounds.query bounds.scalars bounds.words
@@ -120,7 +120,10 @@ theorem update_segment {n r : ℕ} (B D k p b load F fuel S v limit c h j : ℕ)
   have runningτ := (rr.frame_var _ (update_variable cfg _ (by decide) (by decide) (by decide)
     (by decide) (by decide) (by decide))).trans hr
   refine ⟨τ,NativeMachineSegment.phase hr ⟨13,by change 13<16; decide⟩ hp rrPhase,
-    update_frame cfg rr hc,⟨po.1,po.2.1,po.2.2.1,po.2.2.2.2.1⟩,?_⟩
+    update_frame cfg rr hc,?_,root_frame rr
+      (update_variable cfg _ (by decide) (by decide) (by decide) (by decide) (by decide) (by decide))
+      (update_variable cfg _ (by decide) (by decide) (by decide) (by decide) (by decide) (by decide))⟩
+  refine ⟨⟨po.1,po.2.1,po.2.2.1,po.2.2.2.2.1⟩,?_⟩
   by_cases hj : j+1<limit
   · simp only [hj,if_true]
     exact ⟨runningτ,by simpa only [NativeRoundedControl.Output,hj,if_true] using po.2.2.2.2.2⟩
@@ -139,6 +142,8 @@ def oracle {n r : ℕ} (lp flow : List ℕ → List ℕ) (G : SimpleGraph (Fin n
   fun _ center => NativeOracleExecution.reply flow G D k p b load child
     (NativeOracleExecution.projection lp G k D F center)
 
+def WithRoot (root : Env) (Base : Env → Prop) (σ : Env) : Prop := Base σ ∧ RootData root σ
+
 /-- Instantiate the bounded-round Steps contract from the complete native
 oracle and the actual rounded program. Only numerical obligations and
 smaller-fuel child execution remain in the supplied setups. -/
@@ -147,9 +152,9 @@ theorem steps {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM costH T 
     (cfg : Config) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (lp flow : List ℕ → List ℕ) (extent : String → ℕ) (front : List ℕ)
     (child : (C : Finset (Fin n)) → ℕ → Option (Finset (Fin C.card)))
-    (program : Program cfg.rounded c)
+    (root : Env) (program : Program cfg.rounded c)
     (setup : ∀ j,j<limit → NativeOracleExecution.Setup
-      D k p b load F fuel S w M farM nearM costH T space oracleTime callCost flowTime childSteps childTime
+      D k p b load F fuel S v w M farM nearM costH T space oracleTime callCost flowTime childSteps childTime
       cfg G lp flow extent front child (trajectory (oracle (r:=r) lp flow G D k p b load F child) j))
     (rounded : ∀ j,j<limit → ∀ a,
       oracle (r:=r) lp flow G D k p b load F child j
@@ -161,15 +166,15 @@ theorem steps {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM costH T 
       NativeNearExecution.timeBound cfg n r nearM S costH childTime flowTime+6≤oracleCost)
     (hround : ∀ j,j<limit → NativeRoundedUpdate.timeBound cfg.rounded c (MomentLP.dimension n r) roundH j+16≤roundCost) :
     NativeRoundTrace.Steps (2^w) cfg
-      (Context (2^w) D k r p b load F fuel S v limit cfg G extent front)
-      (Invariant (Context (2^w) D k r p b load F fuel S v limit cfg G extent front)
+      (WithRoot root (Context (2^w) D k r p b load F fuel S v limit cfg G extent front))
+      (Invariant (WithRoot root (Context (2^w) D k r p b load F fuel S v limit cfg G extent front))
         (oracle (r:=r) lp flow G D k p b load F child))
       (oracle (r:=r) lp flow G D k p b load F child) limit
       ((childSteps+5)*(n+1)+7) (oracleCost+roundCost) := by
   intro j hj state σ hQ hr hp
-  rcases hQ with ⟨hc,hs,rfl⟩
+  rcases hQ with ⟨⟨hc,hroot⟩,hs,rfl⟩
   let data := setup j hj
-  obtain ⟨ν,s,t,first,hsteps,htime,hcν,hsν,replyν⟩ := NativeOracleExecution.oracle_segment
+  obtain ⟨ν,s,t,first,hsteps,htime,hcν,hsν,replyν,rootν⟩ := NativeOracleExecution.oracle_segment
     D k p b load F fuel S v limit w M farM nearM costH T space oracleTime callCost flowTime childSteps childTime
     cfg G lp flow extent front child j (trajectory (oracle (r:=r) lp flow G D k p b load F child) j)
     data.bounds data.hcenter data.hquery data.call data.farBounds data.nearSetup σ hc hs hr hp
@@ -179,20 +184,20 @@ theorem steps {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM costH T 
   cases he : oracle (r:=r) lp flow G D k p b load F child j
       (trajectory (oracle (r:=r) lp flow G D k p b load F child) j).2 with
   | reject =>
-    refine ⟨ν,s,t,first,by omega,by omega,hcν,?_⟩
+    refine ⟨ν,s,t,first,by omega,by omega,⟨hcν,hroot.trans rootν⟩,?_⟩
     simpa only [he,NativeOracleExecution.Output,NativeRoundTrace.Outcome] using replyν
   | found I =>
-    refine ⟨ν,s,t,first,by omega,by omega,hcν,?_⟩
+    refine ⟨ν,s,t,first,by omega,by omega,⟨hcν,hroot.trans rootν⟩,?_⟩
     simpa only [he,NativeOracleExecution.Output,NativeRoundTrace.Outcome] using replyν
   | cut a =>
     have raw : ν.vars "machine.running"=1 ∧ ν.vars "machine.phase"=13 ∧
         Prefix (NativeRoundedQuery.normal a) "round.normal" ν := by
       simpa only [he,NativeOracleExecution.Output] using replyν
-    obtain ⟨τ,last,hcτ,out⟩ := update_segment (2^w) D k p b load F fuel S v limit c roundH j cfg G
+    obtain ⟨τ,last,hcτ,out,rootτ⟩ := update_segment (2^w) D k p b load F fuel S v limit c roundH j cfg G
       extent front program (trajectory (oracle (r:=r) lp flow G D k p b load F child) j) a
       (rounded j hj a he) ν hcν hsν raw.2.2 raw.1 raw.2.1
     have htRound := hround j hj
-    refine ⟨τ,s+1,_,NativeMachineSegment.append first last,by omega,by omega,hcτ,?_⟩
+    refine ⟨τ,s+1,_,NativeMachineSegment.append first last,by omega,by omega,⟨hcτ,hroot.trans (rootν.trans rootτ)⟩,?_⟩
     have hout : NativeRoundedTrace.StoredState (j+1)
         (update j (trajectory (oracle (r:=r) lp flow G D k p b load F child) j) a) τ ∧
         if j+1<limit then τ.vars "machine.running"=1 ∧ τ.vars "machine.phase"=4
@@ -201,7 +206,7 @@ theorem steps {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM costH T 
         trajectory (oracle (r:=r) lp flow G D k p b load F child) (j+1) := by
       simp only [trajectory,he,selectedNormal]
     simp only [he,NativeRoundTrace.Outcome]
-    exact ⟨⟨hcτ,hout.1,next⟩,hout.2⟩
+    exact ⟨⟨⟨hcτ,hroot.trans (rootν.trans rootτ)⟩,hout.1,next⟩,hout.2⟩
 
 /-- Requirements for the complete search, with no assumed Steps contract. -/
 structure Setup {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM costH T space
@@ -212,7 +217,7 @@ structure Setup {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM costH 
  : Prop where
   program : Program cfg.rounded c
   setup : ∀ j,j<limit → NativeOracleExecution.Setup
-      D k p b load F fuel S w M farM nearM costH T space oracleTime callCost flowTime childSteps childTime
+      D k p b load F fuel S v w M farM nearM costH T space oracleTime callCost flowTime childSteps childTime
       cfg G lp flow extent front child (trajectory (oracle (r:=r) lp flow G D k p b load F child) j)
   rounded : ∀ j,j<limit → ∀ a,
       oracle (r:=r) lp flow G D k p b load F child j
@@ -240,17 +245,18 @@ theorem search_segment {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM
     ∃ τ transitions total,Segment (2^w) (phases cfg) transitions total σ τ ∧
       transitions≤((childSteps+5)*(n+1)+7)*limit ∧ total≤(oracleCost+roundCost)*limit ∧
       Context (2^w) D k r p b load F fuel S v limit cfg G extent front τ ∧
-      NativeRoundTrace.Stopped (search (oracle (r:=r) lp flow G D k p b load F child) precision) τ := by
+      NativeRoundTrace.Stopped (search (oracle (r:=r) lp flow G D k p b load F child) precision) τ ∧ RootData σ τ := by
   have concrete := steps D k p b load F fuel S v limit w M farM nearM costH T space oracleTime callCost flowTime
-    childSteps childTime c roundH oracleCost roundCost cfg G lp flow extent front child
+    childSteps childTime c roundH oracleCost roundCost cfg G lp flow extent front child σ
     data.program data.setup data.rounded data.hcost data.hround
   have scan := NativeRoundTrace.search_segment (2^w) cfg
-    (Context (2^w) D k r p b load F fuel S v limit cfg G extent front)
-    (Invariant (Context (2^w) D k r p b load F fuel S v limit cfg G extent front)
+    (WithRoot σ (Context (2^w) D k r p b load F fuel S v limit cfg G extent front))
+    (Invariant (WithRoot σ (Context (2^w) D k r p b load F fuel S v limit cfg G extent front))
       (oracle (r:=r) lp flow G D k p b load F child))
     (oracle (r:=r) lp flow G D k p b load F child) precision
     ((childSteps+5)*(n+1)+7) (oracleCost+roundCost) (by simpa only [←hlimit] using concrete)
-    σ ⟨hc,hs,rfl⟩ hr hp
-  simpa only [←hlimit] using scan
+    σ ⟨⟨hc,RootData.refl σ⟩,hs,rfl⟩ hr hp
+  obtain ⟨τ,s,t,trace,hs,ht,⟨contextτ,rootτ⟩,answerτ⟩ := scan
+  exact ⟨τ,s,t,trace,by simpa only [←hlimit] using hs,by simpa only [←hlimit] using ht,contextτ,answerτ,rootτ⟩
 
 end Lax263307Proofs.NativeOracleRounds

@@ -26,7 +26,9 @@ theorem exhaustive_segment {n : ℕ} (B : ℕ) (cfg : Config) (lp flow : List �
       ∃ τ, Segment B (phases cfg) 2
         (entryCost cfg.a n+NativeExhaustive.cost n k+15*n+20) σ τ ∧
         NativeRoundTrace.Stopped (RecursiveAlgorithm.attempt lp flow cfg.a cfg.K cfg.b D fuel G k) τ ∧
-        τ.vars "graph.n"=n ∧ Prefix (NativeWeightReduction.adjacency G) "search.graph" τ := by
+        τ.vars "graph.n"=n ∧ Prefix (NativeWeightReduction.adjacency G) "search.graph" τ ∧
+        ∃ ν,Run B (NativeNodeDispatch.command cfg.a cfg.K cfg.b 2 3 14) σ ν (entryCost cfg.a n) ∧
+          Run B (NativeSmallAttempt.command 14) ν τ (NativeExhaustive.cost n k+15*n+20) := by
   intro σ hinput hdata hr hp
   obtain ⟨ν,r1,p1⟩ := NativeNodeDispatch.command_spec B cfg.a cfg.K cfg.b n D k fuel 2 3 14
     (by omega) σ hinput
@@ -47,7 +49,7 @@ theorem exhaustive_segment {n : ℕ} (B : ℕ) (cfg : Config) (lp flow : List �
     NativeMachineSegment.phase hr ⟨1,by change 1<16; decide⟩ hp r1
   have s2 : Segment B (phases cfg) 1 (NativeExhaustive.cost n k+15*n+20) ν τ :=
     NativeMachineSegment.phase hrν ⟨2,by change 2<16; decide⟩ hpν r2
-  refine ⟨τ,?_,?_,p2.1,?_⟩
+  refine ⟨τ,?_,?_,p2.1,?_,ν,r1,r2⟩
   · convert NativeMachineSegment.append s1 s2 using 1 <;> simp [Nat.add_assoc]
   · refine ⟨(r2.frame_var _ (by decide)).trans hrν,p2.2.2,?_⟩
     cases fuel <;> simpa only [RecursiveAlgorithm.attempt,hsmall,if_true] using p2.2.1

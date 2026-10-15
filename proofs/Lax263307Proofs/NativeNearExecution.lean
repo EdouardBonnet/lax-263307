@@ -157,6 +157,7 @@ theorem near_segment {n r : ℕ} (D k p b load F fuel S v limit M h T w space fl
       let costs := NearOracle.costs (MomentLP.decode x) A
       let cs := cuts (step flow G costs b load k) n Finset.univ
       ∀ i∈NearOracle.order cs.length,∀ base σ,
+      Protocol (2^w) D S v cfg extent front σ →
       NativeCollectionExecution.Invariant (2^w) D k r fuel S G costs
         ((NearOracle.order cs.length).map (pieces cs)) A extent front base σ →
       NativeRestrictionRead.Data G (fun v => (costs v : ℚ)) (pieces cs i) σ →
@@ -175,7 +176,7 @@ theorem near_segment {n r : ℕ} (D k p b load F fuel S v limit M h T w space fl
       transitions≤(childSteps+5)*(n+1)+4 ∧ total≤timeBound cfg n r M S h childTime flowTime ∧
       Context (2^w) D k r p b load F fuel S v limit cfg G extent front τ ∧
       NativeRoundedTrace.StoredState j state τ ∧
-      Output r (run flow G D k p b load (MomentLP.decode x) child) τ := by
+      Output r (run flow G D k p b load (MomentLP.decode x) child) τ ∧ RootData σ τ := by
   obtain ⟨ν,first,hrν,hpν,dataν,choiceν⟩ := NativeNearTrace.conditioning_segment
     (2^w) M n r k p cfg G x bounds.positive bounds.sparsity bounds.height bounds.moment
     bounds.search bounds.masks bounds.rational bounds.quadratic hx bounds.test bounds.floor σ
@@ -193,7 +194,8 @@ theorem near_segment {n r : ℕ} (D k p b load F fuel S v limit M h T w space fl
     have r2 := NativeMachineFrame.single_run last ⟨7,by change 7<16; decide⟩ hpν
     change Run (2^w) conditioningReply ν τ _ at r2
     refine ⟨τ,2,_,NativeMachineSegment.append first last,by nlinarith,?_,
-      NativeOracleContext.frame r2 hcν (by decide) (by decide),stored_frame r2 hsν (by decide) (by decide),?_⟩
+      NativeOracleContext.frame r2 hcν (by decide) (by decide),stored_frame r2 hsν (by decide) (by decide),?_,
+      root_frame (r1.seq r2) (by decide) (by decide)⟩
     · dsimp only [timeBound]; omega
     · simpa only [run,choice,Output] using hout
   | some A =>
@@ -251,12 +253,13 @@ theorem near_segment {n r : ℕ} (D k p b load F fuel S v limit M h T w space fl
       (fun i _ => htarget A choice (pieces cs i)) bounds.frameExtents bounds.stack bounds.child bounds.graph
       bounds.bits bounds.labels (by have hh := bounds.word; omega) (by have hn := bounds.positive; have hh := bounds.sum; nlinarith)
       bounds.input bounds.normal
-      (fun i hi σ hσ hd hm ht hr hp => recursive A choice i hi ρ σ hσ hd hm ht hr hp)
+      (fun i hi σ hσ hd hm ht hr hp => recursive A choice i hi ρ σ
+        (NativeOracleContext.collection_protocol hcρ hσ) hσ hd hm ht hr hp)
       ρ ⟨⟨collectionInput,NativeCollectionAnchor.refl ρ⟩,indexρ,by simpa [NativeMasks.mask,NativeCatalog.subsetMask] using unionρ,hrρ,hpρ⟩
     have hcτ := NativeOracleContext.collection hcρ last out.1.2 out.1.1.order out.1.1.stack out.1.1.cursor
     have hsτ := NativeCollectionAnchor.stored_state out.1.2 hsρ
     refine ⟨τ,_,_,NativeMachineSegment.append first (NativeMachineSegment.append second
-        (NativeMachineSegment.append third last)),?_,?_,hcτ,hsτ,?_⟩
+        (NativeMachineSegment.append third last)),?_,?_,hcτ,hsτ,?_,?_⟩
     · simp only [NearOracle.order,List.length_cons,List.length_map,List.length_finRange] at hsLast
       nlinarith only [hsLast,hcs]
     · dsimp only [timeBound]
@@ -274,10 +277,15 @@ theorem near_segment {n r : ℕ} (D k p b load F fuel S v limit M h T w space fl
         (fun i => ∑ v∈pieces cs i,(costs v : ℚ))
         (fun i t => (child (pieces cs i) t).map (fun I => I.image (label (pieces cs i)))) <;>
         simpa only [NativeCollectionTrace.ResultOutput,he,Output] using out.2
+    · apply RootData.trans (root_frame (r1.seq r2) (by decide) (by decide))
+      apply RootData.trans (root_frame r3 ?_ ?_) (root_collection out.1.2)
+      all_goals
+        exact separator_variable cfg _ (by decide) (by decide) (by decide) (by decide)
+          (NativeSeparatorContext.callback_variable _ _ _ (by decide) (by decide) (by decide) (by decide)) (by decide) (by decide)
 
 /-- All requirements consumed by the actual near execution theorem. The
 recursive field refers only to smaller-fuel child execution. -/
-structure Setup {n r : ℕ} (D k p b load fuel S M h T w space flowTime childSteps childTime : ℕ)
+structure Setup {n r : ℕ} (D k p b load fuel S v M h T w space flowTime childSteps childTime : ℕ)
     (cfg : Config) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (flow : List ℕ → List ℕ) (x : Fin (NativeCatalogMetadata.N n r) → ℚ)
     (extent : String → ℕ) (front : List ℕ)
@@ -302,6 +310,7 @@ structure Setup {n r : ℕ} (D k p b load fuel S M h T w space flowTime childSte
       let costs := NearOracle.costs (MomentLP.decode x) A
       let cs := cuts (step flow G costs b load k) n Finset.univ
       ∀ i∈NearOracle.order cs.length,∀ base σ,
+      Protocol (2^w) D S v cfg extent front σ →
       NativeCollectionExecution.Invariant (2^w) D k r fuel S G costs
         ((NearOracle.order cs.length).map (pieces cs)) A extent front base σ →
       NativeRestrictionRead.Data G (fun v => (costs v : ℚ)) (pieces cs i) σ →

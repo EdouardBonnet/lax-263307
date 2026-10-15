@@ -116,7 +116,7 @@ theorem oracle_segment {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM
       farM*RationalCutBuffer.denominator a+farM+RationalCutBuffer.denominator a+
         3*MomentLP.dimension n r+23<2^w)
     (nearSetup : ∀ x,projection lp G k D F state.2=.near x →
-      NativeNearExecution.Setup D k p b load fuel S nearM h T w space flowTime childSteps childTime
+      NativeNearExecution.Setup D k p b load fuel S v nearM h T w space flowTime childSteps childTime
         cfg G flow x extent front child)
     (σ : Env) (hc : Context (2^w) D k r p b load F fuel S v limit cfg G extent front σ)
     (hs : NativeRoundedTrace.StoredState j state σ)
@@ -128,7 +128,7 @@ theorem oracle_segment {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM
         NativeNearExecution.timeBound cfg n r nearM S h childTime flowTime+6 ∧
       Context (2^w) D k r p b load F fuel S v limit cfg G extent front τ ∧
       NativeRoundedTrace.StoredState j state τ ∧
-      Output (reply flow G D k p b load child (projection lp G k D F state.2)) τ := by
+      Output (reply flow G D k p b load child (projection lp G k D F state.2)) τ ∧ RootData σ τ := by
   obtain ⟨ν,first,hrν,hpν,resultν,dimensionν⟩ := NativeProjectionTrace.projection_segment
     (2^w) M n D F cfg (MomentLP.program G k r) state.2 (projection lp G k D F state.2)
     oracleTime callCost call bounds.positive bounds.denominator bounds.floorPower bounds.program
@@ -141,6 +141,9 @@ theorem oracle_segment {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM
     (by rw [hc.lengths]; exact bounds.values) (by rw [hc.lengths]; exact bounds.output) hr hp
   have r1 := NativeMachineFrame.single_run first ⟨4,by change 4<16; decide⟩ hp
   have hcν := projection_frame cfg r1 hc
+  have rootν := root_frame r1
+    (projection_variable cfg _ (by decide) (by decide) (by decide) (by decide) (by decide) (by decide))
+    (projection_variable cfg _ (by decide) (by decide) (by decide) (by decide) (by decide) (by decide))
   have hsν := NativeNearExecution.stored_frame r1 hs
     ⟨projection_variable cfg _ (by decide) (by decide) (by decide) (by decide) (by decide) (by decide),
       projection_variable cfg _ (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)⟩
@@ -155,7 +158,8 @@ theorem oracle_segment {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM
     change Run (2^w) projectionReply ν τ _ at r2
     refine ⟨τ,_,_,NativeMachineSegment.append first last,by nlinarith,by omega,
       NativeOracleContext.frame r2 hcν (by decide) (by decide),
-      NativeNearExecution.stored_frame r2 hsν (by decide) (by decide),?_⟩
+      NativeNearExecution.stored_frame r2 hsν (by decide) (by decide),?_,
+      rootν.trans (root_frame r2 (by decide) (by decide))⟩
     simpa only [he,reply,Output] using hout
   | far a β =>
     obtain ⟨ha,hfar⟩ := farBounds a β he
@@ -168,7 +172,8 @@ theorem oracle_segment {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM
     change Run (2^w) projectionReply ν τ _ at r2
     refine ⟨τ,_,_,NativeMachineSegment.append first last,by nlinarith,by omega,
       NativeOracleContext.frame r2 hcν (by decide) (by decide),
-      NativeNearExecution.stored_frame r2 hsν (by decide) (by decide),?_⟩
+      NativeNearExecution.stored_frame r2 hsν (by decide) (by decide),?_,
+      rootν.trans (root_frame r2 (by decide) (by decide))⟩
     simpa only [he,reply,Output] using And.intro runningτ (And.intro phaseτ normalτ)
   | near x =>
     have resultX : NativeProjectionResult.Output (.near x) ν := by simpa only [he] using resultν
@@ -179,12 +184,12 @@ theorem oracle_segment {n r : ℕ} (D k p b load F fuel S v limit w M farM nearM
     have hcμ := NativeOracleContext.frame r2 hcν (by decide) (by decide)
     have hsμ := NativeNearExecution.stored_frame r2 hsν (by decide) (by decide)
     let setup := nearSetup x he
-    obtain ⟨τ,s,t,last,hsteps,htime,hcτ,hsτ,hout⟩ := NativeNearExecution.near_segment
+    obtain ⟨τ,s,t,last,hsteps,htime,hcτ,hsτ,hout,rootτ⟩ := NativeNearExecution.near_segment
       D k p b load F fuel S v limit nearM h T w space flowTime childSteps childTime cfg G flow x extent front child
       setup.bounds setup.hx setup.hselected setup.htarget setup.hspace setup.flowCall setup.recursive
       j state μ hcμ hsμ pointμ.2.1 hrμ hpμ
     refine ⟨τ,_,_,NativeMachineSegment.append first (NativeMachineSegment.append second last),
-      by omega,by omega,hcτ,hsτ,?_⟩
+      by omega,by omega,hcτ,hsτ,?_,rootν.trans ((root_frame r2 (by decide) (by decide)).trans rootτ)⟩
     simp only [he,reply]
     cases ho : NativeNearExecution.run flow G D k p b load (MomentLP.decode x) child <;>
       simpa only [ho,NativeNearExecution.Output,Output,NativeCollectionExecution.Cut] using hout
@@ -218,7 +223,7 @@ theorem actual_reply {n : ℕ} (lp flow : List ℕ → List ℕ) (a K b D k fuel
 
 /-- Numerical requirements, actual selected solver specifications, and the
 smaller-fuel induction premise consumed by the full oracle composition. -/
-structure Setup {n r : ℕ} (D k p b load F fuel S w M farM nearM h T space
+structure Setup {n r : ℕ} (D k p b load F fuel S v w M farM nearM h T space
     oracleTime callCost flowTime childSteps childTime : ℕ)
     (cfg : Config) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (lp flow : List ℕ → List ℕ) (extent : String → ℕ) (front : List ℕ)
@@ -238,7 +243,7 @@ structure Setup {n r : ℕ} (D k p b load F fuel S w M farM nearM h T space
       farM*RationalCutBuffer.denominator a+farM+RationalCutBuffer.denominator a+
         3*MomentLP.dimension n r+23<2^w
   nearSetup : ∀ x,projection lp G k D F state.2=.near x →
-      NativeNearExecution.Setup D k p b load fuel S nearM h T w space flowTime childSteps childTime
+      NativeNearExecution.Setup D k p b load fuel S v nearM h T w space flowTime childSteps childTime
         cfg G flow x extent front child
 
 end Lax263307Proofs.NativeOracleExecution

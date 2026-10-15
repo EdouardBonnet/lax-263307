@@ -10,6 +10,34 @@ open Lax455465Proofs Lax455465Proofs.RamVirtualState
 open Lax109476.RationalEncoding
 open Lax263307 NativeCoreMachine NativeMachineSegment
 
+def RootData (base σ : Env) : Prop :=
+  σ.vars "root.target"=base.vars "root.target" ∧ σ.vars "root.fuel"=base.vars "root.fuel"
+
+theorem RootData.refl (σ : Env) : RootData σ σ := ⟨rfl,rfl⟩
+
+theorem RootData.trans {σ ν τ : Env} (h1 : RootData σ ν) (h2 : RootData ν τ) : RootData σ τ :=
+  ⟨h2.1.trans h1.1,h2.2.trans h1.2⟩
+
+theorem root_frame {B t : ℕ} {c : Com} {σ τ : Env} (rr : Run B c σ τ t)
+    (ht : "root.target"∉c.wvars) (hf : "root.fuel"∉c.wvars) : RootData σ τ :=
+  ⟨rr.frame_var _ ht,rr.frame_var _ hf⟩
+
+theorem root_collection {σ τ : Env} (ha : NativeCollectionAnchor.Anchor σ τ) : RootData σ τ :=
+  ⟨ha.1 _ (by decide),ha.1 _ (by decide)⟩
+
+/-- The node-independent workspace and stack protocol. It is inherited by
+an activated child and recovered when that child returns. -/
+structure Protocol (B D S v : ℕ) (cfg : Config) (extent : String → ℕ)
+    (front : List ℕ) (σ : Env) : Prop where
+  bounded : NativeStateBounds.Bounded B σ
+  lengths : ∀ a,(σ.arrs a).length=extent a
+  stack : Prefix front "recursion.frames" σ
+  cursor : σ.vars "stack.words"=front.length
+  stride : σ.vars "recursion.stride"=S
+  frameLength : σ.vars "frame.length"=S*(frameArrays cfg).length+(frameScalars cfg).length
+  roundWidth : σ.vars "algorithm.roundWidth"=v
+  accuracy : σ.vars "node.D"=D
+
 /-- The fixed parent data shared by all branches of one oracle execution.
 The evolving rounded state is kept separately. -/
 structure Context {n : ℕ} (B D k r p b load F fuel S v limit : ℕ)
@@ -34,6 +62,25 @@ structure Context {n : ℕ} (B D k r p b load F fuel S v limit : ℕ)
   stride : σ.vars "recursion.stride"=S
   depth : σ.vars "recursion.fuel"=fuel+1
   frameLength : σ.vars "frame.length"=S*(frameArrays cfg).length+(frameScalars cfg).length
+
+theorem protocol {n B D k r p b load F fuel S v limit : ℕ} {cfg : Config}
+    {G : SimpleGraph (Fin n)} [DecidableRel G.Adj] {extent : String → ℕ} {front : List ℕ}
+    {σ : Env} (hc : Context B D k r p b load F fuel S v limit cfg G extent front σ) :
+    Protocol B D S v cfg extent front σ :=
+  ⟨hc.bounded,hc.lengths,hc.stack,hc.cursor,hc.stride,hc.frameLength,hc.roundWidth,hc.nodeD⟩
+
+/-- At every collection iteration the anchor preserves the fixed width,
+frame size and accuracy; the collection context supplies the actual stack
+and whole-state bounds. No execution hypothesis is needed for this use. -/
+theorem collection_protocol {n B D k r p b load F fuel S v limit : ℕ} {cfg : Config}
+    {G : SimpleGraph (Fin n)} [DecidableRel G.Adj] {extent : String → ℕ} {front : List ℕ}
+    {base σ : Env} {x : Fin n → ℚ≥0} {parts : List (Finset (Fin n))} {A : Finset (Fin n)}
+    (hc : Context B D k r p b load F fuel S v limit cfg G extent front base)
+    (hi : NativeCollectionExecution.Invariant B D k r fuel S G x parts A extent front base σ) :
+    Protocol B D S v cfg extent front σ :=
+  ⟨hi.1.bounded,hi.1.lengths,hi.1.stack,hi.1.cursor,hi.1.width,
+    (hi.2.1 _ (by decide)).trans hc.frameLength,
+    (hi.2.1 _ (by decide)).trans hc.roundWidth,(hi.2.1 _ (by decide)).trans hc.nodeD⟩
 
 def scalars : List String := ["graph.n","catalog.count","moment.r",
   "conditioning.k","conditioning.p","algorithm.D","class.B","algorithm.load",

@@ -312,3 +312,7 @@ import Lax263307Proofs.NativeOracleContext
 import Lax263307Proofs.NativeNearExecution
 import Lax263307Proofs.NativeOracleExecution
 import Lax263307Proofs.NativeOracleRounds
+import Lax263307Proofs.NativeNodeProtocol
+import Lax263307Proofs.NativeRecursiveSetup
+import Lax263307Proofs.NativeNodeExecution
+import Lax263307Proofs.NativeCoreExecution

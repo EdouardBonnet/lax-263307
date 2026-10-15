@@ -1437,3 +1437,10 @@ context conversion (/tmp/qptas-composed-search-root-build.log). Lax inspection
 passed exit 0: 91 concepts / 165 proofs. Closure audit found only the main
 theorem open. No strict replay on this batch. Root restore pending.
 Root restore passed actual exit 0 (/tmp/qptas-composed-search-restore.log).
+
+2026-10-15: Closed actual recursive child callbacks by fuel induction in
+NativeNodeExecution, after explicitly threading fixed Protocol into near
+callbacks. Proved RootData and graph preservation through complete search.
+NativeCoreExecution.command_spec now checks the entire unweighted core,
+conditional on explicit numerical/solver Resources. Resource constructor and
+positive weighted Spec remain. Root 317-module build pending.
