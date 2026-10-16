@@ -16,10 +16,16 @@ Updated the bibliography to arXiv:2610.16025 (verified on arXiv, submitted
 declaration or proof changed in any of the 74 edited Lean files.
 `git diff --check` passes. Full local `lax build --no-color --profile` is
 running (session 76505, quiet log `/tmp/qptas-arxiv-build.log`); concepts
-compiled successfully and affected proofs are rebuilding. The archive can
-validate independently in parallel with this local rebuild: commit/push,
-then submit with `lax submit --force --no-color` to avoid starting a second
-local build. Record the immutable source and both validation results.
+compiled successfully and affected proofs are rebuilding.
+
+Committed/pushed source: `4e701623a80aace39fc00986b497d9bb3b4adcfe`.
+Resubmitted with `lax submit --force --no-color` (session 34534), so archive
+validation runs independently in parallel without a duplicate local build.
+Archive workflow: https://github.com/lax-archive/lax/actions/runs/38949896864
+Dispatched 2026-10-16T18:46:26Z; validation is in progress. No acceptance or
+website update has been claimed for this revision. On resuming, collect both
+validation results and run `/tmp/qptas_audit_framework.py` only after the
+local build succeeds, since failed builds leave stale `build-output.json`.
 
 ### Revision to the registered approximation framework (proved, archive-validated, submitted)
 
