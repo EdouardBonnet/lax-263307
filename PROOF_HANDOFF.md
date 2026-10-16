@@ -5,7 +5,7 @@ chronological history, including earlier incomplete checkpoints.
 
 ## Current status
 
-### Concept interface cleanup (2026-10-17, locally validated)
+### Concept interface cleanup (2026-10-17, locally validated and resubmitted)
 
 User requests no tactics in concept files, the explicit name
 `MaxWeightIndependentSet`, and clean, understandable concept code.
@@ -45,7 +45,14 @@ User requests no tactics in concept files, the explicit name
   the old `IndependentSetProblem` concept is absent. Final audit:
   `/tmp/qptas-clean-final-audit.json`. Previews: `/tmp/qptas-clean-main.html`,
   `/tmp/qptas-clean-mwis.html`, `/tmp/qptas-clean-index.html`.
-  Next: commit/push and resubmit; record the source and workflow.
+  Committed/pushed source: `44831e06079b05f1586356e8637243775d5972cc`.
+  `lax submit --no-color` (session 64363) passed its final local check in
+  2m51s and dispatched archive workflow 38983107916 at
+  2026-10-16T23:45:44Z (17 October locally):
+  https://github.com/lax-archive/lax/actions/runs/38983107916
+  Archive validation is running. Acceptance and website propagation are not
+  yet claimed. No implementation work remains for this cleanup; collect the
+  archive/CLI result on resuming.
 
 ### Direct external QPTAS statement (2026-10-16, locally validated and resubmitted)
 
