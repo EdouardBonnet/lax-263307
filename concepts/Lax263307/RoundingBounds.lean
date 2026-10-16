@@ -12,10 +12,6 @@ Consequently, for each vertex set $J$,
 $$\tau\sum_{v\in J}t_v\ge w(J)-|J|\tau.$$
 With $\tau=\varepsilon W/(2n)$, the total number of copies is at most
 $2n^2/\varepsilon$.
-
-# Attribution
-
-Bonnet–Chang, proof of Theorem 2 in Section 6.
 -/
 
 namespace Lax263307.RoundingBounds

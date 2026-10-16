@@ -18,10 +18,6 @@ $Lq\le4m\ell$ and the pruned source treewidth-plus-one bound.
 The class bag bound is an explicit intermediate hypothesis. This lemma
 combines the probability estimates with the sampled width obstruction.
 The main theorem obtains the bag bound from its separator hypothesis.
-
-# Attribution
-
-Bonnet–Chang, the sparse-cost sampling contradiction in Lemma 11.
 -/
 
 namespace Lax263307.CostSamplingObstruction

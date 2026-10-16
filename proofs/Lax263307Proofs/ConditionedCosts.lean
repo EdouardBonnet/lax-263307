@@ -17,10 +17,6 @@ chosen vertices to one, and preserves positivity at every positive-cost step.
 Divide the monotonicity inequalities and mass equation by the positive
 conditioning moment. Inserting a vertex already in the conditioning set
 does not change the set.
-
-# Attribution
-
-Bonnet–Chang, Section 4.1.
 -/
 theorem conditioning_invariants {n : ℕ} (G : SimpleGraph (Fin n)) (k r : ℕ)
     (y : MomentVector n r) (feasible : IsFeasible G k r y)

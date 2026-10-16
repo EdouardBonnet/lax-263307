@@ -10,11 +10,6 @@ host decomposition with bag size at most $w$ to source bags of size at most
 $\max\{1,2dw\}$, even if the source has isolated vertices. Restrict to
 its nonisolated vertices, apply the connected-carrier transfer, then attach
 a singleton leaf bag for each omitted isolated vertex.
-
-# Attribution
-
-The treewidth transfer needed after discarding long routes in Bonnet–Chang,
-Lemma 11, extending the no-isolates formulation of Lemma 9.
 -/
 
 namespace Lax263307.IsolatedEmbeddingTransfer

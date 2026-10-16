@@ -19,10 +19,6 @@ paths in the paper. This slightly more general definition keeps precisely
 the properties needed for tree-decomposition transfer. Mapped vertices need
 not be distinct, and singleton routes are allowed. An induced almost-embedding
 also forbids edges between routes assigned to nonincident edges.
-
-# Attribution
-
-Bonnet–Chang, Lemma 9.
 -/
 
 namespace Lax263307.AlmostEmbeddings

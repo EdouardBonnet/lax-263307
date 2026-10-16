@@ -22,10 +22,6 @@ used host vertices and enumerate each fibre to identify the graph with an
 explicit copy graph. The original host need not have at most as many edges
 until its unused vertices are removed. These existential constructions
 are structural analysis; the algorithm does not build decomposition bags.
-
-# Attribution
-
-Bonnet–Chang, Lemma 16.
 -/
 
 namespace Lax263307.BlowUpBagBounds

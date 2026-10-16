@@ -71,10 +71,6 @@ conclusion: Lax263307.RecursionDepth.approximation_transfer
 Bernoulli's inequality gives `(1-δ)^levels ≥ 1-levels*δ ≥ 1-ε`.
 The certified upper bound dominates every independent-set cardinality,
 so the returned set has the requested unweighted approximation guarantee.
-
-# Attribution
-
-Bonnet–Chang, approximation guarantee in Theorem 15.
 -/
 theorem approximation_transfer {n : ℕ} (G : SimpleGraph (Fin n))
     (I : Finset (Fin n)) (u levels : ℕ) (δ ε : ℚ)

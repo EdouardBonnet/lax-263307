@@ -12,10 +12,6 @@ $$H(\pi)-\sum_v\pi_v H(\pi^v)
   \ge\sum_{u,v:\,uv\in E(G)}\pi_u\pi_v.$$
 Terms with $\pi_v=0$ have weight zero.
 
-# Attribution
-
-Bonnet–Chang, proof of Lemma 12, equations (17) and (18).
-
 # Formalization notes
 
 The lower bound uses $x\ln x\ge x-1$ on the support of $q$.

@@ -9,9 +9,7 @@ Suppose every independent set in $G[C]$ has size at most $u$.
 For $|A|\le r$, every $z\in P_r(G,k)$ satisfies
 $$\sum_{v\in C}z_{A\cup\{v\}}\le u z_A.$$
 
-# Attribution
-
-Bonnet–Chang, Lemma 13. The set $C$ need not be a connected component;
+The set $C$ need not be a connected component;
 the algorithm applies this statement to the components left by a separator.
 -/
 

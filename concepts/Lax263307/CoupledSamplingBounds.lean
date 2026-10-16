@@ -13,10 +13,6 @@ $m^2$ times the sum of the single-pair collision and adjacency probabilities.
 If that bound is at most $1/4$ and the expected total size is at most $M>0$,
 there is a positive-probability sample with no such interaction and total
 route size at most $4M$.
-
-# Attribution
-
-Bonnet–Chang, the union bound and Markov step in Lemma 11.
 -/
 
 namespace Lax263307.CoupledSamplingBounds

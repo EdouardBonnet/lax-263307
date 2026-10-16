@@ -27,10 +27,6 @@ weight and one further scaling unit.
 
 Apply the lower and upper floor inequalities to `w_v / τ` and multiply
 by the positive scaling unit.
-
-# Attribution
-
-Bonnet–Chang, proof of Theorem 2 in Section 6.
 -/
 theorem pointwise_bounds {n : ℕ} (w : Fin n → ℚ) (τ : ℚ)
     (nonnegative : ∀ v, 0 ≤ w v) (positive_scale : 0 < τ) :
@@ -53,10 +49,6 @@ per selected vertex.
 # Proof strategy
 
 Sum the pointwise lower bounds and collect the constant scaling units.
-
-# Attribution
-
-Bonnet–Chang, proof of Theorem 2 in Section 6.
 -/
 theorem set_rounding_loss {n : ℕ} (w : Fin n → ℚ) (τ : ℚ)
     (nonnegative : ∀ v, 0 ≤ w v) (positive_scale : 0 < τ) (J : Finset (Fin n)) :
@@ -81,10 +73,6 @@ The number of copies is at most `2n² / ε`.
 
 Each floor is bounded by `w_v / τ`, and each weight by the maximum weight.
 Sum these bounds and substitute the chosen scale.
-
-# Attribution
-
-Bonnet–Chang, proof of Theorem 2 in Section 6.
 -/
 theorem total_copy_bound {n : ℕ} (w : Fin n → ℚ) (ε : ℚ)
     (nonnegative : ∀ v, 0 ≤ w v) (positive_order : 0 < n)

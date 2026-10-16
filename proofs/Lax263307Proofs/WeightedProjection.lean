@@ -55,10 +55,6 @@ vertex weight, so rounding loses at most an `ε/2` fraction of that optimum.
 Lift this comparison set and use the unweighted `ε/2` approximation.
 Projection has weight at least the scale times the number of selected copies.
 The combined factor `(1-ε/2)²` is at least `1-ε`.
-
-# Attribution
-
-Bonnet–Chang, proof of Theorem 2 in Section 6.
 -/
 theorem approximation_transfer {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
     (ε : ℚ) (nonnegative : ∀ v, 0 ≤ w v) (positive_order : 0 < n)

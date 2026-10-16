@@ -15,10 +15,6 @@ The complete lift of an independent set is independent.
 
 Copies of a common original vertex have no edge between them. For different
 original vertices, independence follows from independence of the original set.
-
-# Attribution
-
-Bonnet–Chang, Section 6.
 -/
 theorem lift_independent {n : ℕ} (G : SimpleGraph (Fin n)) (copies : Fin n → ℕ)
     (I : Finset (Fin n)) (independent : G.IsIndepSet (I : Set (Fin n))) :
@@ -39,10 +35,6 @@ Projecting an independent set of copies gives an independent original set.
 
 If two projected vertices were adjacent, their selected representatives
 would be adjacent copies, contradicting independence.
-
-# Attribution
-
-Bonnet–Chang, Section 6.
 -/
 theorem project_independent {n : ℕ} (G : SimpleGraph (Fin n)) (copies : Fin n → ℕ)
     (K : Finset (Vertex copies)) (independent : (graph G copies).IsIndepSet (K : Set (Vertex copies))) :
@@ -62,10 +54,6 @@ The cardinality of a complete lift is the sum of the fibre sizes.
 
 Use the cardinality formula for a finite dependent sum and the cardinality
 of each `Fin` fibre.
-
-# Attribution
-
-Bonnet–Chang, Section 6.
 -/
 theorem lift_cardinality {n : ℕ} (copies : Fin n → ℕ) (I : Finset (Fin n)) :
     (lift copies I).card = ∑ v ∈ I, copies v := by
@@ -81,10 +69,6 @@ The multiplicities of the projected vertices bound the number of selected copies
 
 Every selected copy belongs to the complete lift of the projection.
 Compare cardinalities and use the lift-cardinality statement.
-
-# Attribution
-
-Bonnet–Chang, Section 6.
 -/
 theorem projection_capacity {n : ℕ} (copies : Fin n → ℕ) (K : Finset (Vertex copies)) :
     K.card ≤ ∑ v ∈ project K, copies v := by

@@ -9,10 +9,6 @@ Let $y\in R_r(G,k)$ and let $|A|\le r$ with $y_A>0$.
 The conditioned costs $x_v=y_{A\cup\{v\}}/y_A$ lie in $[0,1]$,
 sum to $k$, and equal one for every $v\in A$.
 Whenever $x_v>0$, the enlarged conditioning set still has positive moment.
-
-# Attribution
-
-Bonnet–Chang, Section 4.1, the identities preceding Lemma 12.
 -/
 
 namespace Lax263307.ConditionedCosts

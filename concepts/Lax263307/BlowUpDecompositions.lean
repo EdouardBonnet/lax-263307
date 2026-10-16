@@ -16,10 +16,6 @@ The original decomposition tree is retained, and each vertex in a bag is
 replaced by all its copies. An empty fibre contributes no vertices.
 The conclusion is expressed directly as a bag-size bound using the
 registered `Lax228581.Treewidth.TreeDecomposition` definition.
-
-# Attribution
-
-Bonnet–Chang, the tree-decomposition construction in the proof of Lemma 16.
 -/
 
 namespace Lax263307.BlowUpDecompositions

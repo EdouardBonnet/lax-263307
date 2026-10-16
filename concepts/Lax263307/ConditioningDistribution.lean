@@ -12,10 +12,6 @@ The vector $\pi$ is a probability distribution. The entries of $q$ are
 nonnegative and symmetric, with both marginals equal to $\pi$, and $q_{uv}=0$
 whenever $uv$ is an edge. For $\pi_v>0$, the distribution after conditioning
 on $v$ is given by $\pi^v_u=q_{uv}/\pi_v$.
-
-# Attribution
-
-Bonnet–Chang, proof of Lemma 12, equations (15) and (16).
 -/
 
 namespace Lax263307.ConditioningDistribution

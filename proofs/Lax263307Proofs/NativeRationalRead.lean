@@ -3,10 +3,8 @@ import Lax455465Proofs.RamFractionPrimitives
 import Lax263307Proofs.NativeMomentInput
 
 /-!
-A buffer-parametric version of the canonical rational reader in the
-registered Leighton–Rao submission (Apache-2.0), RamLpRationalRead:
-https://github.com/EdouardBonnet/lax-455465/tree/9988b9c5399185cfb3ca2129ca7c807fd80c2885
-The fixed input-buffer name is replaced by an explicit code parameter.
+A canonical rational reader whose input-buffer name is an explicit
+code parameter.
 -/
 
 namespace Lax263307Proofs.NativeRationalRead

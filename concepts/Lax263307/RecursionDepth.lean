@@ -17,11 +17,6 @@ The integer depth function avoids numerical evaluation of logarithms with
 base $3/2$. Empty graphs and singletons have depth zero. The explicit upper
 bound uses twice the binary logarithm; this constant change does not affect
 the QPTAS bound.
-
-# Attribution
-
-Bonnet–Chang, the recursion-depth argument in Lemma 14 and Bernoulli's
-inequality in Theorem 15.
 -/
 
 namespace Lax263307.RecursionDepth

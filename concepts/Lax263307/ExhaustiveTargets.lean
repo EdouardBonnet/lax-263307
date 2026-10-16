@@ -16,10 +16,6 @@ fails, every independent set has size less than $k$.
 The executable enumeration generates sublists of length $k$, without
 materializing all vertex subsets. The two claims give completeness of
 the candidate list and correctness of the search.
-
-# Attribution
-
-Bonnet–Chang, the small-target branch of Algorithm 1.
 -/
 
 namespace Lax263307.ExhaustiveTargets

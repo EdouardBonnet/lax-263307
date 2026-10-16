@@ -25,11 +25,6 @@ minus ports lie inside the cut and whose plus ports lie outside it.
 The cut projection and the external solver's application are proved here;
 flow projection and the RAM cost of constructing the split input are separate
 steps of the reduction.
-
-# Attribution
-
-Bonnet–Chang, the vertex-splitting reduction in Lemma 7, using the registered
-Leighton–Rao algorithm in Lax455465.
 -/
 
 namespace Lax263307.VertexSplitting

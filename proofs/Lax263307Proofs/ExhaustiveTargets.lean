@@ -36,10 +36,6 @@ conclusion: Lax263307.ExhaustiveTargets.search_correct
 The first successful candidate is an independent set of size `k`. If an
 independent set had size at least `k` after failure, selecting a size-`k`
 subset would give a successful candidate, a contradiction.
-
-# Attribution
-
-Bonnet–Chang, exhaustive-search rejection in Lemma 14.
 -/
 theorem search_correct {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k : ℕ) :
     match findIndependentSet G k with

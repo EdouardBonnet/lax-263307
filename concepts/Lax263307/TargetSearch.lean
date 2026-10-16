@@ -12,10 +12,6 @@ target returns an independent set of size at least $\rho k$.
 The first successful target is therefore a certified upper bound on the
 independence number, and the returned set retains the factor $\rho$ of that
 bound. The zero target provides the terminating empty-set case.
-
-# Attribution
-
-Bonnet–Chang, Algorithm 1 and the last paragraph of the proof of Lemma 14.
 -/
 
 namespace Lax263307.TargetSearch

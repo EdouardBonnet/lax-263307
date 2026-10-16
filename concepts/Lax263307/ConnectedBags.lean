@@ -10,10 +10,6 @@ In a tree decomposition, the nodes whose bags meet a nonempty connected
 vertex set induce a connected subtree. The bag subtrees of adjacent vertices
 intersect in a bag covering their edge, so connected vertex sets give
 connected unions of bag subtrees.
-
-# Attribution
-
-The connected-bag observation used in Bonnet–Chang, proof of Lemma 9.
 -/
 
 namespace Lax263307.ConnectedBags

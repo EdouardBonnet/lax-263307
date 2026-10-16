@@ -63,10 +63,6 @@ The fixed-order enumeration contains exactly the sets within the budget.
 A sublist of the vertex list has no duplicates, so its length equals the
 cardinality of its vertex set. Conversely, filter the vertex list by any
 given set and select that sublist at its cardinality.
-
-# Attribution
-
-The finite enumeration used in Bonnet–Chang, proof of Lemma 12.
 -/
 theorem candidate_complete (n r : ℕ) (A : Finset (Fin n)) :
     A ∈ candidates n r ↔ A.card ≤ r := by
@@ -115,10 +111,6 @@ The enumeration contains at most `(r+1)(n+1)^r` candidates.
 
 The exact count is the sum of binomial coefficients for sizes zero through
 `r`. Bound each coefficient by a power of the order, then by `(n+1)^r`.
-
-# Attribution
-
-The dimension and enumeration bounds in Bonnet–Chang, equations (14) and (25).
 -/
 theorem candidate_bound (n r : ℕ) : (candidates n r).length ≤ (r + 1) * (n + 1) ^ r := by
   rw [candidate_count]

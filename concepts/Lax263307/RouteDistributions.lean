@@ -18,10 +18,6 @@ Routes carrying positive probability are simple graph paths. Zero-probability
 outcomes may have empty routes. Arc-to-path conversion is used only for the
 existence argument, so this statement imposes no algorithm for constructing
 the distribution. The underlying solver still returns an arc-flow certificate.
-
-# Attribution
-
-Bonnet–Chang, flow normalization and endpoint-inclusive loads in Lemma 7.
 -/
 
 namespace Lax263307.RouteDistributions

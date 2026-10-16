@@ -47,10 +47,6 @@ Choose the first endpoint of each deleted unordered pair. Their image has
 cardinality at most the number of deleted edges and meets every deleted edge.
 Add this image to every bag, restoring coverage while preserving connected
 bag indices. Bound each enlarged bag by the sum of its two constituent sizes.
-
-# Attribution
-
-The deletion estimate used in Bonnet–Chang, Lemma 11.
 -/
 theorem restore_edges {n : ℕ} (G : SimpleGraph (Fin n)) (F : Finset (Sym2 (Fin n)))
     (w : ℕ) (width : HasTreewidthAtMost (G.deleteEdges (↑F : Set (Sym2 (Fin n)))) w) :

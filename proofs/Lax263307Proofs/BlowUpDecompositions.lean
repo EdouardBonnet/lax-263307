@@ -40,10 +40,6 @@ Construct the lifted decomposition on the original tree. A copy occurs
 at exactly the nodes where its original vertex occurs, preserving connected
 bag indices. Count each lifted bag with the lift-cardinality statement
 and bound all fibre sizes by `s`.
-
-# Attribution
-
-Bonnet–Chang, proof of Lemma 16.
 -/
 theorem bounded_blowup_decomposition {n : ℕ} (G : SimpleGraph (Fin n))
     (copies : Fin n → ℕ) (s w : ℕ) (bounded : ∀ v, copies v ≤ s)

@@ -90,10 +90,6 @@ The inequality `log x ≤ x - 1` bounds each positive-support term below
 by joint mass minus product mass. Edge pairs have zero joint mass, so
 their product mass contributes to the gap. Zero marginals are treated
 explicitly. Divide by `log 2` to obtain the inequality in bits.
-
-# Attribution
-
-Bonnet–Chang, proof of Lemma 12, equations (17) and (18).
 -/
 theorem average_entropy_gap {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (π : Fin n → ℝ) (q : Fin n → Fin n → ℝ)

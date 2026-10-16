@@ -9,11 +9,6 @@ For a finite probability distribution, suppose the probability of a bad
 outcome is at most $1/4$ and a nonnegative total cost has expectation at most
 $M>0$. Some outcome of positive probability is not bad and has total cost
 at most $4M$. This combines the union bound with Markov's inequality.
-
-# Attribution
-
-Bonnet–Chang, the simultaneous choice of noninteracting routes and bounded
-total path length in Lemma 11.
 -/
 
 namespace Lax263307.SamplingOutcomes

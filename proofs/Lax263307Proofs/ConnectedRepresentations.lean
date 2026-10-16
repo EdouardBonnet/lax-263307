@@ -49,10 +49,6 @@ Keep the original tree and replace each bag by all represented vertices
 whose carriers meet it. Connected carriers preserve connected bag indices;
 touching carriers ensure edge coverage. Sum the load bound over each original
 bag to obtain the new bag-size bound.
-
-# Attribution
-
-The transfer construction in Bonnet–Chang, Lemma 9.
 -/
 theorem transfer_decomposition {t n : ℕ} (H : SimpleGraph (Fin t))
     (G : SimpleGraph (Fin n)) (R : Representation H G)

@@ -71,10 +71,6 @@ neighbor has degree at least that fibre size. Embed these survivors into the
 uniform `s`-fold blow-up, pull back its lifted decomposition, insert the
 isolated survivors in singleton bags, and add the removed vertices to every
 bag.
-
-# Attribution
-
-Bonnet–Chang, proof of Lemma 16.
 -/
 theorem deletion_decomposition {n : ℕ} (G : SimpleGraph (Fin n))
     (copies : Fin n → ℕ) (s w : ℕ) (width : HasTreewidthAtMost G w) :
@@ -128,10 +124,6 @@ conclusion: Lax263307.BlowUpDeletion.power_bound
 Choose `s` to be the ceiling of `(m+1)^((1-b)/2)`. The deletion term and
 the lifted-bag term then both have exponent `(1+b)/2`, with the additional
 one accounting for isolated vertices.
-
-# Attribution
-
-Bonnet–Chang, the threshold optimization in Lemma 16.
 -/
 theorem power_bound {n : ℕ} (G : SimpleGraph (Fin n))
     (copies : Fin n → ℕ) (w : ℕ) (b c : ℝ) (hb : 0 ≤ b) (hb₁ : b < 1)

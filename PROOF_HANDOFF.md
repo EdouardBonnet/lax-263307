@@ -5,6 +5,22 @@ chronological history, including earlier incomplete checkpoints.
 
 ## Current status
 
+### Comment and bibliography revision (2026-10-16, validation running)
+
+The user requested removal of comment attributions, an arXiv source reference,
+and resubmission. Removed all 88 attribution sections from 73 local Lean files,
+retaining the mathematical notes about component cuts and entropy. Moved the
+rational reader's source/license provenance from its comment to `NOTICE`.
+Updated the bibliography to arXiv:2610.16025 (verified on arXiv, submitted
+12 October 2026). A comparison after removing comments confirms no Lean
+declaration or proof changed in any of the 74 edited Lean files.
+`git diff --check` passes. Full local `lax build --no-color --profile` is
+running (session 76505, quiet log `/tmp/qptas-arxiv-build.log`); concepts
+compiled successfully and affected proofs are rebuilding. The archive can
+validate independently in parallel with this local rebuild: commit/push,
+then submit with `lax submit --force --no-color` to avoid starting a second
+local build. Record the immutable source and both validation results.
+
 ### Revision to the registered approximation framework (proved, archive-validated, submitted)
 
 User requests QPTAS from lax-213208 and direct use of higher-level program
@@ -79,7 +95,6 @@ validated, and published below; do not redo the algorithm proof.
   Website repository: lax-archive/lax-website. Runs38944975469 and38945733628
   were superseded/cancelled; replacement run38947961285 (18:31:10Z) was still
   active at the final check. The accepted archive snapshot is authoritative.
-- No proof statement or proof has been changed yet beyond lake dependencies.
 
 Useful local sources: ../approximation-algorithms/concepts/Lax213208/;
 its .lake/packages/Lax560851 contains the registered structural encodings.

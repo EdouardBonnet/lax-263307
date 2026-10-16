@@ -166,10 +166,6 @@ conclusion: Lax263307.PathSampling.sampling_bounds
 Substitute the vertex-load bound into the two union bounds. The estimate
 `x_v² ≤ x_v` and total cost at most `k` control intersections; the edge-cost hypothesis
 controls adjacency. Summing the same load bound controls expected size.
-
-# Attribution
-
-Bonnet–Chang, equations (8) and (9) and the length estimate in Lemma 11.
 -/
 theorem sampling_bounds {n q : ℕ} (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] (P : Distribution n q) (x : Fin n → ℝ) (k ℓ p : ℝ)

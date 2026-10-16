@@ -10,10 +10,6 @@ intersecting sets for every edge of $H$. Suppose at most $B$ represented
 vertices use any one vertex of $G$. A tree decomposition of $G$ with bags
 of size at most $w$ then gives a tree decomposition of $H$ with bags of
 size at most $Bw$.
-
-# Attribution
-
-The connected-set transfer used in Bonnet–Chang, Lemma 9.
 -/
 
 namespace Lax263307.ConnectedRepresentations

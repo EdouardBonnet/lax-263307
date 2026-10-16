@@ -8,10 +8,6 @@ type: lemma
 Every independent set $I$ of size $k$ gives a feasible point of $R_r(G,k)$
 by setting $y_A=\mathbf1[A\subseteq I]$. Consequently
 $P_r(G,k)\subseteq R_r(G,k)$.
-
-# Attribution
-
-Bonnet–Chang, Section 4, equation (13), and Section 5.1, equation (20).
 -/
 
 namespace Lax263307.RelaxationFeasibility

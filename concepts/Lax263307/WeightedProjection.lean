@@ -13,10 +13,6 @@ $\tau=\varepsilon W/(2n)$. A $(1-\varepsilon/2)$-approximate independent
 set in the blow-up projects to a $(1-\varepsilon)$-approximate weighted
 independent set in the original graph.
 
-# Attribution
-
-Bonnet–Chang, the approximation guarantee in the proof of Theorem 2.
-
 # Formalization notes
 
 The main theorem combines this approximation transfer with separator

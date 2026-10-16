@@ -126,10 +126,6 @@ force every inside plus port's minus port inside; graph arcs forbid an edge
 between the two exclusive shores. Encode each split vertex by its original
 vertex and port to bound shore sizes by twice the corresponding original
 shore sizes.
-
-# Attribution
-
-Bonnet–Chang, cut projection in Lemma 7.
 -/
 theorem small_cut_separation {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (x : Fin n → ℚ≥0) (large : ℚ≥0) (U : Finset (Fin (2 * n)))
@@ -171,11 +167,6 @@ Instantiate the registered directed uniform algorithm on the split network.
 Its vertex weights are all one, and its order is twice the original order.
 The same total solver function and actual RAM guarantee apply to every
 rational split instance.
-
-# Attribution
-
-Lax455465 directed uniform flow–cut theorem; the split construction is from
-Bonnet–Chang, Lemma 7.
 -/
 theorem split_certificate :
   ∃ (solve : List ℕ → List ℕ) (C : ℝ), Lax759944.RamPolytime.RamPolytime solve ∧ 0 < C ∧
@@ -282,10 +273,6 @@ Sum the cut contributions separately for input and output ports. Every output
 port contributes zero, since no large-capacity arc leaves the cut. An input
 port contributes exactly its vertex cost when it lies inside and its paired
 output port lies outside. These are precisely the separator's vertices.
-
-# Attribution
-
-Bonnet–Chang, capacity identity in the vertex-splitting reduction of Lemma 7.
 -/
 theorem small_cut_cost {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (x : Fin n → ℚ≥0) (large : ℚ≥0) (U : Finset (Fin (2 * n)))
@@ -345,10 +332,6 @@ Uniform weights make the cut demand the product of its shore cardinalities.
 Clear this positive denominator, substitute the cut-capacity identity, and
 bound each split shore by twice its projected shore. The two factors of two
 give the separator bound.
-
-# Attribution
-
-Bonnet–Chang, cut ratio estimate in Lemma 7.
 -/
 theorem separator_cost_bound {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (x : Fin n → ℚ≥0) (large : ℚ≥0) (U : Finset (Fin (2 * n))) (ρ : ℝ)
@@ -456,10 +439,6 @@ cut capacity by `rho(2n)²/γ`, below the chosen large capacity. The cut therefo
 projects to a nontrivial separation. Its ratio is at most `rho/γ`, and the
 shore and capacity identities give the desired original separator cost.
 The other branch retains the certificate's feasible high-value split flow.
-
-# Attribution
-
-Bonnet–Chang, the two alternatives in the vertex-splitting reduction of Lemma 7.
 -/
 theorem flow_or_separation {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (x : Fin n → ℚ≥0) (large : ℚ≥0)

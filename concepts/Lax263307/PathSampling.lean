@@ -21,10 +21,6 @@ A finite distribution is given explicitly by its outcome probabilities.
 The pair probabilities are products, expressing independent sampling.
 The estimates depend only on the vertex sets of the sampled paths, so the
 definitions allow arbitrary finite vertex sets.
-
-# Attribution
-
-Bonnet–Chang, equations (8), (9), and the expected-path-size bound in Lemma 11.
 -/
 
 namespace Lax263307.PathSampling

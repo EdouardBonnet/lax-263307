@@ -1,0 +1,4 @@
+NativeRationalRead.lean adapts the canonical rational reader RamLpRationalRead
+from the Apache-2.0-licensed Leighton–Rao submission, lax-455465:
+https://github.com/EdouardBonnet/lax-455465/tree/9988b9c5399185cfb3ca2129ca7c807fd80c2885
+The fixed input-buffer name is replaced by an explicit code parameter.

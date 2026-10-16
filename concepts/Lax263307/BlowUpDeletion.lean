@@ -17,10 +17,6 @@ Large fibres become isolated after this deletion. The remaining nonisolated
 vertices therefore embed into a blow-up with at most $s$ copies per vertex.
 The maximum with one covers singleton bags for isolated vertices, including
 the edgeless case and threshold zero.
-
-# Attribution
-
-Bonnet–Chang, the structural estimate in the proof of Lemma 16.
 -/
 
 namespace Lax263307.BlowUpDeletion

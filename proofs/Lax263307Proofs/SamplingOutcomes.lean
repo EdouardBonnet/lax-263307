@@ -54,10 +54,6 @@ conclusion: Lax263307.SamplingOutcomes.good_outcome
 Markov bounds the probability of cost exceeding `4M` by one quarter. Union
 with the bad event has probability at most one half, so its complement has
 positive probability. A positive summand supplies the desired outcome.
-
-# Attribution
-
-Bonnet–Chang, choice of the sampled routes in Lemma 11.
 -/
 theorem good_outcome {n q : ℕ} (P : Distribution n q) (bad : Set (Fin q))
     (cost : Fin q → ℝ) (M : ℝ) (positive : 0 < M)

@@ -85,10 +85,6 @@ route union lie on routes incident to this chosen source edge, since the
 almost-embedding is induced. There are at most `2d` such routes and each has
 at most `L` vertices. Combine this degree bound with the route-union order
 bound and the degree-sum formula.
-
-# Attribution
-
-Bonnet–Chang, edge-count estimate in Lemma 11.
 -/
 theorem edge_bound {t n : ℕ} (H : SimpleGraph (Fin t)) [DecidableRel H.Adj]
     (G : SimpleGraph (Fin n)) (E : AlmostEmbedding H G) (d L : ℕ)

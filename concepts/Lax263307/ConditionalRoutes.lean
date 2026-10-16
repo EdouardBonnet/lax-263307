@@ -12,10 +12,6 @@ those endpoints. Averaging over a uniformly sampled pair recovers the
 original law. Averaging independently over four endpoints gives the product
 law for two routes. These identities support sampling nonincident source
 edges while sharing endpoint images for incident edges.
-
-# Attribution
-
-Bonnet–Chang, the coupled route sampling construction in Lemma 11.
 -/
 
 namespace Lax263307.ConditionalRoutes

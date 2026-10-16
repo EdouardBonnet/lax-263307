@@ -12,11 +12,6 @@ constants for width and size overshoot. For every requested order, choose a
 source graph above the request and below a fixed multiple of the request
 plus one, with order bounded by the width constant times treewidth plus one.
 The upper size bound is needed to meet the route-sampling budgets.
-
-# Attribution
-
-Lax920634's registered subcubic construction, size bound, and explicit
-linear-treewidth theorem; the source family used in Bonnet–Chang, Lemma 10.
 -/
 
 namespace Lax263307.SourceGraphs

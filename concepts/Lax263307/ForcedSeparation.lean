@@ -20,10 +20,6 @@ The shores are the actual minus/plus port projections of the certificate's
 cut. This is the certificate analysis needed by the repeated-cut procedure;
 the registered RAM solver and the wrapper cost are handled separately.
 The main theorem derives the power bag premise from its separator hypothesis.
-
-# Attribution
-
-Bonnet–Chang, Lemma 7 with its high-flow branch excluded by Lemma 11.
 -/
 
 namespace Lax263307.ForcedSeparation

@@ -18,10 +18,6 @@ Their two endpoints are distinct, and nonincident edges have four distinct
 endpoints. A sampled route's ordered vertex list is a graph walk, so its
 vertex set induces a connected graph. The shared vertex-image assignment
 provides the endpoint condition in the almost-embedding.
-
-# Attribution
-
-Bonnet–Chang, the initial induced almost-embedding in Lemma 11.
 -/
 
 namespace Lax263307.SampledAlmostEmbeddings

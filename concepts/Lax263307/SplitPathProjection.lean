@@ -15,11 +15,6 @@ it. Successive original vertices must therefore be graph neighbors.
 For a simple original route $Q$, the expanded route traverses the capacity
 arc $w^-\to w^+$ exactly once when $w$ belongs to $Q$, and zero times
 otherwise. This counts both endpoints and includes singleton routes.
-
-# Attribution
-
-Bonnet–Chang, flow projection and endpoint-inclusive load accounting in
-Lemma 7.
 -/
 
 namespace Lax263307.SplitPathProjection

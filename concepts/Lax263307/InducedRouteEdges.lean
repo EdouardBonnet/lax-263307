@@ -10,11 +10,6 @@ Suppose an induced almost-embedding of a graph $H$ of maximum degree at most
 $d$ uses at most $L$ host vertices per route. The union of its routes has
 at most $|E(H)|L$ vertices. Its induced graph has maximum degree at most
 $2dL$, and therefore at most $d|E(H)|L^2$ edges.
-
-# Attribution
-
-The induced edge-count estimate for retained short paths in Bonnet–Chang,
-proof of Lemma 11.
 -/
 
 namespace Lax263307.InducedRouteEdges

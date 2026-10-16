@@ -17,11 +17,6 @@ of the structurally encoded graph and rational weights, as specified by
 the registered `QPTAS` definition in lax-213208.
 No separator or algorithm for finding one is part of the input.
 
-# Attribution
-
-Édouard Bonnet and Yeonsu Chang, *QPTAS for Max Weight Independent Set
-in Graphs with Strongly Edge-Sublinear Separators*, Theorem 2.
-
 # Formalization notes
 
 The conclusion `HasQPTAS C` specializes lax-213208's `QPTAS` to the MWIS

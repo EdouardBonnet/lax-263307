@@ -10,10 +10,6 @@ shores $B_i$, and each separator $A_i\cap B_i$ has cost at most
 $4\rho|A_i||B_i|/\gamma$. Nonnegative costs imply that the union of all
 these separators has total cost at most $4\rho n^2/\gamma$.
 The bound uses $|A_i|\le n$ and $\sum_i|B_i|\le n$.
-
-# Attribution
-
-Bonnet–Chang, the repeated-cut cost accounting in Lemma 8.
 -/
 
 namespace Lax263307.RepeatedCutAccounting

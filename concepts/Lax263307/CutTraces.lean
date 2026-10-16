@@ -24,10 +24,6 @@ shore $B_i$, which also contains the separator intersection. The final
 parts form the concrete partition used by recursive rounding. These
 statements analyze the finite cut sequence; its RAM implementation remains
 part of the main algorithm assembly.
-
-# Attribution
-
-Bonnet–Chang, the repeated-cut construction of Lemma 8.
 -/
 
 namespace Lax263307.CutTraces

@@ -10,10 +10,6 @@ type: lemma
 Independent finite coordinates have total product mass one. Restricting to
 any injectively selected coordinates recovers the product law on precisely
 those coordinates. The remaining coordinates sum out to one.
-
-# Attribution
-
-Finite probability algebra for Bonnet–Chang's coupled sampling in Lemma 11.
 -/
 
 namespace Lax263307.FiniteProductSampling

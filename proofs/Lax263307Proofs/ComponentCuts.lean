@@ -43,10 +43,6 @@ On an indicator vector the left side is zero if the conditioning set is
 absent, and otherwise equals the size of the intersection with `C`.
 The upper bound applies to this independent intersection. The halfspace
 is convex, so the inequality extends to the entire hull.
-
-# Attribution
-
-Bonnet–Chang, Lemma 13.
 -/
 theorem valid_cut {n : ℕ} (G : SimpleGraph (Fin n)) (k r : ℕ)
     (C : Finset (Fin n)) (u : ℕ) (bound : IsIndependenceBound G C u)

@@ -25,10 +25,6 @@ family of linear treewidth.
 
 The monotone class bag bound is an explicit hypothesis here. The main theorem derives it
 from its separator hypothesis.
-
-# Attribution
-
-Bonnet–Chang, the width contradiction after route sampling in Lemma 11.
 -/
 
 namespace Lax263307.InducedEmbeddingWidth

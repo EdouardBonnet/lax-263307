@@ -10,10 +10,6 @@ containing all its copies. An independent set of copies projects to an
 independent set of the original graph. The lift of $I$ has size
 $\sum_{v\in I}t_v$, and every set of copies $K$ satisfies
 $|K|\le\sum_{v\in\operatorname{project}(K)}t_v$.
-
-# Attribution
-
-Bonnet–Chang, Section 6, the independent blow-up construction.
 -/
 
 namespace Lax263307.BlowUpIndependentSets

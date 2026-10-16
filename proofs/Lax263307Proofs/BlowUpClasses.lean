@@ -14,10 +14,6 @@ The independent blow-up closure is closed under induced embeddings.
 
 Compose the induced embedding with the existing projection to the host graph.
 The embedding and projection both preserve and reflect adjacency.
-
-# Attribution
-
-Bonnet–Chang, Lemma 16, with empty fibres allowed as in the weighted construction.
 -/
 theorem hereditary_closure (C : GraphClass) : IsHereditary (blowUpClass C) := by
   intro m n H K hK hembedding
@@ -38,10 +34,6 @@ set, belongs to the independent blow-up closure.
 
 Project each labeled copy to its original vertex. By definition of the
 comap graph, adjacency is exactly adjacency of these original vertices.
-
-# Attribution
-
-Bonnet–Chang, Section 6.
 -/
 theorem copy_graph_mem (C : GraphClass) {n : ℕ} (G : SimpleGraph (Fin n))
     (member : G ∈ C n) (copies : Fin n → ℕ) (m : ℕ) (labeling : Fin m ≃ Vertex copies) :

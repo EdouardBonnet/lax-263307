@@ -66,10 +66,6 @@ conclusion: Lax263307.SplitPathProjection.capacity_arc_count
 The expanded list contains one forward capacity arc per occurrence of the
 original vertex. Cross arcs join output ports to input ports and cannot be
 capacity arcs. On a simple route, a vertex occurs either once or not at all.
-
-# Attribution
-
-Bonnet–Chang, endpoint-inclusive load accounting in Lemma 7.
 -/
 theorem capacity_arc_count {n : ℕ} (Q : List (Fin n)) (simple : Q.Nodup) (v : Fin n) :
     ((expandRoute Q).zip (expandRoute Q).tail).count (minus v, plus v) =
@@ -167,10 +163,6 @@ as a positive-capacity successor. The next input port cannot be the one
 just visited, because the path is simple; the connecting arc therefore
 represents an original graph edge. Apply induction to the remaining pairs
 and preserve both original endpoints and simplicity.
-
-# Attribution
-
-Bonnet–Chang, flow projection in Lemma 7.
 -/
 theorem project_simple_path {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (x : Fin n → ℚ≥0) (large : ℚ≥0) (P : List (Fin (2 * n))) (u v : Fin n)
@@ -220,10 +212,6 @@ A positive-flow path uses only positive-capacity arcs: every used arc's
 positive contribution is bounded by its total load, hence by its capacity.
 The registered flow predicate also supplies path simplicity. Apply the
 split-path projection theorem to paths with the retained split endpoints.
-
-# Attribution
-
-Bonnet–Chang, flow projection in Lemma 7.
 -/
 theorem split_support_projection {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (x : Fin n → ℚ≥0) (large : ℚ≥0) (f : ℝ≥0) (F : PathFlow (2 * n))

@@ -11,10 +11,6 @@ increases any nonnegative load by at most $\gamma/n^2$. Each flow record
 belongs to at most one endpoint pair, so records are counted only once.
 The statement includes diagonal commodities and applies to vertex loads
 that count both route endpoints.
-
-# Attribution
-
-Bonnet–Chang, normalization and vertex-load accounting in Lemma 7.
 -/
 
 namespace Lax263307.RoutingNormalization

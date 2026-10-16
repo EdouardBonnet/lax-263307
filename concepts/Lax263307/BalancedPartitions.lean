@@ -10,10 +10,6 @@ A partition of undeleted vertices into parts closed under undeleted graph
 edges places each connected component wholly inside one part. If every
 part has at most two thirds of the original vertices, the deleted set is
 a balanced separator. This permits the parts supplied by repeated cuts.
-
-# Attribution
-
-The balanced-component conclusion of Bonnet–Chang's repeated-cut Lemma 8.
 -/
 
 namespace Lax263307.BalancedPartitions

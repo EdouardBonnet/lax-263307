@@ -10,10 +10,6 @@ The cut for a part $C$ and bound $u$ is
 $$\sum_{v\in C}z_{A\cup\{v\}}-u z_A\le0.$$
 Collect repeated coordinates into an integer coefficient vector. Evaluating
 that vector gives exactly the left-hand side of the component inequality.
-
-# Attribution
-
-Bonnet–Chang, Lemma 13 and Section 5.3.
 -/
 
 namespace Lax263307.ComponentCutEncoding

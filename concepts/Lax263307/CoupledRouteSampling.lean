@@ -20,10 +20,6 @@ and a route-index assignment. Edge endpoints are given explicitly by two
 maps; the marginal assertions require distinct endpoints for a single edge
 and four distinct endpoints for a pair. The construction does not assume
 independence for incident source edges.
-
-# Attribution
-
-Bonnet–Chang, the coupled sampling construction in Lemma 11.
 -/
 
 namespace Lax263307.CoupledRouteSampling

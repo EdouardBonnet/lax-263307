@@ -11,10 +11,6 @@ width lower bound and discarded-route estimate are both compatible with
 the sampled width upper bound, then
 $t\le (12c)^a A(6(24c)^2+1)^{a-1}\ell^{2(a-1)}$.
 This integer inequality makes the sampling contradiction polynomial in ell.
-
-# Attribution
-
-The growth calculation in Bonnet–Chang, proof of Lemma 11.
 -/
 
 namespace Lax263307.WidthGrowth

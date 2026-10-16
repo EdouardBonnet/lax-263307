@@ -19,10 +19,6 @@ equation at `A ∪ {v}` gives the marginal of the joint distribution.
 Symmetry is commutativity of insertion. A set containing the endpoints
 of an edge has zero moment. Clearing positive denominators gives the
 conditional-probability identity.
-
-# Attribution
-
-Bonnet–Chang, proof of Lemma 12, equations (15) and (16).
 -/
 theorem distribution_identities {n : ℕ} (G : SimpleGraph (Fin n)) (k r : ℕ)
     (y : MomentVector n r) (feasible : IsFeasible G k r y)

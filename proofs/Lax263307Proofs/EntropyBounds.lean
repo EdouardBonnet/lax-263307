@@ -17,10 +17,6 @@ of the number of vertices.
 Each entropy summand is nonnegative. Jensen's inequality for the concave
 function `negMulLog` bounds their sum by the entropy of the uniform vector.
 Divide by the positive logarithm of two to obtain the bound in bits.
-
-# Attribution
-
-Bonnet–Chang, proof of Lemma 12.
 -/
 theorem entropy_bounds {n : ℕ} (π : Fin n → ℝ) (probability : IsProbability π) :
     0 ≤ entropy π ∧ entropy π ≤ Real.logb 2 n := by

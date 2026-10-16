@@ -11,10 +11,6 @@ number of discarded edges times $L$ is at most the original total route
 size. The remaining graph retains an induced almost-embedding with every
 route using at most $L$ vertices. Edge deletion may create isolated source
 vertices; the transfer with singleton bags handles them separately.
-
-# Attribution
-
-Bonnet–Chang, the long-route deletion step in Lemma 11.
 -/
 
 namespace Lax263307.RoutePruning

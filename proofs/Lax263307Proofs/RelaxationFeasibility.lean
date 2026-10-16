@@ -16,10 +16,6 @@ Every independent-set indicator satisfies the relaxation constraints.
 Inclusion indicators are monotone, and every subset of an independent set
 is independent. The mass equation counts the vertices of the selected set
 when the conditioning set is included, and is zero otherwise.
-
-# Attribution
-
-Bonnet–Chang, Section 4, equation (13).
 -/
 theorem indicator_feasible {n : ℕ} (G : SimpleGraph (Fin n)) (k r : ℕ)
     (I : Finset (Fin n)) (independent : G.IsIndepSet (I : Set (Fin n)))
@@ -81,10 +77,6 @@ The exact independent-set hull satisfies all relaxation constraints.
 
 The feasible set is convex because all five constraint families are
 linear. It contains every independent-set indicator, hence their convex hull.
-
-# Attribution
-
-Bonnet–Chang, Section 5.1, equation (20).
 -/
 theorem hull_feasible {n : ℕ} (G : SimpleGraph (Fin n)) (k r : ℕ)
     (y : MomentVector n r) (member : y ∈ independentSetHull G k r) :

@@ -11,11 +11,14 @@ authors:
   - name: Codex 6.1
 bibEntries:
   - |
-    @unpublished{BonnetChang2026QPTAS,
+    @misc{BonnetChang2026QPTAS,
       author = {Bonnet, Édouard and Chang, Yeonsu},
       title = {{QPTAS} for Max Weight Independent Set in Graphs with Strongly Edge-Sublinear Separators},
       year = {2026},
-      note = {Manuscript, local PDF snapshot of 12 October 2026, Theorem 2}
+      eprint = {2610.16025},
+      archivePrefix = {arXiv},
+      primaryClass = {cs.DS},
+      url = {https://arxiv.org/abs/2610.16025}
     }
 issue:
   repositoryId: 1320232165

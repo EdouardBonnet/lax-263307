@@ -117,10 +117,6 @@ its mapped image. At a host vertex, all routes present share an endpoint
 with any one present route `xy`; their endpoints lie in `N(x) ∪ N(y)`.
 Thus at most `2d` represented vertices use that host vertex. Apply the
 connected-set decomposition transfer with this load bound.
-
-# Attribution
-
-Bonnet–Chang, Lemma 9.
 -/
 theorem transfer_decomposition {t n : ℕ} (H : SimpleGraph (Fin t))
     [DecidableRel H.Adj] (G : SimpleGraph (Fin n)) (E : AlmostEmbedding H G)

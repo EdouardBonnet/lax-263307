@@ -9,10 +9,6 @@ type: lemma
 Independent sets contained in distinct parts of a separator partition have
 no edges between them. Their union is independent, and its cardinality is
 the sum of their cardinalities.
-
-# Attribution
-
-Bonnet–Chang, the union step in the proof of Lemma 14.
 -/
 
 namespace Lax263307.RecursiveRounding

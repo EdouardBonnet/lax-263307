@@ -11,11 +11,6 @@ Deleting $q$ edges reduces treewidth by at most $q$. Choose one endpoint of
 each deleted edge and add all chosen vertices to every bag of a decomposition
 of the remaining graph. This restores edge coverage and increases bag sizes
 by at most $q$.
-
-# Attribution
-
-The edge-deletion estimate used to retain linear treewidth after discarding
-long sampled paths in Bonnet–Chang, Lemma 11.
 -/
 
 namespace Lax263307.EdgeDeletionWidth

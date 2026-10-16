@@ -25,11 +25,6 @@ The power bag bound is an explicit hypothesis. The main theorem derives it
 from strongly edge-sublinear separators. No source
 graph construction is needed by the separator algorithm: this family is
 used only in the contradiction that rules out its high-flow branch.
-
-# Attribution
-
-Bonnet–Chang, the sampled-path contradiction of Lemma 11, with the registered
-subcubic source family from Lax920634.
 -/
 
 namespace Lax263307.NoBoundedLoadRoutes

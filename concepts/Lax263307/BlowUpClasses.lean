@@ -19,10 +19,6 @@ in the weighted reduction. With this convention the closure is hereditary
 for every original class. For a hereditary original class it agrees with
 the paper's convention of nonempty fibres: delete the unused host vertices
 before constructing the blow-up.
-
-# Attribution
-
-Bonnet–Chang, the hereditary-closure assertion in Lemma 16.
 -/
 
 namespace Lax263307.BlowUpClasses

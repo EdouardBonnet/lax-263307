@@ -8,9 +8,7 @@ type: lemma
 For every probability vector on $n$ vertices,
 $$0\le H(\pi)\le\log_2 n.$$
 
-# Attribution
-
-Bonnet–Chang, proof of Lemma 12. The upper bound follows from concavity
+The upper bound follows from concavity
 of $-x\log x$, with equality at the uniform distribution.
 -/
 

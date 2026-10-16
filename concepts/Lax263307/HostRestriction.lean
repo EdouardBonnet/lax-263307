@@ -10,11 +10,6 @@ Fin. The resulting graph embeds inducedly in the original host, has the
 same induced edge count, and supports the same induced almost-embedding
 with each route size preserved. Isolated source vertices may receive an
 arbitrary host image because they impose no endpoint condition.
-
-# Attribution
-
-The host restriction before applying the class width bound in Bonnet–Chang,
-proof of Lemma 11.
 -/
 
 namespace Lax263307.HostRestriction

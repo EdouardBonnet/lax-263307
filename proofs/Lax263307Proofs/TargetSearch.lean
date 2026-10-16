@@ -43,10 +43,6 @@ Induct over the decreasing target. A rejection at `k+1` bounds all independent
 sets by `k`, preserving the induction invariant. A success uses that invariant
 as the certified upper bound. Initially every independent set has at most
 the graph's order, and the zero case returns the empty set.
-
-# Attribution
-
-Bonnet–Chang, Algorithm 1 and Lemma 14.
 -/
 theorem search_correct {n : ℕ} (G : SimpleGraph (Fin n)) (ρ : ℝ)
     (attempt : ℕ → Option (Finset (Fin n)))

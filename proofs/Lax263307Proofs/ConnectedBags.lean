@@ -34,10 +34,6 @@ Choose witnesses in the two bags and a walk joining them inside the connected
 vertex set. For each edge of that walk, use a bag containing its endpoints.
 The connected bag indices for each vertex join these edge bags into a walk
 between the original nodes, entirely inside the nodes meeting the vertex set.
-
-# Attribution
-
-Bonnet–Chang, connected-bag observation in Lemma 9.
 -/
 theorem meeting_connected {n : ℕ} (G : SimpleGraph (Fin n))
     (D : TreeDecomposition G) (U : Finset (Fin n))
