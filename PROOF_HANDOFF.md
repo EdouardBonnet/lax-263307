@@ -5,7 +5,7 @@ chronological history, including earlier incomplete checkpoints.
 
 ## Current status
 
-### Direct external QPTAS statement (2026-10-16, locally validated)
+### Direct external QPTAS statement (2026-10-16, locally validated and resubmitted)
 
 The user requests removal of the redundant `Lax263307.QPTAS` concept.
 Deleted that module and its root import. The main concept and proof now
@@ -26,7 +26,17 @@ concepts are connected, and the exported headline names
 Local main-theorem preview links to `../lax-213208/Lax213208.QPTAS.html`;
 all 19 nodes in its displayed neighborhood are connected, and neither removed
 concept appears. Preview: `/tmp/qptas-direct-preview.html`.
-Next: commit/push and resubmit; record the source and archive workflow.
+Full index preview also passed: all 119 local/external nodes are connected,
+the external QPTAS is present, and both removed concepts are absent. Audit:
+`/tmp/qptas-direct-graph-audit.json`.
+
+Committed/pushed source: `7151286af56bf60d2d124d5b619512ae231bcb4f`.
+`lax submit --no-color` (session 68522) passed its local checks in 1m45s
+and dispatched archive workflow 38963795001 at 2026-10-16T20:39:21Z:
+https://github.com/lax-archive/lax/actions/runs/38963795001
+Archive validation is in progress; acceptance and website propagation have
+not yet been claimed. On resuming, collect the workflow/CLI result. No
+additional mathematical work remains for this revision.
 
 ### Comment and bibliography revision (2026-10-16, validated and submitted)
 
