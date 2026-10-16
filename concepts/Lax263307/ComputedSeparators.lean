@@ -76,7 +76,7 @@ def separator {n : ℕ} (cs : List (Finset (Fin n) × Finset (Fin n))) : Finset 
 def remaining {n : ℕ} (start : Finset (Fin n))
     (cs : List (Finset (Fin n) × Finset (Fin n))) : Finset (Fin n) :=
   if h : cs.length = 0 then start else
-    let s := cs.get ⟨cs.length - 1, by omega⟩
+    let s := cs.get ⟨cs.length - 1, Nat.sub_lt (Nat.pos_of_ne_zero h) Nat.zero_lt_one⟩
     s.1 \ s.2
 
 def pieces {n : ℕ} (cs : List (Finset (Fin n) × Finset (Fin n))) :

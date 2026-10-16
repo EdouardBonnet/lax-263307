@@ -1,6 +1,5 @@
 import Lax455465.RamDirectedUniformFlowCut
 import Mathlib.Combinatorics.SimpleGraph.Finite
-import Mathlib.Tactic
 
 /-!
 ---
@@ -35,11 +34,15 @@ open scoped NNReal NNRat
 open Lax455465.RationalEncoding Lax455465.ProductNetwork Lax455465.ConcurrentFlow
 
 /-- The input port of an original vertex. -/
-def minus {n : ℕ} (v : Fin n) : Fin (2 * n) := ⟨2 * v.val, by omega⟩
+def minus {n : ℕ} (v : Fin n) : Fin (2 * n) :=
+  ⟨2 * v.val, Nat.mul_lt_mul_of_pos_left v.isLt (Nat.succ_pos 1)⟩
 /-- The output port of an original vertex. -/
-def plus {n : ℕ} (v : Fin n) : Fin (2 * n) := ⟨2 * v.val + 1, by omega⟩
+def plus {n : ℕ} (v : Fin n) : Fin (2 * n) :=
+  ⟨2 * v.val + 1, (Nat.mul_succ 2 v.val).symm.trans_le (Nat.mul_le_mul_left 2 v.isLt)⟩
 /-- Forget which of the two ports represents a vertex. -/
-def original {n : ℕ} (v : Fin (2 * n)) : Fin n := ⟨v.val / 2, by omega⟩
+def original {n : ℕ} (v : Fin (2 * n)) : Fin n :=
+  ⟨v.val / 2, (Nat.div_lt_iff_lt_mul (Nat.succ_pos 1)).mpr
+    (Nat.mul_comm 2 n ▸ v.isLt)⟩
 
 /-- Rational capacities and uniform demands on the split network. -/
 def splitInstance {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
@@ -49,11 +52,10 @@ def splitInstance {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     else if u.val % 2 = 1 ∧ v.val + 1 = u.val then large
     else if u.val % 2 = 1 ∧ v.val % 2 = 0 ∧ G.Adj (original u) (original v) then large
     else 0
-  loopless v := by
-    have hforward : ¬(v.val % 2 = 0 ∧ v.val = v.val + 1) := by omega
-    have hreverse : ¬(v.val % 2 = 1 ∧ v.val + 1 = v.val) := by omega
-    have hedge : ¬(v.val % 2 = 1 ∧ v.val % 2 = 0 ∧ G.Adj (original v) (original v)) := by omega
-    simp only [if_neg hforward, if_neg hreverse, if_neg hedge]
+  loopless v :=
+    (if_neg (fun h => Nat.ne_of_lt (Nat.lt_succ_self v.val) h.2)).trans
+      ((if_neg (fun h => Nat.ne_of_gt (Nat.lt_succ_self v.val) h.2)).trans
+        (if_neg (fun h => h.2.2.ne rfl)))
   weight _ := 1
 
 /-- Original vertices whose input ports lie inside the split cut. -/

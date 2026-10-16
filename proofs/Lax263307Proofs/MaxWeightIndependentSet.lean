@@ -1,14 +1,14 @@
-import Lax263307.IndependentSetProblem
+import Lax263307.MaxWeightIndependentSet
 import Lax263307Proofs.NativeBlowUp
 
-namespace Lax263307Proofs.IndependentSetProblem
+namespace Lax263307Proofs.MaxWeightIndependentSet
 
-open Lax263307 IndependentSetProblem WeightedIndependentSet
+open Lax263307 Lax263307.MaxWeightIndependentSet WeightedIndependentSet
 attribute [local instance] Classical.propDecidable
 set_option backward.isDefEq.respectTransparency false
 
-@[simp] theorem order_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ) :
-    order (encodeInstance G w) = n := rfl
+@[simp] theorem vertexCount_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ) :
+    vertexCount (encodeInstance G w) = n := rfl
 
 theorem input_eq {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (w : Fin n → ℚ) (ε : ℚ) :
@@ -32,8 +32,8 @@ theorem matrix_entry {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
   rw [h]
   rfl
 
-@[simp] theorem graph_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ) :
-    graph (encodeInstance G w) = G := by
+@[simp] theorem decodeGraph_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ) :
+    decodeGraph (encodeInstance G w) = G := by
   classical
   ext u v
   change Fin n at u v
@@ -60,8 +60,8 @@ theorem weight_entry {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
   simpa only [front, List.append_nil, List.getElem_ofFn, encodeInstance,
     NativeWeightReduction.adjacency] using h
 
-@[simp] theorem weights_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ) :
-    weights (encodeInstance G w) = w := by
+@[simp] theorem decodeWeights_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ) :
+    decodeWeights (encodeInstance G w) = w := by
   classical
   funext v
   change Fin n at v
@@ -70,7 +70,7 @@ theorem weight_entry {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
   have h2 := weight_entry G w v 2 (by decide)
   simp only [Nat.add_zero, encodeRational, List.getElem?_cons_zero,
     List.getElem?_cons_succ] at h0 h1 h2
-  simp only [weights, order_encode, List.getD_eq_getElem?_getD, h0, h1, h2,
+  simp only [decodeWeights, vertexCount_encode, List.getD_eq_getElem?_getD, h0, h1, h2,
     Option.getD_some]
   by_cases h : (w v).num < 0
   · simp only [if_pos h, one_ne_zero, if_false]
@@ -84,27 +84,27 @@ theorem weight_entry {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
         congrArg (fun z : ℤ => (z:ℚ)) (Int.natAbs_of_nonneg (le_of_not_gt h))
     rw [hn, Rat.num_div_den]
 
-@[simp] theorem selected_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
-    (I : Finset (Fin n)) : selected (encodeInstance G w) (encodeOutput I) = I := by
+@[simp] theorem decodeSolution_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
+    (I : Finset (Fin n)) : decodeSolution (encodeInstance G w) (encodeOutput I) = I := by
   ext v
   change Fin n at v
-  simp [selected, encodeOutput, List.getD_eq_getElem, v.isLt]
+  simp [decodeSolution, encodeOutput, List.getD_eq_getElem, v.isLt]
 
-theorem feasible_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
+theorem IsFeasible_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
     (I : Finset (Fin n)) (hI : G.IsIndepSet (I : Set (Fin n))) :
-    feasible (encodeInstance G w) (encodeOutput I) := by
+    IsFeasible (encodeInstance G w) (encodeOutput I) := by
   refine ⟨by simp [encodeOutput], ?_, ?_⟩
   · intro b hb
     obtain ⟨v, rfl⟩ := List.mem_ofFn.mp hb
     split_ifs <;> simp
-  · rw [graph_encode, selected_encode]
+  · rw [decodeGraph_encode, decodeSolution_encode]
     change G.IsIndepSet (I : Set (Fin n))
     exact hI
 
-theorem value_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
+theorem objectiveValue_encode {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ)
     (I : Finset (Fin n)) :
-    value (encodeInstance G w) (encodeOutput I) = Real.toNNReal (weight w I) := by
-  simp [value]
+    objectiveValue (encodeInstance G w) (encodeOutput I) = Real.toNNReal (weight w I) := by
+  simp [objectiveValue]
 
 theorem nonnegative {n : ℕ} {G : SimpleGraph (Fin n)} {w : Fin n → ℚ}
     {ε : ℚ} {I : Finset (Fin n)} (h : IsApproximation G w ε I) : 0 ≤ weight w I := by
@@ -114,17 +114,17 @@ theorem nonnegative {n : ℕ} {G : SimpleGraph (Fin n)} {w : Fin n → ℚ}
 theorem approximation {n k : ℕ} (hk : 0 < k) {G : SimpleGraph (Fin n)}
     {w : Fin n → ℚ} {I : Finset (Fin n)}
     (h : IsApproximation G w (1/(k+1)) I) :
-    Lax213208.Approximation.IsApproximation problem (1+1/(k:ℝ))
+    Lax213208.Approximation.IsApproximation MaxWeightIndependentSet (1+1/(k:ℝ))
       (encodeInstance G w) (encodeOutput I) := by
   have hkR : (0:ℝ) < k := Nat.cast_pos.mpr hk
   have hI : (0:ℝ) ≤ weight w I := by exact_mod_cast nonnegative h
   refine ⟨le_add_of_nonneg_right (by positivity),
-    feasible_encode G w I h.1, ?_⟩
+    IsFeasible_encode G w I h.1, ?_⟩
   intro z hz
-  let J : Finset (Fin n) := selected (encodeInstance G w) z
+  let J : Finset (Fin n) := decodeSolution (encodeInstance G w) z
   have hz' : G.IsIndepSet (J : Set (Fin n)) := by
     have hh := hz.2.2
-    rw [graph_encode] at hh
+    rw [decodeGraph_encode] at hh
     exact hh
   have hc := h.2 J hz'
   have hcR : (1-1/((k:ℝ)+1)) * (weight w J : ℝ)
@@ -138,10 +138,10 @@ theorem approximation {n k : ℕ} (hk : 0 < k) {G : SimpleGraph (Fin n)}
   have hr : 0 ≤ 1+1/(k:ℝ) := by positivity
   have hc' := mul_le_mul_of_nonneg_left hcR hr
   rw [← mul_assoc, he, one_mul] at hc'
-  change (value (encodeInstance G w) z : ℝ) ≤
-    (1+1/(k:ℝ)) * (value (encodeInstance G w) (encodeOutput I) : ℝ)
-  rw [value_encode, Real.coe_toNNReal _ hI]
-  simp only [value, weights_encode, Real.coe_toNNReal']
+  change (objectiveValue (encodeInstance G w) z : ℝ) ≤
+    (1+1/(k:ℝ)) * (objectiveValue (encodeInstance G w) (encodeOutput I) : ℝ)
+  rw [objectiveValue_encode, Real.coe_toNNReal _ hI]
+  simp only [objectiveValue, decodeWeights_encode, Real.coe_toNNReal']
   exact max_le hc' (mul_nonneg hr hI)
 
-end Lax263307Proofs.IndependentSetProblem
+end Lax263307Proofs.MaxWeightIndependentSet

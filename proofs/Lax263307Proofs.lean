@@ -39,12 +39,12 @@ import Lax263307Proofs.HeavyConditioning
 import Lax263307Proofs.HeavyRationalConditioning
 import Lax263307Proofs.HeavyRecursiveRounding
 import Lax263307Proofs.HostRestriction
-import Lax263307Proofs.IndependentSetProblem
 import Lax263307Proofs.InducedEmbeddingWidth
 import Lax263307Proofs.InducedRouteEdges
 import Lax263307Proofs.IsolatedEmbeddingTransfer
 import Lax263307Proofs.LightSeparators
 import Lax263307Proofs.MainTheorem
+import Lax263307Proofs.MaxWeightIndependentSet
 import Lax263307Proofs.MomentLP
 import Lax263307Proofs.NativeAppendBuffer
 import Lax263307Proofs.NativeArchiveExecution
@@ -330,6 +330,7 @@ import Lax263307Proofs.RoutePruning
 import Lax263307Proofs.RoutingNormalization
 import Lax263307Proofs.SampledAlmostEmbeddings
 import Lax263307Proofs.SamplingOutcomes
+import Lax263307Proofs.SeparatorComponents
 import Lax263307Proofs.SeparatorDecompositions
 import Lax263307Proofs.SourceGraphs
 import Lax263307Proofs.SplitPathProjection

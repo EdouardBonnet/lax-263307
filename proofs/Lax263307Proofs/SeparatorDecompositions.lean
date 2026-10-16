@@ -1,5 +1,6 @@
 import Lax263307Proofs.TreeExtensions
 import Lax263307.SeparatorDecompositions
+import Lax263307Proofs.SeparatorComponents
 import Mathlib.Tactic
 
 namespace Lax263307Proofs.SeparatorDecompositions
@@ -97,6 +98,7 @@ theorem join_tree (T : ∀ i, SimpleGraph (V i)) (root : ∀ i, V i) (trees : �
   omega
 
 open Lax228581.Treewidth Lax263307.SeparatorComponents
+open Lax263307Proofs.SeparatorComponents (components)
 open Lax263307.GraphClasses Lax263307.EdgeSublinearSeparators
 
 variable {n : ℕ} {G : SimpleGraph (Fin n)} {S : Finset (Fin n)}

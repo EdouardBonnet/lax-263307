@@ -14,13 +14,14 @@ $2dL$, and therefore at most $d|E(H)|L^2$ edges.
 
 namespace Lax263307.InducedRouteEdges
 
+open scoped Classical
+
 open AlmostEmbeddings
 
 /-- All host vertices used by some edge route. -/
 noncomputable def routeUnion {t n : ℕ} {H : SimpleGraph (Fin t)}
-    [DecidableRel H.Adj] {G : SimpleGraph (Fin n)} (E : AlmostEmbedding H G) : Finset (Fin n) := by
-  classical
-  exact Finset.univ.biUnion E.route
+    [DecidableRel H.Adj] {G : SimpleGraph (Fin n)} (E : AlmostEmbedding H G) : Finset (Fin n) :=
+  Finset.univ.biUnion E.route
 
 /-- Bounded-length induced routes induce few host edges. -/
 axiom edge_bound {t n : ℕ} (H : SimpleGraph (Fin t)) [DecidableRel H.Adj]

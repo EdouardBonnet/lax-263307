@@ -32,6 +32,11 @@ open Lax109476.LinearProgram Lax109476.RationalCertificates
 abbrev dimension (n r : ℕ) : ℕ := (catalog n r).length
 abbrev Index (n r : ℕ) := Fin (dimension n r)
 
+/-- Row blocks for normalization, coordinate bounds, independence, monotonicity, and mass. -/
+abbrev rowCount (n r : ℕ) : ℕ :=
+  let N := dimension n r
+  2 + (N + (N + (N * n + (N + N))))
+
 def decode {K : Type} {n r : ℕ} (x : Index n r → K) : Coordinate n r → K :=
   fun A => x ((indexing n r).symm A)
 
@@ -48,7 +53,7 @@ def massRow {n r : ℕ} (A : Finset (Fin n)) (k : ℕ) (j : Index n r) : ℚ :=
   (∑ v, singleRow (insert v A) j) - (k : ℚ) * singleRow A j
 
 def program {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ) :
-    Program ℚ (2 + (dimension n r + (dimension n r + (dimension n r * n + (dimension n r + dimension n r))))) (dimension n r) where
+    Program ℚ (rowCount n r) (dimension n r) where
   A := Fin.addCases
     (fun i : Fin 2 => fun j => if i = 0 then singleRow ∅ j else -singleRow ∅ j)
     (Fin.addCases
@@ -59,7 +64,8 @@ def program {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (k r : ℕ)
         (Fin.addCases
           (fun i : Fin (dimension n r * n) =>
             let uv := finProdFinEquiv.symm i
-            if (indexing n r uv.1).val.card ≤ r + 1 then monotoneRow (indexing n r uv.1).val uv.2 else fun _ => 0)
+            if (indexing n r uv.1).val.card ≤ r + 1 then
+              monotoneRow (indexing n r uv.1).val uv.2 else fun _ => 0)
           (Fin.addCases
             (fun i : Index n r =>
               if (indexing n r i).val.card ≤ r + 1 then massRow (indexing n r i).val k else fun _ => 0)

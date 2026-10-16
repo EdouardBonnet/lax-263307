@@ -3,7 +3,8 @@ import Lax263307Proofs.ArchiveQptas
 
 namespace Lax263307Proofs.MainTheorem
 
-open Lax263307 GraphClasses EdgeSublinearSeparators IndependentSetProblem
+open Lax263307 GraphClasses EdgeSublinearSeparators
+open Lax263307.MaxWeightIndependentSet
 open Lax213208.QPTAS (QPTAS)
 
 /--
@@ -18,7 +19,7 @@ and quasipolynomial-time bounds.
 -/
 theorem exists_qptas (C : GraphClass) (hereditary : IsHereditary C)
     (separators : HasStronglyEdgeSublinearSeparators C) :
-    ∃ alg, QPTAS (problem := problem) alg (instances C) :=
+    ∃ alg, QPTAS (problem := MaxWeightIndependentSet) alg (instancesOn C) :=
   ArchiveQptas.exists_qptas C hereditary separators
 
 end Lax263307Proofs.MainTheorem

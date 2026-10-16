@@ -37,12 +37,12 @@ import Lax263307.HeavyRationalConditioning
 import Lax263307.HeavyRecursiveRounding
 import Lax263307.HostRestriction
 import Lax263307.IndependentBlowUp
-import Lax263307.IndependentSetProblem
 import Lax263307.InducedEmbeddingWidth
 import Lax263307.InducedRouteEdges
 import Lax263307.IsolatedEmbeddingTransfer
 import Lax263307.LinearRelaxation
 import Lax263307.MainTheorem
+import Lax263307.MaxWeightIndependentSet
 import Lax263307.MomentLP
 import Lax263307.NativeCatalog
 import Lax263307.NativeMomentLP

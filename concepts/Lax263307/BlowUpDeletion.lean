@@ -21,13 +21,14 @@ the edgeless case and threshold zero.
 
 namespace Lax263307.BlowUpDeletion
 
+open scoped Classical
+
 open IndependentBlowUp Lax228581.Treewidth
 
 /-- The vertices removed at degree threshold `s`. -/
 noncomputable def highDegree {n : ℕ} (G : SimpleGraph (Fin n))
-    (copies : Fin n → ℕ) (s : ℕ) : Finset (Vertex copies) := by
-  classical
-  exact Finset.univ.filter fun v => s < (graph G copies).degree v
+    (copies : Fin n → ℕ) (s : ℕ) : Finset (Vertex copies) :=
+  Finset.univ.filter fun v => s < (graph G copies).degree v
 
 /-- The degree sum bounds the number of removed vertices. -/
 axiom high_degree_card {n : ℕ} (G : SimpleGraph (Fin n))

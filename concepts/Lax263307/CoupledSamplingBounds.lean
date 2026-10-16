@@ -17,10 +17,12 @@ route size at most $4M$.
 
 namespace Lax263307.CoupledSamplingBounds
 
+open scoped Classical
+
 open PathSampling (adjacencyProbability collisionProbability expectedSize)
 open RouteDistributions CoupledRouteSampling
 
-noncomputable def Interaction {n q : ℕ} (G : SimpleGraph (Fin n))
+def Interaction {n q : ℕ} (G : SimpleGraph (Fin n))
     (D : Distribution G q) (i j : Fin q) : Prop :=
   ¬Disjoint (D.route i).toFinset (D.route j).toFinset ∨
     ∃ u ∈ (D.route i).toFinset, ∃ v ∈ (D.route j).toFinset, G.Adj u v
@@ -29,9 +31,8 @@ noncomputable instance {n q : ℕ} (G : SimpleGraph (Fin n))
     (D : Distribution G q) (i j : Fin q) : Decidable (Interaction G D i j) := Classical.propDecidable _
 
 noncomputable def badProbability {n q t m : ℕ} (G : SimpleGraph (Fin n))
-    (D : Distribution G q) (a b : Fin m → Fin t) : ℝ := by
-  classical
-  exact ∑ φ, ∑ ψ, if ∃ e f, Function.Injective ![a e, b e, a f, b f] ∧ Interaction G D (ψ e) (ψ f)
+    (D : Distribution G q) (a b : Fin m → Fin t) : ℝ :=
+  ∑ φ, ∑ ψ, if ∃ e f, Function.Injective ![a e, b e, a f, b f] ∧ Interaction G D (ψ e) (ψ f)
     then jointWeight D a b φ ψ else 0
 
 axiom total_length_expectation {n q t m : ℕ} {G : SimpleGraph (Fin n)}

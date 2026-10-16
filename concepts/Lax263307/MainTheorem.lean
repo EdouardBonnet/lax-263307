@@ -1,5 +1,5 @@
 import Lax263307.EdgeSublinearSeparators
-import Lax263307.IndependentSetProblem
+import Lax263307.MaxWeightIndependentSet
 import Lax213208.QPTAS
 
 /-!
@@ -20,8 +20,9 @@ No separator or algorithm for finding one is part of the input.
 
 # Formalization notes
 
-The conclusion uses lax-213208's `QPTAS` directly for the MWIS problem
-and the instances in $\mathcal C$. The structured algorithm uses accuracy
+The conclusion applies lax-213208's `QPTAS` directly to
+`MaxWeightIndependentSet` on the instances in $\mathcal C$.
+The structured algorithm uses accuracy
 $\varepsilon=1/(k+1)$;
 its checked source bound is
 $$\exp\!\left((\varepsilon^{-1}\log(n+2))^{O_{\mathcal C}(1)}\right)
@@ -34,12 +35,12 @@ uses the $m+1$ normalization explained in `EdgeSublinearSeparators`.
 
 namespace Lax263307.MainTheorem
 
-open GraphClasses EdgeSublinearSeparators IndependentSetProblem
+open GraphClasses EdgeSublinearSeparators MaxWeightIndependentSet
 open Lax213208.QPTAS (QPTAS)
 
 /-- Theorem 2: the deterministic weighted approximation scheme. -/
 axiom exists_qptas (C : GraphClass) (hereditary : IsHereditary C)
     (separators : HasStronglyEdgeSublinearSeparators C) :
-    ∃ alg, QPTAS (problem := problem) alg (instances C)
+    ∃ alg, QPTAS (problem := MaxWeightIndependentSet) alg (instancesOn C)
 
 end Lax263307.MainTheorem

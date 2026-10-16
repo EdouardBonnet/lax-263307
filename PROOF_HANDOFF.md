@@ -1,9 +1,51 @@
 # QPTAS proof handoff
 
-Updated 2026-10-16. Read this first when resuming. WORKPLAN.txt keeps the
+Updated 2026-10-17. Read this first when resuming. WORKPLAN.txt keeps the
 chronological history, including earlier incomplete checkpoints.
 
 ## Current status
+
+### Concept interface cleanup (2026-10-17, locally validated)
+
+User requests no tactics in concept files, the explicit name
+`MaxWeightIndependentSet`, and clean, understandable concept code.
+
+- Removed all tactic blocks from the 13 affected concept modules. Simple
+  noncomputable definitions now use scoped classical instances and direct
+  expressions. Finite-index and graph-constructor obligations use standard
+  proof terms. The catalog's checked completeness/injectivity terms remain
+  necessary for its computable indexing; no axioms were added to definitions.
+- Moved the canonical separator-component construction to the proof package;
+  the concept retains the partition structure and its mathematical interface.
+- Renamed the MWIS concept/proof modules to `MaxWeightIndependentSet`.
+  The public problem is `Lax263307.MaxWeightIndependentSet`. Encoding helpers
+  are in the matching `MaxWeightIndependentSet` namespace: `vertexCount`, `decodeGraph`,
+  `decodeWeights`, `decodeSolution`, `IsFeasible`, `objectiveValue`, and
+  `instancesOn`. The main theorem directly uses the named problem with the
+  external QPTAS predicate. Updated imports, roots, and downstream references.
+- Named the moment LP row count instead of repeating its nested expression.
+- Direct Lean checks and full concept compilation passed. Lax inspection
+  required the encoding helpers to carry the concept namespace; moved them
+  from `IndependentSetEncoding` into `MaxWeightIndependentSet`. The public
+  problem itself remains `Lax263307.MaxWeightIndependentSet`. Initial log:
+  `/tmp/qptas-concept-clean-build.log`. Full rebuild (session 23545) passed
+  with exit 0: concepts 11s, proofs 17m13s, statement inspection 24s. Log:
+  `/tmp/qptas-clean-final-build.log`. Static audit confirms all 84 concept
+  files contain no tactics or tactic imports, all local concepts are connected,
+  and no generic `problem` definition remains: `/tmp/qptas-clean-source-audit.json`.
+- The renamed MWIS proof also passes Lean directly (log
+  `/tmp/qptas-clean-mwis-proof.log`). The explicit headline uses the named
+  problem and external QPTAS. Its problem definition depends only on
+  `propext`, `Classical.choice`, and `Quot.sound` (log
+  `/tmp/qptas-clean-interface.log`).
+- Checked inventory: 84 concepts, 135 claims/proofs, 345 proof modules.
+  All claims are closed and in the headline ancestry, with no admissions or
+  unmatched proofs. The rendered main statement links to the named problem
+  and external QPTAS. All 119 local/external concept graph nodes are connected;
+  the old `IndependentSetProblem` concept is absent. Final audit:
+  `/tmp/qptas-clean-final-audit.json`. Previews: `/tmp/qptas-clean-main.html`,
+  `/tmp/qptas-clean-mwis.html`, `/tmp/qptas-clean-index.html`.
+  Next: commit/push and resubmit; record the source and workflow.
 
 ### Direct external QPTAS statement (2026-10-16, locally validated and resubmitted)
 
@@ -34,9 +76,8 @@ Committed/pushed source: `7151286af56bf60d2d124d5b619512ae231bcb4f`.
 `lax submit --no-color` (session 68522) passed its local checks in 1m45s
 and dispatched archive workflow 38963795001 at 2026-10-16T20:39:21Z:
 https://github.com/lax-archive/lax/actions/runs/38963795001
-Archive validation is in progress; acceptance and website propagation have
-not yet been claimed. On resuming, collect the workflow/CLI result. No
-additional mathematical work remains for this revision.
+Archive workflow completed successfully, confirmed on 2026-10-17. No
+additional mathematical work remains for that revision.
 
 ### Comment and bibliography revision (2026-10-16, validated and submitted)
 

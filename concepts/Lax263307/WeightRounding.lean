@@ -23,7 +23,7 @@ namespace Lax263307.WeightRounding
 
 /-- The maximum of the vertex weights and zero. -/
 def maximumWeight {n : ℕ} (w : Fin n → ℚ) : ℚ :=
-  (insert 0 (Finset.univ.image w)).max' (by simp)
+  (insert 0 (Finset.univ.image w)).max' (Finset.insert_nonempty _ _)
 
 /-- The weight unit used by the reduction. -/
 def scale {n : ℕ} (w : Fin n → ℚ) (ε : ℚ) : ℚ :=

@@ -13,13 +13,14 @@ at most $4M$. This combines the union bound with Markov's inequality.
 
 namespace Lax263307.SamplingOutcomes
 
+open scoped Classical
+
 open PathSampling
 
 /-- Probability of an event in the finite outcome space. -/
 noncomputable def eventProbability {n q : ℕ} (P : Distribution n q)
-    (event : Set (Fin q)) : ℝ := by
-  classical
-  exact ∑ i, if i ∈ event then P.probability i else 0
+    (event : Set (Fin q)) : ℝ :=
+  ∑ i, if i ∈ event then P.probability i else 0
 
 /-- Markov's inequality for a nonnegative cost and a positive threshold. -/
 axiom markov_bound {n q : ℕ} (P : Distribution n q) (cost : Fin q → ℝ)

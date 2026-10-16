@@ -15,12 +15,13 @@ vertices; the transfer with singleton bags handles them separately.
 
 namespace Lax263307.RoutePruning
 
+open scoped Classical
+
 open AlmostEmbeddings
 
 noncomputable def longEdges {t n : ℕ} {H : SimpleGraph (Fin t)} [DecidableRel H.Adj]
-    {G : SimpleGraph (Fin n)} (E : AlmostEmbedding H G) (L : ℕ) : Finset (Sym2 (Fin t)) := by
-  classical
-  exact (Finset.univ.filter fun e : H.edgeSet => L < (E.route e).card).image Subtype.val
+    {G : SimpleGraph (Fin n)} (E : AlmostEmbedding H G) (L : ℕ) : Finset (Sym2 (Fin t)) :=
+  (Finset.univ.filter fun e : H.edgeSet => L < (E.route e).card).image Subtype.val
 
 axiom long_edge_count {t n : ℕ} (H : SimpleGraph (Fin t)) [DecidableRel H.Adj]
     (G : SimpleGraph (Fin n)) (E : AlmostEmbedding H G) (L : ℕ) :

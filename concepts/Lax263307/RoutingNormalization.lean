@@ -15,18 +15,18 @@ that count both route endpoints.
 
 namespace Lax263307.RoutingNormalization
 
+open scoped Classical
+
 def IsUniquePair {n q : ℕ} (E : Fin n → Fin n → Fin q → Prop) : Prop :=
   ∀ i u v u' v', E u v i → E u' v' i → u = u' ∧ v = v'
 
 noncomputable def routed {n q : ℕ} (w : Fin q → ℝ)
-    (E : Fin n → Fin n → Fin q → Prop) (u v : Fin n) : ℝ := by
-  classical
-  exact ∑ i, if E u v i then w i else 0
+    (E : Fin n → Fin n → Fin q → Prop) (u v : Fin n) : ℝ :=
+  ∑ i, if E u v i then w i else 0
 
 noncomputable def probability {n q : ℕ} (w : Fin q → ℝ)
-    (E : Fin n → Fin n → Fin q → Prop) (u v : Fin n) (i : Fin q) : ℝ := by
-  classical
-  exact if E u v i then w i / (routed w E u v * (n : ℝ) ^ 2) else 0
+    (E : Fin n → Fin n → Fin q → Prop) (u v : Fin n) (i : Fin q) : ℝ :=
+  if E u v i then w i / (routed w E u v * (n : ℝ) ^ 2) else 0
 
 /-- Nonnegative normalized probabilities with uniform ordered endpoints. -/
 axiom normalization_correct {n q : ℕ} (w : Fin q → ℝ)

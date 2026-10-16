@@ -1,4 +1,4 @@
-import Lax263307.IndependentSetProblem
+import Lax263307.MaxWeightIndependentSet
 import Lax455465Proofs.WordSize
 import Mathlib.Tactic
 

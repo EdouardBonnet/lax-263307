@@ -1,6 +1,6 @@
 import Lax263307Proofs.NativeWeightedExecution
 import Lax263307Proofs.StructuralFrontend
-import Lax263307Proofs.IndependentSetProblem
+import Lax263307Proofs.MaxWeightIndependentSet
 
 namespace Lax263307Proofs.NativeArchiveExecution
 
@@ -32,7 +32,7 @@ theorem accuracy_lt {k : ℕ} (hk : 0<k) : (1:ℚ)/((k:ℚ)+1)<1 := by
 
 theorem command_spec {C : GraphClass} (i : Fixed C) {n : ℕ} (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] (hG : G∈C n) (w : Fin n → ℚ) (k : ℕ) (hk : 0<k) :
-    let x := Lax263307.IndependentSetProblem.encodeInstance G w
+    let x := Lax263307.MaxWeightIndependentSet.encodeInstance G w
     ∃ (I : Finset (Fin n)) (ext : String → ℕ),
       IsApproximation G w (1/((k:ℚ)+1)) I ∧
       Spec (2^width i w k (StructuralPacket.size x))
@@ -40,7 +40,7 @@ theorem command_spec {C : GraphClass} (i : Fixed C) {n : ℕ} (G : SimpleGraph (
         (fun _ τ => τ.out=encodeOutput I) (cost i w k x.length) := by
   classical
   dsimp only
-  let x := Lax263307.IndependentSetProblem.encodeInstance G w
+  let x := Lax263307.MaxWeightIndependentSet.encodeInstance G w
   let ε : ℚ := 1/((k:ℚ)+1)
   let W := width i w k (StructuralPacket.size x)
   have hlen := StructuralPacket.length_le_size x
@@ -53,7 +53,7 @@ theorem command_spec {C : GraphClass} (i : Fixed C) {n : ℕ} (G : SimpleGraph (
     intro v hv
     exact (WordSize.member_bound x v hv).trans_le (Nat.pow_le_pow_right (by decide) (by omega))
   have hinp : encodeInput G w ε = x++[0,1,k+1] := by
-    rw [IndependentSetProblem.input_eq, StructuralPacket.accuracy_encoding]
+    rw [MaxWeightIndependentSet.input_eq, StructuralPacket.accuracy_encoding]
   obtain ⟨I,ext,happrox,hs⟩ := NativeWeightedExecution.command_spec i G hG w ε
     (accuracy_pos k) (accuracy_lt hk)
   refine ⟨I,StructuralFrontend.extent ext x.length,happrox,?_⟩
@@ -75,18 +75,18 @@ theorem command_spec {C : GraphClass} (i : Fixed C) {n : ℕ} (G : SimpleGraph (
 lax-62, obtaining the exact execution interface required by lax-213208. -/
 theorem result {C : GraphClass} (i : Fixed C) {n : ℕ} (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] (hG : G∈C n) (w : Fin n → ℚ) (k : ℕ) (hk : 0<k) :
-    let x := Lax263307.IndependentSetProblem.encodeInstance G w
+    let x := Lax263307.MaxWeightIndependentSet.encodeInstance G w
     ∃ I : Finset (Fin n),
-      Lax213208.Approximation.IsApproximation Lax263307.IndependentSetProblem.problem
+      Lax213208.Approximation.IsApproximation Lax263307.MaxWeightIndependentSet
         (1+1/(k:ℝ)) x (encodeOutput I) ∧
       ∀ T : ℕ, width i w k (StructuralPacket.size x)+RamTransfer.layoutAllowance (layout i)≤T →
         10*cost i w k x.length+1≤T →
         Lax213208.Programs.RunsWithin (program i) (StructuralPacket.tape k x) (encodeOutput I) T := by
   dsimp only
-  let x := Lax263307.IndependentSetProblem.encodeInstance G w
+  let x := Lax263307.MaxWeightIndependentSet.encodeInstance G w
   let W := width i w k (StructuralPacket.size x)
   obtain ⟨I,ext,happrox,hspec⟩ := command_spec i G hG w k hk
-  refine ⟨I,IndependentSetProblem.approximation hk happrox,?_⟩
+  refine ⟨I,MaxWeightIndependentSet.approximation hk happrox,?_⟩
   intro T hwidth htime
   change W+RamTransfer.layoutAllowance (layout i)≤T at hwidth
   have hW : 0<W := by dsimp [W,width]; omega

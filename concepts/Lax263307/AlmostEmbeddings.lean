@@ -23,6 +23,8 @@ also forbids edges between routes assigned to nonincident edges.
 
 namespace Lax263307.AlmostEmbeddings
 
+open scoped Classical
+
 open Lax228581.Treewidth
 
 /-- A connected route for every edge, disjoint for nonincident edges. -/
@@ -47,9 +49,8 @@ def IsInduced {t n : ℕ} {H : SimpleGraph (Fin t)} {G : SimpleGraph (Fin n)}
 
 /-- The union of all routes incident to one represented vertex. -/
 noncomputable def vertexCarrier {t n : ℕ} {H : SimpleGraph (Fin t)}
-    {G : SimpleGraph (Fin n)} (E : AlmostEmbedding H G) (v : Fin t) : Finset (Fin n) := by
-  classical
-  exact Finset.univ.biUnion fun e : H.edgeSet => if v ∈ e.val then E.route e else ∅
+    {G : SimpleGraph (Fin n)} (E : AlmostEmbedding H G) (v : Fin t) : Finset (Fin n) :=
+  Finset.univ.biUnion fun e : H.edgeSet => if v ∈ e.val then E.route e else ∅
 
 /-- An almost-embedding transfers decompositions with at most factor `2d` loss. -/
 axiom transfer_decomposition {t n : ℕ} (H : SimpleGraph (Fin t))
