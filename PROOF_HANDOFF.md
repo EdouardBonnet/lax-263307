@@ -59,9 +59,18 @@ validated, and published below; do not redo the algorithm proof.
   Definition audit confirms HasQPTAS is the external predicate and the problem
   definition uses only propext/Classical.choice/Quot.sound.
 - Logs: /tmp/qptas-framework-final-build.log, /tmp/qptas-definition-audit.log,
-  /tmp/qptas-framework-audit.json. Local preview requested on port 8136;
-  /tmp/qptas-framework-preview.log. Still required: commit/push/lax submit
-  and monitor remote validation.
+  /tmp/qptas-framework-audit.json.
+- Source committed and pushed: 64fa63b6d0695e92909f87d75e77fc9802742106.
+  `lax submit --no-color` dispatched archive workflow 38940528328
+  (2026-10-16T17:33:02Z), currently validating. CLI session 99030 is attached.
+- Local preview runs at http://localhost:8136/lax-263307/index.html (session
+  61293). All 121 local/external concept nodes are connected; credits are
+  correct and the QPTAS page links directly to lax-213208. Audit saved in
+  /tmp/qptas-framework-preview-audit.json. New preview graphs render in the
+  browser from the embedded graph-data JSON, so the old SVG audit cannot run
+  directly on unrendered preview HTML.
+- Still required: monitor remote validation, record final archive status,
+  commit/push these handoff updates, and report completion accurately.
 - No proof statement or proof has been changed yet beyond lake dependencies.
 
 Useful local sources: ../approximation-algorithms/concepts/Lax213208/;
