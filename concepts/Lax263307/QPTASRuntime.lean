@@ -22,7 +22,7 @@ additive polynomial dependence on $\ell$.
 
 namespace Lax263307.QPTASRuntime
 
-/-- The explicit time and sufficient word-width bound used by `HasQPTAS`. -/
+/-- The stronger internal time and sufficient word-width bound for the source algorithm. -/
 def timeBound (c d n ℓ : ℕ) (ε : ℚ) : ℕ :=
   2 ^ (c * (⌈ε⁻¹⌉₊ * (Nat.log2 (n + 2) + 1)) ^ d) + c * (ℓ + 1) ^ d
 

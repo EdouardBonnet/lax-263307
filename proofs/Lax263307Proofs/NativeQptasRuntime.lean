@@ -1,5 +1,4 @@
 import Lax263307Proofs.NativeWeightedExecution
-import Lax263307Proofs.NativeQptasTransfer
 
 set_option maxHeartbeats 500000
 set_option maxRecDepth 20000

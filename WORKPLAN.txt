@@ -1490,3 +1490,15 @@ Website workflow 38766726169 succeeded. The live QPTAS page shows all three
 submitters and the separated runtime concept. Its rendered proof network
 has 135 claims and 135 proofs, all in the main connected component, including
 the external dependency nodes. No isolated components remain.
+
+2026-10-16: Revised the completed submission to specialize the registered
+QPTAS predicate of lax-213208. Defined the standard structural MWIS problem,
+proved packet decoding and the 1/(k+1) accuracy-to-ratio conversion, and
+constructed one fixed structured command for all precisions. A verified
+structural reader and buffered-command simulation reuse the original source
+algorithm; lax-62 Codegen.computesInTime_of_spec directly supplies the compiled
+execution contract. Original stronger resource bounds absorb all reader,
+buffer, compiler, input-length, and word-width costs into the archive envelope.
+Removed the obsolete custom raw-program transfer. Full local Lax validation
+passed (2m14s): 86 concepts, 135 proofs, all claims closed and in headline
+ancestry, no admissions. Definition-side injectivity is proved directly.

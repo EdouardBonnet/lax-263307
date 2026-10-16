@@ -1,55 +1,39 @@
-import Lax263307.GraphClasses
-import Lax263307.WeightedIndependentSet
+import Lax263307.IndependentSetProblem
 import Lax263307.QPTASRuntime
-import Lax808846.Ram
 
 /-!
 ---
 title: A QPTAS for maximum-weight independent set
 type: definition
 ---
-A deterministic QPTAS for maximum-weight independent set on a class
-$\mathcal C$ uses one finite program, depending only on $\mathcal C$,
-which returns a $(1-\varepsilon)$-approximation on every member with
-rational weights and rational $0<\varepsilon<1$.
-Its running time has the form
-$$2^{(\varepsilon^{-1}\log(n+2))^{O_{\mathcal C}(1)}}
-  +(\ell+1)^{O_{\mathcal C}(1)},$$
-where $\ell$ is the binary length of the weights and accuracy.
-Neither class recognition nor a separator is supplied as input.
+A graph class admits a deterministic QPTAS for maximum-weight independent
+set when its optimization problem has a QPTAS in the registered sense of
+lax-213208. One fixed program works for every integer precision $k>0$ and
+returns an independent set with weight at least $\mathrm{OPT}/(1+1/k)$.
+For each fixed $k$, its running time is quasipolynomial in the binary input
+size. Both the input words and the running time obey the archive's uniform
+word-width convention.
+
+The instance is the standard structural encoding of the graph order,
+adjacency matrix, and rational vertex weights. The scheme's precision is
+supplied separately. Neither a separator nor class recognition is supplied.
 
 # Formalization notes
 
-Execution is `Lax808846.Ram.RunsTo` on the registered word RAM.
-The supplied input is exactly `encodeInput`, with no implicit length prefix.
-The constants and program precede the input and word width in the quantifiers.
-The natural-number time bound uses $\lceil1/\varepsilon\rceil$ and
-$1+\lfloor\log_2(n+2)\rfloor$ to cover small inputs.
-
-The same bound is a sufficient word width, and the program must work at
-every larger width. In particular it works at that explicitly prescribed
-width; there is no advice hidden in a choice of width. Allowing this many
-bits accommodates exact rational subroutines. Simulating these bounded-word
-operations with bit operations costs a polynomial in the time bound,
-which remains of the displayed form after increasing its constants and
-exponent: $(A+B)^k\le2^{k-1}(A^k+B^k)$. Thus the additive polynomial
-dependence on $\ell$ is preserved. Correctness and time are promised only
-on well-formed inputs whose graphs belong to $\mathcal C$.
+`HasQPTAS` is a specialization of `Lax213208.QPTAS.QPTAS`, without a separate
+execution or complexity definition. The proof constructs a structured command,
+adapts the structural input to the existing weighted algorithm, and applies
+lax-62's `Codegen.computesInTime_of_spec` directly. The stronger original
+accuracy-dependent estimate remains available internally in `QPTASRuntime`.
 -/
 
 namespace Lax263307.QPTAS
 
-open GraphClasses WeightedIndependentSet QPTASRuntime Lax808846.Ram
+open GraphClasses IndependentSetProblem
+open Lax213208.QPTAS (QPTAS)
 
-/-- One uniform deterministic word-RAM program realizes the approximation scheme. -/
+/-- The registered approximation-scheme predicate specialized to MWIS. -/
 def HasQPTAS (C : GraphClass) : Prop :=
-  ∃ (program : Program) (c d : ℕ), 0 < c ∧ 0 < d ∧
-    ∀ (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
-      G ∈ C n → ∀ (weights : Fin n → ℚ) (ε : ℚ), 0 < ε → ε < 1 →
-        let T := timeBound c d n (rationalBitSize weights ε) ε
-        ∀ wordLength : ℕ, T ≤ wordLength →
-          ∃ I : Finset (Fin n), IsApproximation G weights ε I ∧
-            ∃ t ≤ T, RunsTo wordLength program
-              (encodeInput G weights ε) (encodeOutput I) t
+  ∃ alg, QPTAS (problem := problem) alg (instances C)
 
 end Lax263307.QPTAS

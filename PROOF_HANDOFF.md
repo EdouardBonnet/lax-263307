@@ -1,9 +1,73 @@
 # QPTAS proof handoff
 
-Updated 2026-10-15. Read this first when resuming. WORKPLAN.txt keeps the
+Updated 2026-10-16. Read this first when resuming. WORKPLAN.txt keeps the
 chronological history, including earlier incomplete checkpoints.
 
 ## Current status
+
+### Revision to the registered approximation framework (proved and locally validated)
+
+User requests QPTAS from lax-213208 and direct use of higher-level program
+models (not a bespoke raw-RAM statement). Baseline is completely proved,
+validated, and published below; do not redo the algorithm proof.
+
+- lax-213208 was registered by workflow 38935326509, archive commit
+  d688cde657b028b38c76d65bb36866d0fbb0640e. Its immutable source is
+  EdouardBonnet/lax-213208@180b8ec1e851a4948b7a3c77d001e29df8a32dad.
+- Added that concept dependency and its structural-arena dependency
+  Lax560851@2748fdc0afc0b4f729b7775ca6475ba08129418a to both lakefiles.
+- Registered QPTAS takes ONE program, precision k>0, approximation ratio
+  1+1/k, and quasipolynomial time in the binary size of a structural arena.
+  Input is the arena of (k, instance), not the current flat input tape.
+- MWIS problem: standard list-of-naturals structural presentation
+  of the canonical graph/weight packet (n, adjacency matrix, rational triples),
+  identity output encoding of the membership vector. Feasibility interprets
+  the packet; objective is nonnegative total weight (positive part for signed
+  inputs). Every graph/weight pair has its canonical represented input.
+- Keep the already checked NativeWeightedExecution.command_spec as the
+  algorithm interface. Change final transfer to use lax-62's
+  Codegen.computesInTime_of_spec directly, then registered QPTAS.
+- A proved structured-command adapter reads structural input and k, uses
+  epsilon=1/(k+1), and run the existing command on the flat instance packet
+  followed by [0,1,k+1]. Marshaling, uniform time/width bounds,
+  and the conversion from (1-epsilon) to ratio 1+1/k are checked.
+- Reuse the stronger detailed running-time estimate internally. The new
+  public headline must conclude the actual lax-213208 QPTAS predicate.
+- Checked new `IndependentSetProblem` concept and proof: canonical packets
+  recover the graph and rational weights; all feasible outputs are independent
+  sets; accuracy 1/(k+1) gives the archive ratio 1+1/k, including signed weights.
+- Checked `BufferedCommand`: injective renaming isolates the source state;
+  redirects reads to a prepared array, with a proved factor-eight bound and
+  monotonicity of the word bound. Uses the structured command semantics.
+- `StructuralPacket` and `StructuralFrontend` pass Lean. They decode the
+  standard postorder arena into that buffer, without advice.
+- `NativeArchiveExecution` passes Lean: one fixed structured command, compiled
+  directly with lax-62's `computesInTime_of_spec`, satisfies archive RunsWithin.
+- `ArchiveRuntime` passes Lean: original source time plus all structural input,
+  buffer, compiler, word-width and layout costs fit the registered envelope.
+- `ArchiveQptas.exists_qptas` passes Lean and proves the actual external QPTAS
+  predicate. Final wrapper now uses it; `QPTAS.HasQPTAS` is a specialization
+  of lax-213208, not a custom raw-execution definition. Removed obsolete
+  `NativeQptasTransfer.lean` and its imports.
+- First full Lax build compiled every concept and proof but rejected outdated
+  root imports and an external axiom in the problem's injectivity field.
+  Fixed root indexes (86 concepts, 343 proof modules), and replaced that field's
+  proof with direct constructor injectivity, without external axioms.
+- Corrected full Lax build passed (exit0, 2m14s): 86 concepts, 135 proofs,
+  no errors. 67 LEM, 18 DEF, one THM. Closure/admission audit passed: all 135
+  claims closed and in headline ancestry; no unmatched proofs or admissions.
+  Definition audit confirms HasQPTAS is the external predicate and the problem
+  definition uses only propext/Classical.choice/Quot.sound.
+- Logs: /tmp/qptas-framework-final-build.log, /tmp/qptas-definition-audit.log,
+  /tmp/qptas-framework-audit.json. Local preview requested on port 8136;
+  /tmp/qptas-framework-preview.log. Still required: commit/push/lax submit
+  and monitor remote validation.
+- No proof statement or proof has been changed yet beyond lake dependencies.
+
+Useful local sources: ../approximation-algorithms/concepts/Lax213208/;
+its .lake/packages/Lax560851 contains the registered structural encodings.
+Lax62 codegen is in proofs/.lake/packages/Lax62Proofs/refinement-tower/.
+No subagents. Keep logs quiet; no further permission needed for git/gh/lax.
 
 ### Draft cleanup completed and submitted (2026-10-15)
 
@@ -160,7 +224,7 @@ Keep output short; redirect compiler/replay logs to /tmp. Require actual exit0.
 The user authorizes git, gh, lax and lake commands; do not ask again. Platform
 sandbox requirements still apply. Do not use subagents unless requested.
 No boxed mathematics. Do not claim full Sepref adoption: the proof uses
-Lax62Proofs.Refine.Codegen.solves_of_spec for the final code-generation descent.
+Lax62Proofs.Refine.Codegen.computesInTime_of_spec directly on structured commands.
 
 The active mathlib build is a symlink into
 /home/ebonnet/.lax/warm/v4.33.0-db584cd6d46c/.lake/packages/mathlib/.lake/build.
@@ -176,6 +240,8 @@ Lean4.33.0; mathlib db584cd6d46c92f209a44c0f1c829460d327499d.
 - Expanders920634:4e1ce662f8ff75f2fa86d3a3973c871d3068c4c0
 - LP109476:0a042604c7ae1ef4cd9a4c7d82eb902f313d4864
 - Refinement62:0503df0eaf4e41104b9a3aa31e3e028b5adf7a0e
+- Approximation213208:180b8ec1e851a4948b7a3c77d001e29df8a32dad
+- Structural560851:2748fdc0afc0b4f729b7775ca6475ba08129418a
 
 The fixed paper snapshot is round-or-cut.pdf. Scope: Bonnet–Chang Theorem2;
 applications and corollaries are outside this submission's intended proof.

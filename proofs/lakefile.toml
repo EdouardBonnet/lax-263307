@@ -63,3 +63,15 @@ name = "Lax62Proofs"
 git = "https://github.com/lax-archive/lax-submissions"
 rev = "0503df0eaf4e41104b9a3aa31e3e028b5adf7a0e"
 subDir = "refinement-tower/proofs"
+
+[[require]]
+name = "Lax213208"
+git = "https://github.com/EdouardBonnet/lax-213208"
+rev = "180b8ec1e851a4948b7a3c77d001e29df8a32dad"
+subDir = "concepts"
+
+[[require]]
+name = "Lax560851"
+git = "https://github.com/szymtor/lax58"
+rev = "2748fdc0afc0b4f729b7775ca6475ba08129418a"
+subDir = "concepts"

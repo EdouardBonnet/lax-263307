@@ -5,7 +5,7 @@ import Lax263307Proofs.NativeOriginalAccuracy
 import Lax263307Proofs.NativeRootBudget
 import Lax263307Proofs.NativeEmptyOutput
 import Lax263307Proofs.NativeWeightedOutput
-import Lax263307Proofs.NativeQptasTransfer
+import Lax455465Proofs.RamAutomaticLayout
 
 namespace Lax263307Proofs.NativeQptasProgram
 
