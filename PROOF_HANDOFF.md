@@ -5,7 +5,7 @@ chronological history, including earlier incomplete checkpoints.
 
 ## Current status
 
-### Revision to the registered approximation framework (proved and locally validated)
+### Revision to the registered approximation framework (proved, archive-validated, submitted)
 
 User requests QPTAS from lax-213208 and direct use of higher-level program
 models (not a bespoke raw-RAM statement). Baseline is completely proved,
@@ -62,15 +62,23 @@ validated, and published below; do not redo the algorithm proof.
   /tmp/qptas-framework-audit.json.
 - Source committed and pushed: 64fa63b6d0695e92909f87d75e77fc9802742106.
   `lax submit --no-color` dispatched archive workflow 38940528328
-  (2026-10-16T17:33:02Z), currently validating. CLI session 99030 is attached.
+  (2026-10-16T17:33:02Z). It succeeded: validation completed at18:05:22Z,
+  publication at18:07:08Z. CLI exited0 and confirmed the updated public draft.
+  Archive commit: e9fd08bddcc64e7b475f00685026e1f2ca204074. Issue201 result
+  acknowledges this immutable source and accepted the Website rebuild event.
 - Local preview runs at http://localhost:8136/lax-263307/index.html (session
   61293). All 121 local/external concept nodes are connected; credits are
   correct and the QPTAS page links directly to lax-213208. Audit saved in
   /tmp/qptas-framework-preview-audit.json. New preview graphs render in the
   browser from the embedded graph-data JSON, so the old SVG audit cannot run
   directly on unrendered preview HTML.
-- Still required: monitor remote validation, record final archive status,
-  commit/push these handoff updates, and report completion accurately.
+- No proof or submission work remains. Website propagation is being checked;
+  at18:34Z the live QPTAS page still served the previous version, while the
+  local preview already showed the new version. Do not confuse propagation
+  delay with incomplete proof or failed archive validation.
+  Website repository: lax-archive/lax-website. Runs38944975469 and38945733628
+  were superseded/cancelled; replacement run38947961285 (18:31:10Z) was still
+  active at the final check. The accepted archive snapshot is authoritative.
 - No proof statement or proof has been changed yet beyond lake dependencies.
 
 Useful local sources: ../approximation-algorithms/concepts/Lax213208/;

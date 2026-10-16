@@ -1502,3 +1502,8 @@ buffer, compiler, input-length, and word-width costs into the archive envelope.
 Removed the obsolete custom raw-program transfer. Full local Lax validation
 passed (2m14s): 86 concepts, 135 proofs, all claims closed and in headline
 ancestry, no admissions. Definition-side injectivity is proved directly.
+
+2026-10-16: Framework revision 64fa63b passed archive validation in run
+38940528328 and was accepted as archive commit
+e9fd08bddcc64e7b475f00685026e1f2ca204074. The draft update succeeded;
+website rebuild was accepted. No proof or submission work remains.
