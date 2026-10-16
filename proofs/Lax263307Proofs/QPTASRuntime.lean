@@ -2,10 +2,8 @@ import Mathlib.Data.Rat.Floor
 import Mathlib.Data.Nat.Log
 
 /-!
----
-title: The quasipolynomial approximation bound
-type: definition
----
+# Internal quasipolynomial approximation bound
+
 For fixed positive integers $c,d$, the running-time bound is
 $$2^{c(\lceil1/\varepsilon\rceil(1+\lfloor\log_2(n+2)\rfloor))^d}
   +c(\ell+1)^d.$$
@@ -20,10 +18,10 @@ overheads can be absorbed by increasing them, while preserving the
 additive polynomial dependence on $\ell$.
 -/
 
-namespace Lax263307.QPTASRuntime
+namespace Lax263307Proofs.QPTASRuntime
 
 /-- The stronger internal time and sufficient word-width bound for the source algorithm. -/
 def timeBound (c d n ℓ : ℕ) (ε : ℚ) : ℕ :=
   2 ^ (c * (⌈ε⁻¹⌉₊ * (Nat.log2 (n + 2) + 1)) ^ d) + c * (ℓ + 1) ^ d
 
-end Lax263307.QPTASRuntime
+end Lax263307Proofs.QPTASRuntime

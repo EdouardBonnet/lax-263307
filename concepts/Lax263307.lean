@@ -54,8 +54,6 @@ import Lax263307.PathSampling
 import Lax263307.PositiveWeights
 import Lax263307.PowerBagBounds
 import Lax263307.ProjectedOracle
-import Lax263307.QPTAS
-import Lax263307.QPTASRuntime
 import Lax263307.RationalConditioning
 import Lax263307.RationalCutBuffer
 import Lax263307.RationalProjection

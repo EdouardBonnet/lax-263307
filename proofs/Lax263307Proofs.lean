@@ -312,6 +312,7 @@ import Lax263307Proofs.PathSampling
 import Lax263307Proofs.PositiveWeights
 import Lax263307Proofs.PowerBagBounds
 import Lax263307Proofs.ProjectedOracle
+import Lax263307Proofs.QPTASRuntime
 import Lax263307Proofs.RationalConditioning
 import Lax263307Proofs.RationalCutBuffer
 import Lax263307Proofs.RationalProjection

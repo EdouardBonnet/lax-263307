@@ -5,7 +5,30 @@ chronological history, including earlier incomplete checkpoints.
 
 ## Current status
 
-### Comment and bibliography revision (2026-10-16, validation running)
+### Direct external QPTAS statement (2026-10-16, locally validated)
+
+The user requests removal of the redundant `Lax263307.QPTAS` concept.
+Deleted that module and its root import. The main concept and proof now
+conclude `∃ alg, QPTAS (problem := problem) alg (instances C)` using
+`open Lax213208.QPTAS (QPTAS)` and `IndependentSetProblem`. No local
+`HasQPTAS` predicate remains. Removing the wrapper left `QPTASRuntime`
+isolated in the concept import graph. Moved that internal formula to
+`Lax263307Proofs.QPTASRuntime`, updating the proof imports and root indexes.
+The algorithm proof and time-bound formula are unchanged. Checked inventory:
+84 concepts (67 lemma, 16 definition, 1 theorem), 135 claims/proofs, 344 proof
+modules. Initial build session 96484 was stopped to include this relocation.
+Full `lax build --no-color --profile` passed (session 94574, exit 0):
+concepts 15s, proofs 1m09s, statement inspection 15s. Log:
+`/tmp/qptas-direct-build.log`. Closure audit passed: all 135 claims proved,
+all in headline ancestry, no admissions or unmatched proofs. All 84 local
+concepts are connected, and the exported headline names
+`Lax213208.QPTAS.QPTAS` directly. Audit: `/tmp/qptas-direct-audit.json`.
+Local main-theorem preview links to `../lax-213208/Lax213208.QPTAS.html`;
+all 19 nodes in its displayed neighborhood are connected, and neither removed
+concept appears. Preview: `/tmp/qptas-direct-preview.html`.
+Next: commit/push and resubmit; record the source and archive workflow.
+
+### Comment and bibliography revision (2026-10-16, validated and submitted)
 
 The user requested removal of comment attributions, an arXiv source reference,
 and resubmission. Removed all 88 attribution sections from 73 local Lean files,
@@ -14,18 +37,17 @@ rational reader's source/license provenance from its comment to `NOTICE`.
 Updated the bibliography to arXiv:2610.16025 (verified on arXiv, submitted
 12 October 2026). A comparison after removing comments confirms no Lean
 declaration or proof changed in any of the 74 edited Lean files.
-`git diff --check` passes. Full local `lax build --no-color --profile` is
-running (session 76505, quiet log `/tmp/qptas-arxiv-build.log`); concepts
-compiled successfully and affected proofs are rebuilding.
+`git diff --check` passes. Full local `lax build --no-color --profile`
+passed (exit 0; quiet log `/tmp/qptas-arxiv-build.log`): concepts in 1m02s,
+proofs in 12m04s, statement inspection in 16s; 86 concepts, 135 proofs.
 
 Committed/pushed source: `4e701623a80aace39fc00986b497d9bb3b4adcfe`.
 Resubmitted with `lax submit --force --no-color` (session 34534), so archive
 validation runs independently in parallel without a duplicate local build.
 Archive workflow: https://github.com/lax-archive/lax/actions/runs/38949896864
-Dispatched 2026-10-16T18:46:26Z; validation is in progress. No acceptance or
-website update has been claimed for this revision. On resuming, collect both
-validation results and run `/tmp/qptas_audit_framework.py` only after the
-local build succeeds, since failed builds leave stale `build-output.json`.
+Dispatched 2026-10-16T18:46:26Z; completed successfully. CLI exited 0:
+archive rebuild 22m35s, public-record publication 1m32s. The updated draft
+was accepted. The same 45 nonblocking warnings remain.
 
 ### Revision to the registered approximation framework (proved, archive-validated, submitted)
 

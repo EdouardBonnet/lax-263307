@@ -1,11 +1,11 @@
-import Lax263307.QPTASRuntime
+import Lax263307Proofs.QPTASRuntime
 import Mathlib.Tactic
 
 set_option maxRecDepth 10000
 
 namespace Lax263307Proofs.ArchiveRuntime
 
-open Lax263307.QPTASRuntime
+open QPTASRuntime
 
 /-- For fixed precision, the original stronger bound and the structural
 reader/compiler overhead fit the archive's quasipolynomial envelope. -/

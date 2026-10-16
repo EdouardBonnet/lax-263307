@@ -1,7 +1,7 @@
 import Lax263307Proofs.NativeRootResource
 import Lax263307Proofs.RoundingBounds
 import Lax263307.RecursiveAlgorithm
-import Lax263307.QPTAS
+import Lax263307Proofs.QPTASRuntime
 
 namespace Lax263307Proofs.NativeFinalBounds
 
