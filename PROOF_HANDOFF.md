@@ -5,7 +5,7 @@ chronological history, including earlier incomplete checkpoints.
 
 ## Current status
 
-### Mathematical instances and separate encoding (2026-10-17, locally validated)
+### Mathematical instances and separate encoding (2026-10-17, validated and resubmitted)
 
 User approved replacing packet-level feasibility with typed mathematical
 instances/solutions, separating canonical representations, and resubmitting.
@@ -50,8 +50,16 @@ instances/solutions, separating canonical representations, and resubmitting.
   external QPTAS directly. All 120 local/external graph nodes are connected.
   Audit: `/tmp/qptas-typed-preview-audit.json`. Preview HTML files:
   `/tmp/qptas-typed-{problem,encoding,main,index}.html`.
-- Implementation and verification are complete. Commit, push, and resubmit;
-  record the immutable source and archive workflow below.
+- Committed and pushed source:
+  `68b2d26aa2075e2ef80fd9d355ea748d2a818fd1`.
+  After the complete local build passed, `lax submit --force --no-color`
+  (session 46952) skipped a duplicate local build and dispatched archive
+  workflow 39043457628 on 2026-10-17 at 15:04:31Z:
+  https://github.com/lax-archive/lax/actions/runs/39043457628
+  Issue 201's submission command confirms that exact immutable source.
+  Archive validation is running; acceptance and website propagation are not
+  yet claimed. The implementation, local checks, and requested resubmission
+  are complete. Collect the archive result if resuming.
 
 ### Concept interface cleanup (2026-10-17, locally validated and resubmitted)
 
