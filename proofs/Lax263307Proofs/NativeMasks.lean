@@ -1,3 +1,4 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeCombinations
 import Lax263307.NativeCatalog
 import Mathlib.Combinatorics.Colex
@@ -7,6 +8,8 @@ set_option maxHeartbeats 1000000
 set_option maxRecDepth 10000
 
 namespace Lax263307Proofs.NativeMasks
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax455465Proofs.RamVirtualState Lax263307.WeightedIndependentSet

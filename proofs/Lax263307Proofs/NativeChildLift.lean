@@ -1,3 +1,4 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeRestrictionOrder
 import Lax263307Proofs.NativeMaskUnpack
 
@@ -19,7 +20,7 @@ theorem selected_step {n : ℕ} (R : Finset (Fin n)) (I : Finset (Fin R.card))
 
 structure Context {n : ℕ} (R : Finset (Fin n)) (I : Finset (Fin R.card)) (σ : Env) : Prop where
   order : σ.vars "graph.n"=R.card
-  bits : Prefix (WeightedIndependentSet.encodeOutput I) "subset.bits" σ
+  bits : Prefix (IndependentSetEncoding.encodeOutput I) "subset.bits" σ
   labels : Prefix (NativeRestrictionOrder.words R) "restrict.vertices" σ
 
 theorem frame {B K n : ℕ} {R : Finset (Fin n)} {I : Finset (Fin R.card)} {c : Com} {σ τ : Env}
@@ -56,8 +57,8 @@ theorem step_spec (B n : ℕ) (R : Finset (Fin n)) (I : Finset (Fin R.card))
   have hvB : v.val<B := v.isLt.trans (by omega)
   have hbB : bit<B := by dsimp [bit]; split_ifs <;> omega
   have hgetb : (σ.arrs "subset.bits")[i]?=some bit := by
-    simpa only [WeightedIndependentSet.encodeOutput,List.getElem_ofFn] using
-      hd.context.bits i (by simpa only [WeightedIndependentSet.encodeOutput,List.length_ofFn] using hi)
+    simpa only [IndependentSetEncoding.encodeOutput,List.getElem_ofFn] using
+      hd.context.bits i (by simpa only [IndependentSetEncoding.encodeOutput,List.length_ofFn] using hi)
   have hgetv : (σ.arrs "restrict.vertices")[i]?=some v.val := by
     simpa only [NativeRestrictionOrder.words,List.getElem_ofFn] using
       hd.context.labels i (by simpa only [NativeRestrictionOrder.words,List.length_ofFn] using hi)

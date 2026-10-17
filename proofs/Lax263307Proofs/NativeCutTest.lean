@@ -1,3 +1,4 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeMaskUnpack
 
 namespace Lax263307Proofs.NativeCutTest
@@ -26,7 +27,7 @@ remaining cardinality with twice the original graph order. -/
 theorem command_spec {n : ℕ} (B : ℕ) (R : Finset (Fin n)) (hB : 3*n+5<B) (hm : 2^n<B) :
     Spec B (fun σ => σ.vars "graph.n"=n ∧ σ.vars "separator.remaining"=mask R ∧ n≤(σ.arrs "subset.bits").length)
       command (fun _ τ => τ.vars "separator.active"=(if 3*R.card≤2*n then 0 else 1) ∧
-        Prefix (Lax263307.WeightedIndependentSet.encodeOutput R) "subset.bits" τ ∧ τ.vars "unpack.card"=R.card)
+        Prefix (Lax263307.IndependentSetEncoding.encodeOutput R) "subset.bits" τ ∧ τ.vars "unpack.card"=R.card)
       (21*n+20) := by
   rintro σ ⟨hn,hR,hroom⟩
   let ν := σ.setVar "unpack.mask" (mask R)

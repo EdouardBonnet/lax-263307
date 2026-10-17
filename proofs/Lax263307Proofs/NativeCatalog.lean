@@ -1,3 +1,4 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeMasks
 import Lax263307Proofs.NativeCatalogOrder
 
@@ -5,6 +6,8 @@ set_option maxHeartbeats 1000000
 set_option maxRecDepth 10000
 
 namespace Lax263307Proofs.NativeCatalog
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax455465Proofs.RamVirtualState Lax263307.WeightedIndependentSet

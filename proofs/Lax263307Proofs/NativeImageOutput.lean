@@ -1,8 +1,11 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeMaskUnpack
 import Lax263307Proofs.NativeEmptyOutput
 import Lax455465Proofs.RamFrames
 
 namespace Lax263307Proofs.NativeImageOutput
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax808846Proofs.Reasoning.Lib Lax455465Proofs Lax455465Proofs.RamVirtualState

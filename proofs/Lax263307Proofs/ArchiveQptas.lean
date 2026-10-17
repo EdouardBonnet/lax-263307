@@ -1,34 +1,38 @@
+import Lax263307.IndependentSetEncoding
+import Lax213208.QPTAS
 import Lax263307Proofs.NativeArchiveExecution
 import Lax263307Proofs.NativeQptasComplexity
 import Lax263307Proofs.ArchiveRuntime
 
 namespace Lax263307Proofs.ArchiveQptas
 
+open Lax263307.IndependentSetEncoding
+
 open Lax263307 GraphClasses EdgeSublinearSeparators WeightedIndependentSet QPTASRuntime
 open Lax455465Proofs
 open Lax759944.BinaryWordEncoding (bitSize)
-open Lax213208.OptimizationProblem Lax213208.Programs
+open Lax213208.OptimizationProblem Lax213208.Programs Lax213208.AlgorithmInput
 
 theorem instance_length {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ) :
-    (Lax263307.MaxWeightIndependentSet.encodeInstance G w).length = n*n+3*n+1 := by
+    (encodeInstance G w).length = n*n+3*n+1 := by
   classical
-  simp [Lax263307.MaxWeightIndependentSet.encodeInstance, encodeRational, List.length_flatten,
+  simp [encodeInstance, encodeRational, List.length_flatten,
     List.length_flatMap, List.sum_ofFn, Finset.sum_const, Nat.mul_comm]
 
 theorem instance_order_bound {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ) :
-    n ≤ StructuralPacket.size (Lax263307.MaxWeightIndependentSet.encodeInstance G w) := by
-  have hh := StructuralPacket.length_le_size (Lax263307.MaxWeightIndependentSet.encodeInstance G w)
+    n ≤ StructuralPacket.size (encodeInstance G w) := by
+  have hh := StructuralPacket.length_le_size (encodeInstance G w)
   rw [instance_length] at hh
   omega
 
 theorem parameter_bound {n : ℕ} (G : SimpleGraph (Fin n)) (w : Fin n → ℚ) (k : ℕ) :
     rationalBitSize w (1/((k:ℚ)+1)) ≤
-      StructuralPacket.size (Lax263307.MaxWeightIndependentSet.encodeInstance G w)+k+6 := by
+      StructuralPacket.size (encodeInstance G w)+k+6 := by
   classical
-  have hbits := StructuralPacket.bits_le_size (Lax263307.MaxWeightIndependentSet.encodeInstance G w)
+  have hbits := StructuralPacket.bits_le_size (encodeInstance G w)
   have hpart : bitSize ((List.ofFn w).flatMap encodeRational) ≤
-      bitSize (Lax263307.MaxWeightIndependentSet.encodeInstance G w) := by
-    simp only [Lax263307.MaxWeightIndependentSet.encodeInstance, WordSize.bitSize_append]
+      bitSize (encodeInstance G w) := by
+    simp only [encodeInstance, WordSize.bitSize_append]
     omega
   have hw := hpart.trans hbits
   have he := StructuralPacket.bits_accuracy k
@@ -61,10 +65,11 @@ theorem exists_qptas (C : GraphClass) (hereditary : IsHereditary C)
   have hresult : ∀ x ∈ Lax263307.MaxWeightIndependentSet.instancesOn C,
       ∃ y, Lax213208.Approximation.IsApproximation Lax263307.MaxWeightIndependentSet
         (1+1/(k:ℝ)) x y ∧
-        RunsWithin (NativeArchiveExecution.program i) (StructuralPacket.tape k x) y
-          (time (StructuralPacket.size x)) := by
-    rintro x ⟨n,G,w,hG,rfl⟩
-    let x := Lax263307.MaxWeightIndependentSet.encodeInstance G w
+        RunsWithin (NativeArchiveExecution.program i)
+          (inputTape Lax263307.MaxWeightIndependentSet (some k) x) (output y)
+          (time (inputSize Lax263307.MaxWeightIndependentSet x)) := by
+    rintro ⟨n,G,w⟩ hG
+    let x := encodeInstance G w
     let N := StructuralPacket.size x
     let ε : ℚ := 1/((k:ℚ)+1)
     have hh := final n w ε (NativeArchiveExecution.accuracy_pos k)
@@ -72,7 +77,7 @@ theorem exists_qptas (C : GraphClass) (hereditary : IsHereditary C)
     have ht := htime n (rationalBitSize w ε) N
       (instance_order_bound G w) (parameter_bound G w k)
     obtain ⟨I,happrox,hrun⟩ := NativeArchiveExecution.result i G hG w k hk
-    refine ⟨encodeOutput I,happrox,hrun (time N) ?_ ?_⟩
+    refine ⟨⟨n,I⟩,happrox,hrun (time N) ?_ ?_⟩
     · apply le_trans (b := 1000*(timeBound c d n (rationalBitSize w ε) ε+N+k+a+100)) ?_ ht
       change NativeQptasWordBounds.width i w ε+N+k+10+a≤_
       omega
@@ -84,13 +89,13 @@ theorem exists_qptas (C : GraphClass) (hereditary : IsHereditary C)
     intro x hx
     obtain ⟨y,happrox,hrun⟩ := hresult x hx
     refine ⟨y,?_,happrox⟩
-    refine ⟨time (StructuralPacket.size x),?_⟩
+    refine ⟨time (inputSize Lax263307.MaxWeightIndependentSet x),?_⟩
     intro wordLength hw
-    obtain ⟨steps,hsteps,hr⟩ := hrun.2 wordLength hw (StructuralPacket.tape k x) (Set.mem_singleton _)
+    obtain ⟨steps,hsteps,hr⟩ := hrun.2 wordLength hw _ (Set.mem_singleton _)
     exact ⟨steps,hr⟩
   · refine ⟨q,e,hq,he,?_⟩
     intro x hx
     obtain ⟨y,_,hrun⟩ := hresult x hx
-    exact ⟨y,hrun⟩
+    exact ⟨output y,hrun⟩
 
 end Lax263307Proofs.ArchiveQptas

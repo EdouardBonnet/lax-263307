@@ -1,9 +1,12 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeQptasPositive
 import Lax263307Proofs.NativeFinalBounds
 
 set_option maxHeartbeats 1000000
 
 namespace Lax263307Proofs.NativeQptasWordBounds
+
+open Lax263307.IndependentSetEncoding
 
 open Lax263307 GraphClasses WeightedIndependentSet
 open NativeQptasImplementation NativeQptasPositive

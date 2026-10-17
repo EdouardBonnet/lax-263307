@@ -1,8 +1,12 @@
-import Lax263307.MaxWeightIndependentSet
+import Lax263307.IndependentSetEncoding
+import Lax560851.WordArena
+import Lax213208.Programs
 import Lax455465Proofs.WordSize
 import Mathlib.Tactic
 
 namespace Lax263307Proofs.StructuralPacket
+
+open Lax263307.IndependentSetEncoding
 
 open Lax560851 StructuralPresentation StructuralCombinators WordArena
 open Lax759944.BinaryWordEncoding (bitSize)
@@ -91,12 +95,12 @@ theorem bits_le_size (xs : List ℕ) : bitSize xs ≤ size xs := by
   omega
 
 theorem accuracy_encoding (k : ℕ) :
-    Lax263307.WeightedIndependentSet.encodeRational (1/((k:ℚ)+1)) = [0,1,k+1] := by
+    Lax263307.IndependentSetEncoding.encodeRational (1/((k:ℚ)+1)) = [0,1,k+1] := by
   have hp : 0 < k+1 := by omega
   have hn := Rat.inv_natCast_num_of_pos hp
   have hd := Rat.inv_natCast_den_of_pos hp
   simp only [Nat.cast_add, Nat.cast_one] at hn hd
-  simp [Lax263307.WeightedIndependentSet.encodeRational, one_div, hn, hd]
+  simp [Lax263307.IndependentSetEncoding.encodeRational, one_div, hn, hd]
 
 theorem bits_accuracy (k : ℕ) : bitSize [0,1,k+1] ≤ k+6 := by
   simp only [bitSize_cons, bitSize_nil]

@@ -1,9 +1,12 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeRestrictionOrder
 
 set_option maxRecDepth 10000
 set_option maxHeartbeats 600000
 
 namespace Lax263307Proofs.NativeSelectedVertices
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax455465Proofs Lax455465Proofs.RamVirtualState

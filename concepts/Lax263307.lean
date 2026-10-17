@@ -37,6 +37,7 @@ import Lax263307.HeavyRationalConditioning
 import Lax263307.HeavyRecursiveRounding
 import Lax263307.HostRestriction
 import Lax263307.IndependentBlowUp
+import Lax263307.IndependentSetEncoding
 import Lax263307.InducedEmbeddingWidth
 import Lax263307.InducedRouteEdges
 import Lax263307.IsolatedEmbeddingTransfer

@@ -1,6 +1,9 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeWeightReduction
 
 namespace Lax263307Proofs.NativeOriginalAccuracy
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax455465Proofs.RamVirtualState

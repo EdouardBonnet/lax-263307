@@ -1,3 +1,4 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307.WeightedAlgorithm
 import Lax808846.Ram
 import Lax263307Proofs.NativeWeightReduction
@@ -7,6 +8,8 @@ set_option maxHeartbeats 1000000
 set_option maxRecDepth 10000
 
 namespace Lax263307Proofs.NativeBlowUp
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax455465Proofs.RamVirtualState

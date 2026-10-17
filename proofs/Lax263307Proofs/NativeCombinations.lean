@@ -1,3 +1,4 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeBlowUp
 import Lax263307.ExhaustiveTargets
 
@@ -474,21 +475,21 @@ theorem decode_get {α : Type*} (xs : List α) (bs : List ℕ) (hnd : xs.Nodup)
     · simp [hb]
 
 theorem bits_encoding (n k rank : ℕ) :
-    bits n k rank=Lax263307.WeightedIndependentSet.encodeOutput
+    bits n k rank=Lax263307.IndependentSetEncoding.encodeOutput
       (decode (List.finRange n) (bits n k rank)).toFinset := by
   let bs := bits n k rank
   let I := (decode (List.finRange n) bs).toFinset
   have hlen : bs.length=n := bits_length _ _ _
   apply List.ext_getElem
-  · simpa [Lax263307.WeightedIndependentSet.encodeOutput] using hlen
+  · simpa [Lax263307.IndependentSetEncoding.encodeOutput] using hlen
   · intro i hi hi'
     have hin : i<n := by simpa only [bits_length] using hi
     have hxs : i<(List.finRange n).length := by simpa using hin
     have hd := decode_get (List.finRange n) bs (List.nodup_finRange n) (by simpa using hlen) i hxs
     simp only [List.getElem_finRange] at hd
-    have hget : (Lax263307.WeightedIndependentSet.encodeOutput I)[i]=
+    have hget : (Lax263307.IndependentSetEncoding.encodeOutput I)[i]=
         if (⟨i,hin⟩ : Fin n)∈I then 1 else 0 := List.getElem_ofFn hi'
-    change bs[i]=(Lax263307.WeightedIndependentSet.encodeOutput I)[i]
+    change bs[i]=(Lax263307.IndependentSetEncoding.encodeOutput I)[i]
     rw [hget]
     by_cases hb : bs[i]=1
     · have hm : (⟨i,hin⟩ : Fin n)∈I := List.mem_toFinset.mpr (hd.mpr hb)

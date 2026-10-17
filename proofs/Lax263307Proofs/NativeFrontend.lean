@@ -1,3 +1,4 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307.WeightRounding
 import Lax455465Proofs.RamInputCopy
 import Lax455465Proofs.RamVirtualState
@@ -5,6 +6,8 @@ import Lax109476Proofs.RamAutomaticLayout
 import Mathlib.Tactic
 
 namespace Lax263307Proofs.NativeFrontend
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax455465Proofs Lax455465Proofs.RamVirtualState

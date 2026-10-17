@@ -1,9 +1,12 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeMaximum
 import Lax455465Proofs.RamWordBuffer
 
 set_option maxHeartbeats 800000
 
 namespace Lax263307Proofs.NativeMultiplicities
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax455465Proofs.RamVirtualState Lax263307Proofs.NativeFrontend

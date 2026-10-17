@@ -1,8 +1,11 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeMasks
 import Lax455465Proofs.RamEmitWords
 import Lax62Proofs.Refine.Codegen.Harness
 
 namespace Lax263307Proofs.NativeEmptyOutput
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax808846Proofs.Reasoning.Lib Lax455465Proofs

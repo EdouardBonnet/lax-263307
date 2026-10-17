@@ -5,6 +5,54 @@ chronological history, including earlier incomplete checkpoints.
 
 ## Current status
 
+### Mathematical instances and separate encoding (2026-10-17, locally validated)
+
+User approved replacing packet-level feasibility with typed mathematical
+instances/solutions, separating canonical representations, and resubmitting.
+
+- `WeightedIndependentSet` now contains only mathematical definitions, plus
+  `Instance` (order, graph, rational weights) and `Solution` (ambient order,
+  finite vertex set). No word encodings remain in that module.
+- New `IndependentSetEncoding` owns the canonical encoders and their checked
+  injectivity certificates, all written without tactics. Its input is the
+  standard structural list of the existing graph-and-weight packet; its output
+  is the existing membership vector. `presentationOf` supplies the generic
+  partial inverse; no custom graph, weight, or solution decoder is needed.
+- `MaxWeightIndependentSet` uses typed feasibility, objective, and class
+  membership. The old `decodeGraph`, `decodeWeights`, `decodeSolution`, and
+  `vertexCount` definitions and their transfer proofs were removed. The shorter
+  approximation transfer compares mathematical vertex sets directly.
+- The fixed program, all encoded bytes, approximation ratio, and time bounds
+  are unchanged. `ArchiveQptas` transfers the existing execution proof to typed
+  instances and solutions. Backend users explicitly import the relocated
+  encoders; packet/program proofs use the declared high-level program API.
+  No dependency versions or package requirements changed.
+- Full `lax build --no-color --profile` passed, session 87632, exit 0:
+  concepts 40s, proofs 54s, statement inspection 18s. Log:
+  `/tmp/qptas-typed-validated-build.log`. 44 nonblocking warnings remain.
+  Previous passes exposed missing transitive imports; all are resolved.
+- Checked inventory: 85 concepts, 135 claims/proofs, 345 proof modules.
+  Every claim is proved and belongs to the main theorem's proof ancestry:
+  `/tmp/qptas-typed-closure-audit.json` (script
+  `/tmp/qptas_typed_closure_audit.py`). All 85 concept files have no tactics,
+  admissions, or old custom decoder definitions:
+  `/tmp/qptas-typed-static-audit.json`.
+- `/tmp/QptasTypedAudit.lean` passes: the problem depends only on `propext`,
+  `Classical.choice`, and `Quot.sound`. Input tapes, input sizes, and output
+  vectors are definitionally identical to those used by the original program.
+  The local definitional cone of the main statement has 22 constants, no custom
+  decoders, and no algorithm-specific input/accuracy encodings. Log:
+  `/tmp/qptas-typed-interface-audit.log`. The approximation transfer also passes
+  Lean directly: `/tmp/qptas-typed-transfer-final.log`.
+- Preview runs at http://localhost:8136/lax-263307/index.html, session 4813;
+  it automatically refreshed after the successful build. The mathematical
+  problem links to its separate encoding concept; the main theorem still uses
+  external QPTAS directly. All 120 local/external graph nodes are connected.
+  Audit: `/tmp/qptas-typed-preview-audit.json`. Preview HTML files:
+  `/tmp/qptas-typed-{problem,encoding,main,index}.html`.
+- Implementation and verification are complete. Commit, push, and resubmit;
+  record the immutable source and archive workflow below.
+
 ### Concept interface cleanup (2026-10-17, locally validated and resubmitted)
 
 User requests no tactics in concept files, the explicit name
@@ -50,9 +98,8 @@ User requests no tactics in concept files, the explicit name
   2m51s and dispatched archive workflow 38983107916 at
   2026-10-16T23:45:44Z (17 October locally):
   https://github.com/lax-archive/lax/actions/runs/38983107916
-  Archive validation is running. Acceptance and website propagation are not
-  yet claimed. No implementation work remains for this cleanup; collect the
-  archive/CLI result on resuming.
+  Archive workflow completed successfully, confirmed on 2026-10-17.
+  No implementation work remains for that cleanup.
 
 ### Direct external QPTAS statement (2026-10-16, locally validated and resubmitted)
 

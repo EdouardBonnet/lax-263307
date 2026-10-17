@@ -1,3 +1,4 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeQptasImplementation
 import Lax263307Proofs.NativeUnweightedExecution
 import Lax263307Proofs.NativeQptasZero
@@ -7,6 +8,8 @@ set_option maxHeartbeats 1000000
 set_option maxRecDepth 20000
 
 namespace Lax263307Proofs.NativeQptasPositive
+
+open Lax263307.IndependentSetEncoding
 
 open Lax808846Proofs.Imp Lax808846Proofs.Reasoning
 open Lax455465Proofs Lax455465Proofs.RamVirtualState

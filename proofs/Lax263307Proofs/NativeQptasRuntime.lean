@@ -1,9 +1,12 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeWeightedExecution
 
 set_option maxHeartbeats 500000
 set_option maxRecDepth 20000
 
 namespace Lax263307Proofs.NativeQptasRuntime
+
+open Lax263307.IndependentSetEncoding
 
 open Lax263307 GraphClasses AlgorithmParameters WeightedIndependentSet
 open NativeQptasImplementation NativeQptasPositive NativePolynomialEnvelope

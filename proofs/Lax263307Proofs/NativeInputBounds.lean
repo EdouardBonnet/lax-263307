@@ -1,7 +1,10 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307.WeightedIndependentSet
 import Lax455465Proofs.WordSize
 
 namespace Lax263307Proofs.NativeInputBounds
+
+open Lax263307.IndependentSetEncoding
 
 open Lax263307 WeightedIndependentSet
 

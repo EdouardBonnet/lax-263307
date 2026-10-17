@@ -1,3 +1,4 @@
+import Lax263307.IndependentSetEncoding
 import Lax263307Proofs.NativeExhaustive
 import Lax263307Proofs.NativeTargetDriver
 
@@ -26,7 +27,7 @@ theorem none_spec (B n ret : ℕ) (hB : n+ret+5<B) :
 
 theorem some_spec (B n ret : ℕ) (I : Finset (Fin n)) (hB : n+ret+5<B) (hm : 2^n<B) :
     Spec B (fun σ => σ.vars "graph.n"=n ∧ Lax455465Proofs.RamVirtualState.Prefix
-      (WeightedIndependentSet.encodeOutput I) "subset.bits" σ) (someCommand ret)
+      (IndependentSetEncoding.encodeOutput I) "subset.bits" σ) (someCommand ret)
       (fun _ τ => τ.vars "graph.n"=n ∧ NativeTargetDriver.Reply (some I) τ ∧
         τ.vars "machine.phase"=ret) (15*n+14) := by
   rintro σ ⟨hn,hbits⟩
